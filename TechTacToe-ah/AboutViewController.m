@@ -1,59 +1,87 @@
 //
 //  AboutViewController.m
-//  TechTacToe-ah
+//  Groups
 //
-//  Created by andreas on 06/10/2011.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Created by Benjamin Mies on 04.03.10.
+//  Modified by andreas for TechTacToe on 10/13/11.
+//  Copyright 2011 os-cillation e.K. All rights reserved.
 //
 
 #import "AboutViewController.h"
 
+
 @implementation AboutViewController
 
-#pragma mark - Initializer and memory management
+@synthesize labelProducts = _labelProducts;
+@synthesize labelVersion = _labelVersion;
+@synthesize scrollView = _scrollView;
+@synthesize textView = _textView;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (void)dealloc
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+    [_labelProducts release], _labelProducts = nil;
+    [_labelVersion release], _labelVersion = nil;
+    [_scrollView release], _scrollView = nil;
+    [_textView release], _textView = nil;
+    [super dealloc];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
 
-#pragma mark - View lifecycle
+#pragma mark -
+#pragma mark View lifecycle
+
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+	[super viewDidLoad];
+
+    self.scrollView.contentSize = CGSizeMake(320, 800);
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    self.labelVersion.text = [NSString stringWithFormat:@"%@ (%@)",
+                              [infoDictionary objectForKey:@"CFBundleShortVersionString"],
+                              [infoDictionary objectForKey:@"CFBundleVersion"]];
+	self.labelProducts.text = NSLocalizedString(@"otherProducts", @"");
+	self.textView.text = NSLocalizedString(@"aboutText", @"");
 }
+
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    self.labelProducts = nil;
+    self.labelVersion = nil;
+    self.scrollView = nil;
+    self.textView = nil;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    self.navigationController.navigationBar.tintColor = nil; 
-    [super viewWillAppear:animated];
-}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
+    return UIInterfaceOrientationIsPortrait(interfaceOrientation);
 }
+
+
+#pragma mark -
+#pragma mark Actions
+
+
+- (IBAction)openIVideoShow
+{
+    // TODO - insert link to iVideoShow
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=370136323&amp;amp;amp;amp;mt=8"]];
+}
+
+
+- (IBAction)openGroupPlus
+{
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=377201940&amp;amp;amp;amp;mt=8"]];
+}
+
+
+- (IBAction)openGroupMessage
+{
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=377177900&amp;amp;amp;amp;mt=8"]];
+}
+
 
 @end

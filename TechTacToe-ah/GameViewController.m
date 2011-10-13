@@ -847,6 +847,19 @@
 
 - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    // hide the bottom text element and the info icon for rules view
+    self.turnInfo.hidden = YES;
+    self.rulesButton.hidden = YES;
+    
+    // call layouting code
     [self layoutElements:toInterfaceOrientation];
 }
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    // unhide elements we hid before
+    self.turnInfo.hidden = NO;
+    self.rulesButton.hidden = NO;
+}
+
 @end

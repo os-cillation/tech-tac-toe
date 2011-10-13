@@ -15,11 +15,14 @@
 		CE759D20144336D100DAB57E /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE759D1F144336D100DAB57E /* icon@2x.png */; };
 		CE7C3351143F0BB7005EE0D9 /* LoadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7C334F143F0BB7005EE0D9 /* LoadViewController.m */; };
 		CE7C3352143F0BB7005EE0D9 /* LoadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE7C3350143F0BB7005EE0D9 /* LoadViewController.xib */; };
+		CE80560A1446E2AE00CE90C8 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8056081446E2AE00CE90C8 /* AboutViewController.m */; };
+		CE80560B1446E2AE00CE90C8 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE8056091446E2AE00CE90C8 /* AboutViewController.xib */; };
+		CE80560F1446E3FE00CE90C8 /* groupplus-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = CE80560C1446E3FE00CE90C8 /* groupplus-icon.png */; };
+		CE8056111446E3FE00CE90C8 /* os.png in Resources */ = {isa = PBXBuildFile; fileRef = CE80560E1446E3FE00CE90C8 /* os.png */; };
+		CE8056141446E9F700CE90C8 /* iVideoShow-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = CE8056131446E9F700CE90C8 /* iVideoShow-icon.png */; };
 		CE81460A1433145D006E7099 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8146081433145D006E7099 /* SettingsViewController.m */; };
 		CE81460B1433145D006E7099 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE8146091433145D006E7099 /* SettingsViewController.xib */; };
 		CE8B90E0143C41B700E41250 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE8B90E2143C41B700E41250 /* Localizable.strings */; };
-		CE8C3E34143DB13700A076DA /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8C3E32143DB13700A076DA /* AboutViewController.m */; };
-		CE8C3E35143DB13700A076DA /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE8C3E33143DB13700A076DA /* AboutViewController.xib */; };
 		CEAF498E1443255200931E99 /* blue_line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEAF49861443255200931E99 /* blue_line@2x.png */; };
 		CEAF498F1443255200931E99 /* blue_marked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEAF49871443255200931E99 /* blue_marked@2x.png */; };
 		CEAF49901443255200931E99 /* blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEAF49881443255200931E99 /* blue@2x.png */; };
@@ -68,14 +71,17 @@
 		CE7C334E143F0BB7005EE0D9 /* LoadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadViewController.h; sourceTree = "<group>"; };
 		CE7C334F143F0BB7005EE0D9 /* LoadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadViewController.m; sourceTree = "<group>"; };
 		CE7C3350143F0BB7005EE0D9 /* LoadViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadViewController.xib; sourceTree = "<group>"; };
+		CE8056071446E2AE00CE90C8 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
+		CE8056081446E2AE00CE90C8 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
+		CE8056091446E2AE00CE90C8 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
+		CE80560C1446E3FE00CE90C8 /* groupplus-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "groupplus-icon.png"; sourceTree = "<group>"; };
+		CE80560E1446E3FE00CE90C8 /* os.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = os.png; sourceTree = "<group>"; };
+		CE8056131446E9F700CE90C8 /* iVideoShow-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iVideoShow-icon.png"; sourceTree = "<group>"; };
 		CE8146071433145D006E7099 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		CE8146081433145D006E7099 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		CE8146091433145D006E7099 /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
 		CE8B90E1143C41B700E41250 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CE8B90E3143C422700E41250 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		CE8C3E31143DB13700A076DA /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
-		CE8C3E32143DB13700A076DA /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
-		CE8C3E33143DB13700A076DA /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		CEAF49861443255200931E99 /* blue_line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue_line@2x.png"; sourceTree = "<group>"; };
 		CEAF49871443255200931E99 /* blue_marked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue_marked@2x.png"; sourceTree = "<group>"; };
 		CEAF49881443255200931E99 /* blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue@2x.png"; sourceTree = "<group>"; };
@@ -144,6 +150,9 @@
 		CE7EF956143602C700CA8DB2 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				CE8056131446E9F700CE90C8 /* iVideoShow-icon.png */,
+				CE80560C1446E3FE00CE90C8 /* groupplus-icon.png */,
+				CE80560E1446E3FE00CE90C8 /* os.png */,
 				CE754F671442DBAA000944C7 /* Default.png */,
 				CE27B562144596AB005BAA35 /* Default@2x.png */,
 				CE759D1C144336C600DAB57E /* icon.png */,
@@ -182,10 +191,10 @@
 				CE320ED8143F226500A688AB /* LoadDetailViewController.m */,
 				CE8146071433145D006E7099 /* SettingsViewController.h */,
 				CE8146081433145D006E7099 /* SettingsViewController.m */,
+				CE8056071446E2AE00CE90C8 /* AboutViewController.h */,
+				CE8056081446E2AE00CE90C8 /* AboutViewController.m */,
 				CEE6E613143B2EA400402251 /* RulesViewController.h */,
 				CEE6E614143B2EA400402251 /* RulesViewController.m */,
-				CE8C3E31143DB13700A076DA /* AboutViewController.h */,
-				CE8C3E32143DB13700A076DA /* AboutViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -197,8 +206,8 @@
 				CE7C3350143F0BB7005EE0D9 /* LoadViewController.xib */,
 				CE320ED9143F226500A688AB /* LoadDetailViewController.xib */,
 				CE8146091433145D006E7099 /* SettingsViewController.xib */,
+				CE8056091446E2AE00CE90C8 /* AboutViewController.xib */,
 				CEE6E615143B2EA400402251 /* RulesViewController.xib */,
-				CE8C3E33143DB13700A076DA /* AboutViewController.xib */,
 			);
 			name = "Interface Builder xib Files";
 			sourceTree = "<group>";
@@ -295,6 +304,7 @@
 				E1806A701410D6720050493D /* Sources */,
 				E1806A711410D6720050493D /* Frameworks */,
 				E1806A721410D6720050493D /* Resources */,
+				CE8056121446E85100CE90C8 /* Set Build Version */,
 			);
 			buildRules = (
 			);
@@ -350,7 +360,6 @@
 				CEC1E9291434557F0053266F /* MainWindow.xib in Resources */,
 				CEE6E617143B2EA500402251 /* RulesViewController.xib in Resources */,
 				CE8B90E0143C41B700E41250 /* Localizable.strings in Resources */,
-				CE8C3E35143DB13700A076DA /* AboutViewController.xib in Resources */,
 				CE7C3352143F0BB7005EE0D9 /* LoadViewController.xib in Resources */,
 				CE320EDB143F226500A688AB /* LoadDetailViewController.xib in Resources */,
 				CE754F681442DBAA000944C7 /* Default.png in Resources */,
@@ -365,10 +374,32 @@
 				CE759D1D144336C600DAB57E /* icon.png in Resources */,
 				CE759D20144336D100DAB57E /* icon@2x.png in Resources */,
 				CE27B563144596AB005BAA35 /* Default@2x.png in Resources */,
+				CE80560B1446E2AE00CE90C8 /* AboutViewController.xib in Resources */,
+				CE80560F1446E3FE00CE90C8 /* groupplus-icon.png in Resources */,
+				CE8056111446E3FE00CE90C8 /* os.png in Resources */,
+				CE8056141446E9F700CE90C8 /* iVideoShow-icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CE8056121446E85100CE90C8 /* Set Build Version */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Set Build Version";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "SVN_VERSION=`svnversion`\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"CFBundleVersion\" \"${SVN_VERSION%M*}\"";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E1806A701410D6720050493D /* Sources */ = {
@@ -388,9 +419,9 @@
 				CE81460A1433145D006E7099 /* SettingsViewController.m in Sources */,
 				CEC1E92E14345B320053266F /* MainViewController.m in Sources */,
 				CEE6E616143B2EA500402251 /* RulesViewController.m in Sources */,
-				CE8C3E34143DB13700A076DA /* AboutViewController.m in Sources */,
 				CE7C3351143F0BB7005EE0D9 /* LoadViewController.m in Sources */,
 				CE320EDA143F226500A688AB /* LoadDetailViewController.m in Sources */,
+				CE80560A1446E2AE00CE90C8 /* AboutViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

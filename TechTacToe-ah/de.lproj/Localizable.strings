@@ -178,3 +178,20 @@
 "DISABLED_CONCISE" = "aus";
 "YES" = "Ja";
 "NO" = "Nein";
+
+
+/* von iVideoShow AboutViewController */
+
+"otherProducts" = "Weitere Apps:";
+"aboutText" = 
+"os-cillation GmbH  
+GF: Oliver Schweissgut
+Hohler Weg 75
+57072 Siegen
+Deutschland
+
+Tel.: +49 271 31368-0
+Fax: +49 271 31368-18
+http://www.os-cillation.de
+
+© 2011 by os-cillation GmbH";
