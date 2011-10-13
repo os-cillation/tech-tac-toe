@@ -1,0 +1,180 @@
+/* 
+  Localizable.strings
+  TechTacToe-ah
+
+  Created by andreas on 05/10/2011.
+  Copyright 2011 __MyCompanyName__. All rights reserved.
+*/
+
+
+/* main menu */
+
+"MAIN_VIEW_TITLE" = "TechTacToe - Main Menu";
+
+// cell labels
+"MAIN_VIEW_CELL_DEFAULT_SETTINGS" = "Default Settings";
+"MAIN_VIEW_CELL_TICTACTOE" = "TicTacToe";
+"MAIN_VIEW_CELL_GOMOKU" = "Gomoku";
+"MAIN_VIEW_CELL_CUSTOMIZED_GAME" = "Customized Game";
+"MAIN_VIEW_CELL_CONTINUE" = "Continue";
+"MAIN_VIEW_CELL_LOAD" = "Load Game";
+"MAIN_VIEW_CELL_ABOUT" = "About"; //TODO
+
+// section headers
+"MAIN_VIEW_HEADER_START_NEW_GAME" = "New Game";
+"MAIN_VIEW_HEADER_ONGOING_GAMES" = "Ongoing Games";
+
+
+/* load view */
+"LOAD_VIEW_TITLE" = "Load Game";
+
+// alert views
+"LOAD_VIEW_ALERT_DELETE_GAME_UNSUCCESSFUL_TITLE" = "Error";
+"LOAD_VIEW_ALERT_DELETE_GAME_UNSUCCESSFUL_MESSAGE" = "Could not delete the file.";
+
+
+/* load detail view */
+"LOAD_DETAIL_VIEW_TITLE" = "Game Details";
+"LOAD_DETAIL_VIEW_LOAD_BUTTON" = "Load";
+
+// section headers
+"LOAD_DETAIL_VIEW_HEADER_SAVEGAME" = "Savegame: ";
+
+// cell labels
+"LOAD_DETAIL_VIEW_CELL_CURRENT_TURN" = "Current Turn";
+"LOAD_DETAIL_VIEW_CELL_MAXIMUM_NUMBER_OF_TURNS" = "Maximum Number of Turns";
+"LOAD_DETAIL_VIEW_CELL_BOARD_WIDTH" = "Board Width";
+"LOAD_DETAIL_VIEW_CELL_BOARD_HEIGHT" = "Board Height";
+"LOAD_DETAIL_VIEW_CELL_EXTENDABLE_BOARD" = "Board Extendable";
+"LOAD_DETAIL_VIEW_CELL_MINIMUM_LINE_SIZE" = "Minimum Line Size";
+"LOAD_DETAIL_VIEW_CELL_SCORE_MODE" = "Score Mode";
+"LOAD_DETAIL_VIEW_CELL_ADDITIONAL_RED_TURN" = "Additional Red Turn";
+"LOAD_DETAIL_VIEW_CELL_REUSE_LINES" = "Reuse Lines";
+"LOAD_DETAIL_VIEW_CELL_BLUE_PLAYER_SCORE" = "Blue Player Score";
+"LOAD_DETAIL_VIEW_CELL_RED_PLAYER_SCORE" = "Red Player Score";
+
+
+/* settings view */
+
+"SETTINGS_VIEW_TITLE" = "Customize Game";
+"SETTINGS_VIEW_PLAY_BUTTON" = "Play";
+
+// cell labels
+"SETTINGS_VIEW_CELL_TURN_LIMIT" = "Turn Limit";
+"SETTINGS_VIEW_CELL_NUMBER_OF_TURNS" = "Number of Turns";
+"SETTINGS_VIEW_CELL_LIMIT_BOARD_SIZE" = "Limit Board Size";
+"SETTINGS_VIEW_CELL_BOARD_WIDTH" = "Board Width";
+"SETTINGS_VIEW_CELL_BOARD_HEIGHT" = "Board Height";
+"SETTINGS_VIEW_CELL_MINIMUM_LINE_SIZE" = "Minimum Line Size";
+"SETTINGS_VIEW_CELL_SCORE_MODE" = "Score Mode";
+"SETTINGS_VIEW_CELL_ADDITIONAL_RED_TURN" = "Additional Red Turn";
+"SETTINGS_VIEW_CELL_REUSE_LINES" = "Reuse Lines";
+
+// section headers
+"SETTINGS_VIEW_HEADER_BOARD_OPTIONS" = "Board Options";
+"SETTINGS_VIEW_HEADER_GAME_MODE_OPTIONS" = "Game Mode Options";
+
+// section footers
+"SETTINGS_VIEW_FOOTER_TURN_OPTIONS" = "Sets the number of turns. Cannot be higher than the total board size. If no turn limit is set but the board has a limit, the maximum number of turns will be used. On unlimited boards, the highest valid value is %i. Also, if no turn limit and no board limit is set, game will not be in score mode.";
+"SETTINGS_VIEW_FOOTER_BOARD_OPTIONS" = "Determines the size of the board. Values cannot be lower than the minimum line size or higher than 25. On games with deactivated size limit, the blue player will already have set and players cannot set more than two fields away from any previously set field. Also, if the total number of possible fields reaches or exceeds %i, the board will be limited during the game.";
+"SETTINGS_VIEW_FOOTER_MINIMUM_LINE_SIZE" = "The minimum number of fields in a row for a line. Lines with more than this value will score for additional points. Values range from three to six.";
+"SETTINGS_VIEW_FOOTER_SCORE_MODE" = "If enabled, the game will always end after a set number of turns with the player with a higher score winning.";
+"SETTINGS_VIEW_FOOTER_ADDITIONAL_RED_TURN" = "Allow the second (red) player a chance to counter a line with an additional turn on non-score mode games.";
+"SETTINGS_VIEW_FOOTER_REUSE_LINES" = "Either allow lines to be crossed (but not extended) by any new line or effectively remove fields of a line from the game.";
+
+// alert views
+"SETTINGS_VIEW_ALERT_TITLE_INVALID_VALUE" = "Invalid Value";
+"SETTINGS_VIEW_ALERT_TITLE_AUTO-ADJUSTMENT" = "Auto-adjustment";
+"SETTINGS_VIEW_ALERT_TITLE_VALUE_TOO_HIGH" = "Value too High";
+
+"SETTINGS_VIEW_ALERT_NUMBER_OF_TURNS_EDIT_END_BOARD_LIMITED" = "Please enter a valid value.\nIf a turn limit is not desired, switch it off instead. Defaulting to current maximum (%i).";
+"SETTINGS_VIEW_ALERT_NUMBER_OF_TURNS_EDIT_END_BOARD_UNLIMITED" = "Please enter a valid value.\nIf a turn limit is not desired, switch it off instead. Defaulting to 100 turns.";
+"SETTINGS_VIEW_ALERT_NUMBER_OF_TURNS_EDIT_CHANGED_BOARD_LIMITED" = "The value is too high. Make sure it does not exceed the current number of fields, which is %i.";
+"SETTINGS_VIEW_ALERT_NUMBER_OF_TURNS_EDIT_CHANGED_BOARD_UNLIMITED" = "The value is too high. Make sure it does not exceed %i.";
+
+"SETTINGS_VIEW_ALERT_MINIMUM_FOR_LINE_EDIT_END_BOARD_WIDTH_CHANGE" = "Changed board width from %i to %i.\n";
+"SETTINGS_VIEW_ALERT_MINIMUM_FOR_LINE_EDIT_END_BOARD_HEIGHT_CHANGE" = "Changed board height from %i to %i.\n";
+"SETTINGS_VIEW_ALERT_MINIMUM_FOR_LINE_EDIT_END_AUTO-ADJUSTMENT" = "Setting the minimum line size to %i triggered the following adjustments:\n\n%@%@";
+"SETTINGS_VIEW_ALERT_MINIMUM_FOR_LINE_EDIT_END_INVALID_VALUE" = "Please enter a value between three and six.\nDefaulting to minimum (three).";
+"SETTINGS_VIEW_ALERT_MINIMUM_FOR_LINE_EDIT_CHANGED" = "Please enter a value between three and six.\nDefaulting to maximum (six).\nAuto-adjusting board size if necessary.";
+
+"SETTINGS_VIEW_ALERT_BOARD_WIDTH_EDIT_END_INVALID_VALUE" = "Please enter a value equal or greater than the minimum line size.\nIf you do not want the board to be of set size, switch the limiter off instead. Defaulting to current minimum (%i).\nAuto-adjusting turn limit if necessary.";
+"SETTINGS_VIEW_ALERT_BOARD_WIDTH_EDIT_END_AUTO-ADJUSTMENT" = "Changing the board width has made it necessary to adjust the number of turns to the new maximum value of %i.";
+"SETTINGS_VIEW_ALERT_BOARD_WIDTH_EDIT_CHANGED" = "The value is too high. Make sure it does not exceed the maximum, which is 25.";
+
+"SETTINGS_VIEW_ALERT_BOARD_HEIGHT_EDIT_END_INVALID_VALUE" = "Please enter a value equal or greater than the minimum line size.\nIf you do not want the board to be of set size, switch the limiter off instead. Defaulting to current minimum (%i).\nAuto-adjusting turn limit if necessary.";
+"SETTINGS_VIEW_ALERT_BOARD_HEIGHT_EDIT_END_AUTO-ADJUSTMENT" = "Changing the board height has made it necessary to adjust the number of turns to the new maximum value of %i.";
+"SETTINGS_VIEW_ALERT_BOARD_HEIGHT_EDIT_CHANGED" = "The value is too high. Make sure it does not exceed the maximum, which is 25.";
+"SETTINGS_VIEW_ALERT_BOARD_LIMIT_SWITCHED_ON" = "Automatically set the number of turns to current maximum (%i).";
+
+
+/* in-game */
+
+// turn information (displayed in title)
+"GAME_VIEW_TURN_TEXT_SHORT" = "Turn %i";
+"GAME_VIEW_TURN_TEXT_NORMAL" = "Turn %i of %i";
+"GAME_VIEW_TURN_TEXT_GAME_OVER_RED_WON" = "Red won on turn %i";
+"GAME_VIEW_TURN_TEXT_GAME_OVER_BLUE_WON" = "Blue won on turn %i";
+"GAME_VIEW_TURN_TEXT_GAME_OVER_DRAW" = "Draw on turn %i";
+"GAME_VIEW_TURN_TEXT_GAME_OVER_RED_RESIGNED" = "Red resigned on turn %i";
+"GAME_VIEW_TURN_TEXT_GAME_OVER_BLUE_RESIGNED" = "Blue resigned on turn %i";
+
+// score information
+"GAME_VIEW_GAME_TEXT" = "Blue Score:   %i            Red Score:   %i";
+
+// navigation bar buttons
+"GAME_VIEW_COMMIT_BUTTON" = "Commit";
+"GAME_VIEW_MENU_BUTTON" = "Menu";
+
+// action sheet
+"GAME_VIEW_ACTION_SHEET_TITLE" = "Game Menu";
+"GAME_VIEW_ACTION_SHEET_CANCEL_BUTTON" = "Cancel";
+"GAME_VIEW_ACTION_SHEET_RESIGN_BUTTON" = "Resign Game";
+"GAME_VIEW_ACTION_SHEET_MAIN_MENU_BUTTON" = "Back to Main Menu";
+"GAME_VIEW_ACTION_SHEET_SAVE_BUTTON" = "Save Game";
+"GAME_VIEW_ACTION_SHEET_SAVE_GAME_ALERT_SUCCESSFUL_TITLE" = "Game Saved";
+"GAME_VIEW_ACTION_SHEET_SAVE_GAME_ALERT_SUCCESSFUL_MESSAGE" = "The game was successfully saved as \"%@\".";
+"GAME_VIEW_ACTION_SHEET_SAVE_GAME_ALERT_UNSUCCESSFUL_TITLE" = "Error";
+"GAME_VIEW_ACTION_SHEET_SAVE_GAME_ALERT_UNSUCCESSFUL_MESSAGE" = "The game could not be saved.";
+
+// alert views
+"GAME_VIEW_ALERT_GAME_OVER_TITLE" = "Game Over";
+"GAME_VIEW_ALERT_GAME_OVER_MESSAGE" = "The game is over. Back to menu?";
+"GAME_VIEW_ALERT_RESIGN_CONFIRMATION_TITLE" = "Resigning";
+"GAME_VIEW_ALERT_RESIGN_CONFIRMATION_MESSAGE" = "Really resign the game?";
+"GAME_VIEW_ALERT_BOARD_LIMITATION_TITLE" = "Notification";
+"GAME_VIEW_ALERT_BOARD_LIMITATION_MESSAGE" = "The board is now limited to the size of %i by %i fields.";
+
+
+/* rules view */
+
+"RULES_VIEW_TITLE" = "Rules";
+
+// rule descriptions
+"RULES_VIEW_LIMITED_BOARD" = "-  The board is %i by %i fields in size.\n";
+"RULES_VIEW_UNLIMITED_BOARD" = "-  The board has no set size and will be enlarged on demand. It is currently %i by %i fields in size.\n";
+
+"RULES_VIEW_LIMITED_TURNS" = "-  After %i turns, if no one has won, the game will end in a draw.";
+"RULES_VIEW_UNLIMITED_TURNS" = "-  There is currently no turn limit. If the board cannot grow anymore, a turn limit will be set.";
+
+"RULES_VIEW_MINIMUM_LINE_SIZE" = "-  A line has to be at least %i fields long to be counted. Longer lines will score for one or more additional points.\n";
+"RULES_VIEW_MINIMUM_LINE_SIZE_CONCISE" = "-  A line has to be at least %i fields long to be counted.\n";
+
+"RULES_VIEW_SCORE_MODE_ENABLED" = "-  The game will end after the set number of turns and the winner will be determined by score only.\n";
+"RULES_VIEW_SCORE_MODE_DISABLED" = "-  The first player to get a line of at least minimum size will be declared the winner.\n";
+
+"RULES_VIEW_ADDITIONAL_TURN" = "-  The red player has one extra turn to counter a blue line with one of his own. However, if the red player has a higher score than the blue player at any time, he will win.\n";
+
+"RULES_VIEW_REUSE_LINES_ENABLED" = "-  Fields of a line may be crossed (but not extended) by fields in any direction and do count towards a new line.";
+"RULES_VIEW_REUSE_LINES_DISABLED" = "-  Fields belonging to a line cannot be used again. They are effectively out of the game.";
+
+/* misc. strings */
+
+"BACK_BUTTON" = "Back";
+"LIMIT_NONE" = "none";
+"ENABLED" = "enabled";
+"DISABLED" = "disabled";
+"ENABLED_CONCISE" = "on";
+"DISABLED_CONCISE" = "off";
+"YES" = "Yes";
+"NO" = "No";

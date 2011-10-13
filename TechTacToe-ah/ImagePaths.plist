@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>free field</key>
+	<string>free.png</string>
+	<key>unavailable field</key>
+	<string>unavailable.png</string>
+	<key>red field</key>
+	<string>red.png</string>
+	<key>blue field</key>
+	<string>blue.png</string>
+	<key>red marked field</key>
+	<string>red_marked.png</string>
+	<key>blue marked field</key>
+	<string>blue_marked.png</string>
+	<key>red line field</key>
+	<string>red_line.png</string>
+	<key>blue line field</key>
+	<string>blue_line.png</string>
+</dict>
+</plist>
