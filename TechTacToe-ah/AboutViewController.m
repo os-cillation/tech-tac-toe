@@ -35,7 +35,7 @@
 {
 	[super viewDidLoad];
 
-    self.scrollView.contentSize = CGSizeMake(320, 800);
+    self.scrollView.contentSize = CGSizeMake(320, 700);
     NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
     self.labelVersion.text = [NSString stringWithFormat:@"%@ (%@)",
                               [infoDictionary objectForKey:@"CFBundleShortVersionString"],
@@ -67,8 +67,7 @@
 
 - (IBAction)openIVideoShow
 {
-    // TODO - insert link to iVideoShow
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=370136323&amp;amp;amp;amp;mt=8"]];
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=428492557&amp;amp;amp;amp;mt=8"]];
 }
 
 
@@ -76,12 +75,5 @@
 {
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=377201940&amp;amp;amp;amp;mt=8"]];
 }
-
-
-- (IBAction)openGroupMessage
-{
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=377177900&amp;amp;amp;amp;mt=8"]];
-}
-
 
 @end

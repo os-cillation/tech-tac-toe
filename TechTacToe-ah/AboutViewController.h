@@ -19,6 +19,5 @@
 
 - (IBAction)openIVideoShow;
 - (IBAction)openGroupPlus;
-- (IBAction)openGroupMessage;
 
 @end

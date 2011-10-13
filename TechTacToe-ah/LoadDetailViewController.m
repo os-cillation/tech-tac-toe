@@ -356,7 +356,7 @@
     
     // assign the game data we loaded in initWithGameDataFromFile (mvc will take ownership), create a controller, assign it as well and display
     self.mvc.currentGame.gameData = self.gameInformation;
-    GameViewController *tempGameViewController = [[GameViewController alloc] initWithSize:CGSizeMake(MAX(FIELDSIZE * (self.mvc.currentGame.gameData.boardWidth + 2), FIELDSIZE * 9), MAX(FIELDSIZE * (self.mvc.currentGame.gameData.boardHeight + 2), FIELDSIZE * 9)) gameData:self.mvc.currentGame.gameData secondPlayer:nil];
+    GameViewController *tempGameViewController = [[GameViewController alloc] initWithSize:CGSizeMake(MAX(FIELDSIZE * (self.mvc.currentGame.gameData.boardWidth + 2), FIELDSIZE * 9), MAX(FIELDSIZE * (self.mvc.currentGame.gameData.boardHeight + 2), FIELDSIZE * 9)) gameData:self.mvc.currentGame.gameData];
     self.mvc.currentGame.gameViewController = tempGameViewController;
     [self.navigationController pushViewController:self.mvc.currentGame.gameViewController animated:YES];
     [tempGameViewController release];

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE14B906144705C8003F3516 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE14B905144705C8003F3516 /* GameKit.framework */; };
 		CE27B563144596AB005BAA35 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE27B562144596AB005BAA35 /* Default@2x.png */; };
 		CE320EDA143F226500A688AB /* LoadDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE320ED8143F226500A688AB /* LoadDetailViewController.m */; };
 		CE320EDB143F226500A688AB /* LoadDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE320ED9143F226500A688AB /* LoadDetailViewController.xib */; };
@@ -45,9 +46,6 @@
 		E16F86CB14287E7A00DF7722 /* unavailable.png in Resources */ = {isa = PBXBuildFile; fileRef = E16F86CA14287E7A00DF7722 /* unavailable.png */; };
 		E16FA3B1141DF44E001D2F09 /* Field.m in Sources */ = {isa = PBXBuildFile; fileRef = E16FA3B0141DF44E001D2F09 /* Field.m */; };
 		E1705FEA1418BA8900E9FAFB /* Game.m in Sources */ = {isa = PBXBuildFile; fileRef = E1705FE91418BA8900E9FAFB /* Game.m */; };
-		E1705FEE1418BFE400E9FAFB /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = E1705FED1418BFE400E9FAFB /* Player.m */; };
-		E1705FF11418C02C00E9FAFB /* NetworkPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E1705FF01418C02C00E9FAFB /* NetworkPlayer.m */; };
-		E1705FF41418C04600E9FAFB /* AIPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E1705FF31418C04600E9FAFB /* AIPlayer.m */; };
 		E1705FF71418C22300E9FAFB /* GameData.m in Sources */ = {isa = PBXBuildFile; fileRef = E1705FF61418C22300E9FAFB /* GameData.m */; };
 		E170BA5D14232F5C00A2F6BF /* Rules.m in Sources */ = {isa = PBXBuildFile; fileRef = E170BA5C14232F5C00A2F6BF /* Rules.m */; };
 		E171B834142776ED0068868A /* ImagePaths.plist in Resources */ = {isa = PBXBuildFile; fileRef = E171B833142776ED0068868A /* ImagePaths.plist */; };
@@ -61,6 +59,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CE14B905144705C8003F3516 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		CE27B562144596AB005BAA35 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "../Default@2x.png"; sourceTree = "<group>"; };
 		CE320ED7143F226500A688AB /* LoadDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadDetailViewController.h; sourceTree = "<group>"; };
 		CE320ED8143F226500A688AB /* LoadDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadDetailViewController.m; sourceTree = "<group>"; };
@@ -108,12 +107,6 @@
 		E16FA3B0141DF44E001D2F09 /* Field.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Field.m; sourceTree = "<group>"; };
 		E1705FE81418BA8900E9FAFB /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
 		E1705FE91418BA8900E9FAFB /* Game.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Game.m; sourceTree = "<group>"; };
-		E1705FEC1418BFE400E9FAFB /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
-		E1705FED1418BFE400E9FAFB /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
-		E1705FEF1418C02C00E9FAFB /* NetworkPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkPlayer.h; sourceTree = "<group>"; };
-		E1705FF01418C02C00E9FAFB /* NetworkPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkPlayer.m; sourceTree = "<group>"; };
-		E1705FF21418C04600E9FAFB /* AIPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIPlayer.h; sourceTree = "<group>"; };
-		E1705FF31418C04600E9FAFB /* AIPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIPlayer.m; sourceTree = "<group>"; };
 		E1705FF51418C22300E9FAFB /* GameData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameData.h; sourceTree = "<group>"; };
 		E1705FF61418C22300E9FAFB /* GameData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameData.m; sourceTree = "<group>"; };
 		E170BA5B14232F5C00A2F6BF /* Rules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rules.h; sourceTree = "<group>"; };
@@ -138,6 +131,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE14B906144705C8003F3516 /* GameKit.framework in Frameworks */,
 				E1806A791410D6720050493D /* UIKit.framework in Frameworks */,
 				E1806A7B1410D6720050493D /* Foundation.framework in Frameworks */,
 				E1806A7D1410D6720050493D /* CoreGraphics.framework in Frameworks */,
@@ -234,12 +228,6 @@
 				E1806A881410D6720050493D /* AppDelegate.m */,
 				CE7EF95A1436076800CA8DB2 /* Data Objects */,
 				CE7EF9581436032E00CA8DB2 /* View Controllers */,
-				E1705FEC1418BFE400E9FAFB /* Player.h */,
-				E1705FED1418BFE400E9FAFB /* Player.m */,
-				E1705FEF1418C02C00E9FAFB /* NetworkPlayer.h */,
-				E1705FF01418C02C00E9FAFB /* NetworkPlayer.m */,
-				E1705FF21418C04600E9FAFB /* AIPlayer.h */,
-				E1705FF31418C04600E9FAFB /* AIPlayer.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -264,6 +252,7 @@
 		E1806A771410D6720050493D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE14B905144705C8003F3516 /* GameKit.framework */,
 				E1806A781410D6720050493D /* UIKit.framework */,
 				E1806A7A1410D6720050493D /* Foundation.framework */,
 				E1806A7C1410D6720050493D /* CoreGraphics.framework */,
@@ -410,9 +399,6 @@
 				E1806A891410D6720050493D /* AppDelegate.m in Sources */,
 				E17BB52C1414E44700DFBCB5 /* GameViewController.m in Sources */,
 				E1705FEA1418BA8900E9FAFB /* Game.m in Sources */,
-				E1705FEE1418BFE400E9FAFB /* Player.m in Sources */,
-				E1705FF11418C02C00E9FAFB /* NetworkPlayer.m in Sources */,
-				E1705FF41418C04600E9FAFB /* AIPlayer.m in Sources */,
 				E1705FF71418C22300E9FAFB /* GameData.m in Sources */,
 				E16FA3B1141DF44E001D2F09 /* Field.m in Sources */,
 				E170BA5D14232F5C00A2F6BF /* Rules.m in Sources */,

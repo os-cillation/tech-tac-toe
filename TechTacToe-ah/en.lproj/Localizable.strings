@@ -18,7 +18,9 @@
 "MAIN_VIEW_CELL_CUSTOMIZED_GAME" = "Customized Game";
 "MAIN_VIEW_CELL_CONTINUE" = "Continue";
 "MAIN_VIEW_CELL_LOAD" = "Load Game";
-"MAIN_VIEW_CELL_ABOUT" = "About"; //TODO
+"MAIN_VIEW_CELL_CONNECT" = "Connect Via Bluetooth";
+"MAIN_VIEW_CELL_DISCONNECT" = "Disconnect";
+"MAIN_VIEW_CELL_ABOUT" = "About";
 
 // section headers
 "MAIN_VIEW_HEADER_START_NEW_GAME" = "New Game";

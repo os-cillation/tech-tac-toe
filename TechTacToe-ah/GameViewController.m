@@ -23,7 +23,6 @@
 @synthesize blueFieldLine=_blueFieldLine;
 @synthesize lastDrawn=_lastDrawn;
 @synthesize gameData=_gameData;
-@synthesize secondPlayer=_secondPlayer;
 @synthesize currentSize=_currentSize;
 @synthesize rulesButton=_rulesButton;
 @synthesize tapGestureRecognizer=_tapGestureRecognizer;
@@ -41,7 +40,7 @@
     return self;
 }
 
--(GameViewController*)initWithSize:(CGSize)size gameData:(GameData *)data secondPlayer:(Player *)playerOrNil
+-(GameViewController*)initWithSize:(CGSize)size gameData:(GameData *)data
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
@@ -80,7 +79,6 @@
         // data was loaded/created in Game, assign it here (no retaining)
         self.gameData = data;
         
-        self.secondPlayer = playerOrNil;
         self.currentSize = size;
     }
     return self;
@@ -100,7 +98,6 @@
     [_redFieldLine release];
     [_blueFieldLine release];
     [_lastDrawn release];
-    [_secondPlayer release];
     [_rulesButton release];
     [_tapGestureRecognizer release];
     [_turnInfo release];

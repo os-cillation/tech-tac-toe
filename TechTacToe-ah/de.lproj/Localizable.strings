@@ -18,7 +18,9 @@
 "MAIN_VIEW_CELL_CUSTOMIZED_GAME" = "Angepasstes Spiel";
 "MAIN_VIEW_CELL_CONTINUE" = "Fortsetzen";
 "MAIN_VIEW_CELL_LOAD" = "Spiel Laden";
-"MAIN_VIEW_CELL_ABOUT" = "Über"; //TODO
+"MAIN_VIEW_CELL_CONNECT" = "Bluetooth Verbindung Aufbauen";
+"MAIN_VIEW_CELL_DISCONNECT" = "Verbindung Trennen";
+"MAIN_VIEW_CELL_ABOUT" = "Über";
 
 // Abschnittsüberschriften
 "MAIN_VIEW_HEADER_START_NEW_GAME" = "Neues Spiel";

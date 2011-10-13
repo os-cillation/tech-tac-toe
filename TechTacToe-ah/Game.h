@@ -15,7 +15,7 @@
 }
 
 // will initialize a new game if passed nil as filename, else tries to load a saved game - will pass information about game mode and rules to the gameData object - use this instead of standard init
--(Game*)initInMode:(int)mode withBoardSize:(CGSize)sizeOrNil withCustomRules:(Rules*)rulesOrNil;
+-(Game*)initInMode:(int)mode withBoardSize:(CGSize)sizeOrNil;
 
 @property (nonatomic, retain) GameViewController *gameViewController;
 @property (nonatomic, retain) GameData *gameData;

@@ -747,7 +747,7 @@
     // create the rules, the game, retain it by setter and display new game
     // TODO (low priority) adjust the rest of the code to use "scoreMode" instead of "survivalMode" for continuity
     Rules *customRules = [[Rules alloc] initWithMinFieldsForLine:self.minimumForLineTextField.text.intValue numberOfTurns:turns extendableBoard:extendable survivalMode:!self.scoreModeSwitch.isOn additionalRedTurn:self.additionalRedTurnSwitch.isOn reuseOfLines:self.reuseLineSwitch.isOn];
-    Game *newGame = [[Game alloc]initInMode:CUSTOM_GAME withBoardSize:boardSize withCustomRules:nil];
+    Game *newGame = [[Game alloc]initInMode:CUSTOM_GAME withBoardSize:boardSize];
     newGame.gameData.rules = customRules;
     self.mvc.currentGame = newGame;
     [customRules release];

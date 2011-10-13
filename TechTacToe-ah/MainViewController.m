@@ -14,6 +14,7 @@
 @implementation MainViewController
 
 @synthesize currentGame=_currentGame;
+@synthesize currentSession=_currentSession;
 
 #pragma mark - Initializer and memory management
 
@@ -28,6 +29,7 @@
 
 - (void)dealloc {
     [_currentGame release];
+    [_currentSession release];
     [super dealloc];
 }
 
@@ -107,14 +109,14 @@
 {
 
     // Return the number of sections.
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 
     // Return the number of rows in the section.
-    if (section == 2) {
+    if (section == 2 || section == 3) {
         return 1;
     } else if (section == 1) {
         return 2;
@@ -177,6 +179,14 @@
             }
             break;
         case 2:
+            // connect/disconnect to/from bluetooth
+            if (!self.currentSession) {
+                cell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_CONNECT", @"Connect Via Bluetooth");
+            } else {
+                cell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_DISCONNECT", @"Disconnect");
+            }
+            break;
+        case 3:
             // about screen cell
             cell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_ABOUT", @"About");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -263,21 +273,21 @@
         if (indexPath.row == 0) {
             // new default game cell
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            Game *newGame = [[Game alloc]initInMode:DEFAULT_GAME withBoardSize:CGSizeMake(0, 0) withCustomRules:nil];
+            Game *newGame = [[Game alloc]initInMode:DEFAULT_GAME withBoardSize:CGSizeMake(0, 0)];
             self.currentGame = newGame;
             [newGame release];
             [self.navigationController pushViewController:self.currentGame.gameViewController animated:YES];
         } else if (indexPath.row == 1) {
              // new tictactoe game cell
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            Game *newGame = [[Game alloc]initInMode:TICTACTOE withBoardSize:CGSizeMake(3, 3) withCustomRules:nil];
+            Game *newGame = [[Game alloc]initInMode:TICTACTOE withBoardSize:CGSizeMake(3, 3)];
             self.currentGame = newGame;
             [newGame release];
             [self.navigationController pushViewController:self.currentGame.gameViewController animated:YES];  
         } else if (indexPath.row == 2) {
             // new gomoku game cell
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            Game *newGame = [[Game alloc]initInMode:GOMOKU withBoardSize:CGSizeMake(19, 19) withCustomRules:nil];
+            Game *newGame = [[Game alloc]initInMode:GOMOKU withBoardSize:CGSizeMake(19, 19)];
             self.currentGame = newGame;
             [newGame release];
             [self.navigationController pushViewController:self.currentGame.gameViewController animated:YES];
@@ -305,12 +315,84 @@
             [loadView release];
         }
     } else if (indexPath.section == 2) {
-        // TODO: fill about view with content
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        // find and establish connection to other device or disconnect
+        if (!self.currentSession) {
+            // find/connect
+            GKPeerPickerController *picker = [[GKPeerPickerController alloc] init];
+            picker.delegate = self;
+            picker.connectionTypesMask = GKPeerPickerConnectionTypeNearby;
+            [picker show];
+        } else {
+            // disconnect
+            [self.currentSession disconnectFromAllPeers];
+            [self.currentSession release];
+            currentSession = nil;
+        }
+    } else if (indexPath.section == 3) {
         // about screen with information about the app
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         AboutViewController *aboutView = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
         [self.navigationController pushViewController:aboutView animated:YES];
         [aboutView release];
+    }
+}
+
+#pragma mark - Data transmission
+
+- (void) mySendDataToPeers:(NSData *) data
+{
+    if (currentSession) {
+        [self.currentSession sendDataToAllPeers:data 
+								   withDataMode:GKSendDataReliable 
+										  error:nil];    
+    }
+}
+
+- (void) receiveData:(NSData *)data fromPeer:(NSString *)peer inSession:(GKSession *)session context:(void *)context
+{
+	// TODO
+}
+
+#pragma mark - Peer picker delegate
+
+- (void)peerPickerController:(GKPeerPickerController *)picker 
+              didConnectPeer:(NSString *)peerID 
+                   toSession:(GKSession *) session {
+    self.currentSession = session;
+    session.delegate = self;
+    [session setDataReceiveHandler:self withContext:nil];
+    picker.delegate = nil;
+    
+    [picker dismiss];
+    [picker autorelease];
+}
+
+- (void)peerPickerControllerDidCancel:(GKPeerPickerController *)picker
+{
+    picker.delegate = nil;
+    [picker autorelease];
+}
+
+#pragma mark - Session delegate
+
+- (void)session:(GKSession *)session 
+           peer:(NSString *)peerID 
+ didChangeState:(GKPeerConnectionState)state {
+    switch (state)
+    {
+        case GKPeerStateConnected:
+            NSLog(@"connected");
+            break;
+            
+        case GKPeerStateDisconnected:
+            [self.currentSession release];
+            currentSession = nil;
+            NSLog(@"disconnected");    
+            break;
+            
+        default:
+            break;
     }
 }
 

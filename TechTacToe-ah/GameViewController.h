@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Player.h"
 #import "GameData.h"
 #import "RulesViewController.h"
 
@@ -22,7 +21,6 @@
     UIImage *redField, *blueField, *emptyField, *unavailableField, *redFieldMarked, *blueFieldMarked, *redFieldLine, *blueFieldLine; // graphics for the different types of fields
     UIImage *lastDrawn; // copy of the last drawn big board - need this to speed up drawing at expense of memory
     GameData *gameData; // the data (and logic) of the game
-    Player *secondPlayer;
     CGSize currentSize; // the current size of the big board - need this to check if we resized
     UIButton *rulesButton; // the button to display the rules of the current game in a new view
     UITapGestureRecognizer *tapGestureRecognizer; // this is used to select fields in the containerView
@@ -36,14 +34,13 @@
 @property (nonatomic, retain) UIImage *lastDrawn;
 // the game object is the owner of the data, just assign here
 @property (nonatomic, assign) GameData *gameData;
-@property (nonatomic, retain) Player *secondPlayer;
 @property (nonatomic) CGSize currentSize;
 @property (nonatomic, retain) UIButton *rulesButton;
 @property (nonatomic, retain) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, retain) UILabel *turnInfo, *gameInfo;
 
 // creates a new gamefield - if no field data is present a new field will be generated; if no second player is set, the game will use hotseat mode - don't use the standard init
--(GameViewController*) initWithSize:(CGSize) size gameData:(GameData*) data secondPlayer:(Player*)playerOrNil;
+-(GameViewController*) initWithSize:(CGSize) size gameData:(GameData*) data;
 
 // will draw over existing field at point or draw the entire board by data
 -(void) changeGameFields:(NSArray*)fieldsOrNil orDrawAll:(BOOL)redrawEverything;
