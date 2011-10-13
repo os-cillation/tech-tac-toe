@@ -388,17 +388,30 @@
     [self.boardWidthTextField resignFirstResponder];
     [self.numberOfTurnsTextField resignFirstResponder];
     [self.minimumForLineTextField resignFirstResponder];
-    
-    // enable navigation items again
-    [self.navigationItem setHidesBackButton:NO animated:YES];
-    self.navigationItem.rightBarButtonItem.enabled = YES;
 }
 
 #pragma mark - Text field delegate
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
+    
     return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField 
+{
+    // enable navigation items again
+    [self.navigationItem setHidesBackButton:NO animated:YES];
+    self.navigationItem.rightBarButtonItem.enabled = YES; 
+    
+    // also reactivate all switches that should be reactivated
+    self.limitTurnsSwitch.enabled = YES;
+    self.boardLimitSwitch.enabled = YES;
+    if (self.limitTurnsSwitch.isOn || self.boardLimitSwitch.isOn)
+        self.scoreModeSwitch.enabled = YES;
+    if (!self.scoreModeSwitch.isOn)
+        self.additionalRedTurnSwitch.enabled = YES;
+    self.reuseLineSwitch.enabled = YES;
 }
 
 #pragma mark - Interface Builder actions
@@ -407,6 +420,13 @@
     // deactivate navigation controls if any keyboard is open
     [self.navigationItem setHidesBackButton:YES animated:YES];
     self.navigationItem.rightBarButtonItem.enabled = NO;
+    
+    // also deactivate all switches
+    self.limitTurnsSwitch.enabled = NO;
+    self.boardLimitSwitch.enabled = NO;
+    self.scoreModeSwitch.enabled = NO;
+    self.additionalRedTurnSwitch.enabled = NO;
+    self.reuseLineSwitch.enabled = NO;
 }
 
 - (IBAction)numberOfTurnsEditEnd:(id)sender {

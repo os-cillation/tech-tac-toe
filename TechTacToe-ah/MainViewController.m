@@ -342,7 +342,7 @@
 
 - (void) mySendDataToPeers:(NSData *) data
 {
-    if (currentSession) {
+    if (self.currentSession) {
         [self.currentSession sendDataToAllPeers:data 
 								   withDataMode:GKSendDataReliable 
 										  error:nil];    
