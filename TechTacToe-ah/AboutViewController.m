@@ -39,7 +39,7 @@
     NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
     self.labelVersion.text = [NSString stringWithFormat:@"%@ (%@)",
                               [infoDictionary objectForKey:@"CFBundleShortVersionString"],
-                              [infoDictionary objectForKey:@"CFBundleVersion"]];
+                              [infoDictionary objectForKey:@"BuildNumber"]];
 	self.labelProducts.text = NSLocalizedString(@"otherProducts", @"");
 	self.textView.text = NSLocalizedString(@"aboutText", @"");
 }

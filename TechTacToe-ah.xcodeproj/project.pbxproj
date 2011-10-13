@@ -385,7 +385,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "SVN_VERSION=`svnversion`\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"CFBundleVersion\" \"${SVN_VERSION%M*}\"";
+			shellScript = "plist=\"TechTacToe-ah/TechTacToe-ah-Info.plist\"\nsvn update\nrev=$(svn info | grep '^Revision:' | sed -e 's/^Revision: //')\n/usr/libexec/PlistBuddy -c \"Set :BuildNumber $rev\" \"$plist\"";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
