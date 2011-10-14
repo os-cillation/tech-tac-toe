@@ -14,7 +14,7 @@
 @implementation MainViewController
 
 @synthesize currentGame=_currentGame;
-@synthesize currentSession=_currentSession;
+@synthesize dataHandler=_dataHandler;
 
 #pragma mark - Initializer and memory management
 
@@ -29,7 +29,6 @@
 
 - (void)dealloc {
     [_currentGame release];
-    [_currentSession release];
     [super dealloc];
 }
 
@@ -50,6 +49,12 @@
     UIBarButtonItem *tempButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"BACK_BUTTON", @"Back") style:UIBarButtonItemStyleBordered target:nil action:nil];
     self.navigationItem.backBarButtonItem = tempButton;
     [tempButton release];
+    
+    // make a data handler if none exists
+    if (!self.dataHandler) {
+        self.dataHandler = [BluetoothDataHandler new];
+        self.dataHandler.mvc = self;
+    }
     
     [super viewDidLoad];
 
@@ -180,7 +185,7 @@
             break;
         case 2:
             // connect/disconnect to/from bluetooth
-            if (!self.currentSession) {
+            if (!self.dataHandler.currentSession) {
                 cell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_CONNECT", @"Connect Via Bluetooth");
             } else {
                 cell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_DISCONNECT", @"Disconnect");
@@ -319,7 +324,7 @@
     } else if (indexPath.section == 2) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         // find and establish connection to other device or disconnect
-        if (!self.currentSession) {
+        if (!self.dataHandler.currentSession) {
             // find/connect
             GKPeerPickerController *picker = [[GKPeerPickerController alloc] init];
             picker.delegate = self;
@@ -327,13 +332,13 @@
             [picker show];
         } else {
             // disconnect
-            [self.currentSession disconnectFromAllPeers];
-            if (self.currentSession) {
-                self.currentSession.available = NO;
-                [self.currentSession setDataReceiveHandler:nil withContext:NULL];
-                self.currentSession.delegate = nil;
-                self.currentSession = nil;
-                [self.currentSession release];
+            [self.dataHandler.currentSession disconnectFromAllPeers];
+            if (self.dataHandler.currentSession) {
+                self.dataHandler.currentSession.available = NO;
+                [self.dataHandler.currentSession setDataReceiveHandler:nil withContext:NULL];
+                self.dataHandler.currentSession.delegate = nil;
+                self.dataHandler.currentSession = nil;
+                [self.dataHandler.currentSession release];
             }
             [self.tableView reloadData]; 
         }
@@ -346,30 +351,13 @@
     }
 }
 
-#pragma mark - Data transmission
-
-- (void) mySendDataToPeers:(NSData *) data
-{
-    if (self.currentSession) {
-        [self.currentSession sendDataToAllPeers:data 
-								   withDataMode:GKSendDataReliable 
-										  error:nil];    
-    }
-}
-
-- (void) receiveData:(NSData *)data fromPeer:(NSString *)peer inSession:(GKSession *)session context:(void *)context
-{
-	// TODO
-}
-
 #pragma mark - Peer picker delegate
 
-- (void)peerPickerController:(GKPeerPickerController *)picker 
-              didConnectPeer:(NSString *)peerID 
-                   toSession:(GKSession *) session {
-    self.currentSession = session;
-    self.currentSession.delegate = self;
-    [self.currentSession setDataReceiveHandler:self withContext:nil];
+- (void)peerPickerController:(GKPeerPickerController *)picker didConnectPeer:(NSString *)peerID toSession:(GKSession *) session
+{
+    self.dataHandler.currentSession = session;
+    self.dataHandler.currentSession.delegate = self.dataHandler;
+    [self.dataHandler.currentSession setDataReceiveHandler:self.dataHandler withContext:nil];
  
     // refresh table view
     [self.tableView reloadData];  
@@ -383,36 +371,6 @@
 {
     picker.delegate = nil;
     [picker autorelease];
-}
-
-#pragma mark - Session delegate
-
-- (void)session:(GKSession *)session 
-           peer:(NSString *)peerID 
- didChangeState:(GKPeerConnectionState)state {
-    switch (state)
-    {
-        case GKPeerStateConnected:
-            NSLog(@"connected");
-            break;
-            
-        case GKPeerStateDisconnected:
-            // since we only ever have one peer connected, thrash the session if he leaves
-            if (self.currentSession) {
-                self.currentSession.available = NO;
-                [self.currentSession setDataReceiveHandler:nil withContext:NULL];
-                self.currentSession.delegate = nil;
-                self.currentSession = nil;
-                [self.currentSession release];
-                [self.tableView reloadData];
-                // TODO display alert telling about the session ending
-            }
-            NSLog(@"disconnected");    
-            break;
-            
-        default:
-            break;
-    }
 }
 
 @end

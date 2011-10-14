@@ -7,17 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <GameKit/GKSession.h>
-#import <GameKit/GKPeerPickerController.h>
 #import "Game.h"
+#import "BluetoothDataHandler.h"
 
-@interface MainViewController : UITableViewController <UINavigationBarDelegate, GKPeerPickerControllerDelegate, GKSessionDelegate>
+@interface MainViewController : UITableViewController <UINavigationBarDelegate, GKPeerPickerControllerDelegate>
 {
     Game *currentGame; // the game that will be started either from self, the settings view or from the load detail view
-    GKSession *currentSession; // will be nil in hotseat mode or is a valid bluetooth seesion
+    BluetoothDataHandler *dataHandler; // handles data transfer from one device to another
 }
 
 @property (nonatomic, retain) Game *currentGame;
-@property (nonatomic, retain) GKSession *currentSession;
+@property (nonatomic, retain) BluetoothDataHandler *dataHandler;
 
 @end

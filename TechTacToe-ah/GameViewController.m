@@ -129,11 +129,13 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0) {
-        // resign: display alert view for confirmation
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_CONFIRMATION_TITLE", @"Resigning") message:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_CONFIRMATION_MESSAGE", @"Really resign the game?") delegate:self cancelButtonTitle:NSLocalizedString(@"NO", @"no") otherButtonTitles:NSLocalizedString(@"YES", @"yes"), nil];
-        alert.tag = 12;
-        [alert show];
-        [alert release];
+        // resign: display alert view for confirmation, but only if the game is still ongoing
+        if (!self.gameData.isGameOver) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_CONFIRMATION_TITLE", @"Resigning") message:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_CONFIRMATION_MESSAGE", @"Really resign the game?") delegate:self cancelButtonTitle:NSLocalizedString(@"NO", @"no") otherButtonTitles:NSLocalizedString(@"YES", @"yes"), nil];
+            alert.tag = 12;
+            [alert show];
+            [alert release];
+        }
     }
     if (buttonIndex == 1) {
         // save
@@ -803,7 +805,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self layoutElements:self.interfaceOrientation];
+    [self layoutElements:UIInterfaceOrientationPortrait];
     
     self.navigationController.navigationBar.tintColor = [UIColor grayColor]; 
     [super viewWillAppear:animated];
@@ -845,7 +847,7 @@
 - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     // hide the bottom text element and the info icon for rules view
-    self.turnInfo.hidden = YES;
+    self.gameInfo.hidden = YES;
     self.rulesButton.hidden = YES;
     
     // call layouting code
@@ -855,7 +857,7 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     // unhide elements we hid before
-    self.turnInfo.hidden = NO;
+    self.gameInfo.hidden = NO;
     self.rulesButton.hidden = NO;
 }
 
