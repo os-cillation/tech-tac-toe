@@ -315,7 +315,7 @@
             return;
         }
         
-        if (field.status == FREE_FIELD) {
+        if (fieldIsFree) {
             // call changeGameFieldAtPoint operation depending on which turn we're in, put field with changed status into array for drawing
             if (self.gameData.isBluePlayerTurn) {
                 [self.gameData changeDataAtPoint:tapLocation withStatus:BLUE_MARKED];
@@ -480,7 +480,7 @@
                     [self.gameScrollView setContentOffset:offset];
                 }
             }
-            // update the board size once more since it could have changed - and if we hit the MAX_FIELDS threshold, draw everything, resize and recalculate offset, call the border creation in gameData and set the bool of the data, so we do this only once
+            // update the board size once more since it could have changed - and if we hit the MAX_FIELDS threshold, set to draw everything, call the border creation in gameData and set the bool of the data so we do this only once
             [self.gameData updateBoardSize];
             if (self.gameData.boardWidth * self.gameData.boardHeight >= MAX_FIELDS && !self.gameData.didHitBoardLimit && self.gameData.rules.isExtendableBoard) {
                 needsCompleteRedraw = YES;

@@ -208,8 +208,10 @@
             return NSLocalizedString(@"MAIN_VIEW_HEADER_ONGOING_GAMES", @"Ongoing Games");
             break;
         case 2:
-            return @" ";
+            return @"Bluetooth";
             break;
+        case 3:
+            return @" ";
         default:
             break;
     }
@@ -326,8 +328,14 @@
         } else {
             // disconnect
             [self.currentSession disconnectFromAllPeers];
-            [self.currentSession release];
-            currentSession = nil;
+            if (self.currentSession) {
+                self.currentSession.available = NO;
+                [self.currentSession setDataReceiveHandler:nil withContext:NULL];
+                self.currentSession.delegate = nil;
+                self.currentSession = nil;
+                [self.currentSession release];
+            }
+            [self.tableView reloadData]; 
         }
     } else if (indexPath.section == 3) {
         // about screen with information about the app
@@ -360,10 +368,13 @@
               didConnectPeer:(NSString *)peerID 
                    toSession:(GKSession *) session {
     self.currentSession = session;
-    session.delegate = self;
-    [session setDataReceiveHandler:self withContext:nil];
-    picker.delegate = nil;
+    self.currentSession.delegate = self;
+    [self.currentSession setDataReceiveHandler:self withContext:nil];
+ 
+    // refresh table view
+    [self.tableView reloadData];  
     
+    picker.delegate = nil;
     [picker dismiss];
     [picker autorelease];
 }
@@ -386,8 +397,16 @@
             break;
             
         case GKPeerStateDisconnected:
-            [self.currentSession release];
-            currentSession = nil;
+            // since we only ever have one peer connected, thrash the session if he leaves
+            if (self.currentSession) {
+                self.currentSession.available = NO;
+                [self.currentSession setDataReceiveHandler:nil withContext:NULL];
+                self.currentSession.delegate = nil;
+                self.currentSession = nil;
+                [self.currentSession release];
+                [self.tableView reloadData];
+                // TODO display alert telling about the session ending
+            }
             NSLog(@"disconnected");    
             break;
             
