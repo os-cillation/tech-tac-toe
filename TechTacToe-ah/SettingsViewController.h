@@ -25,6 +25,8 @@
     UISwitch *additionalRedTurnSwitch;
     UITableViewCell *reuseLineCell;
     UISwitch *reuseLineSwitch;
+    UITableViewCell *playerSelectionCell;
+    UISwitch *playerSelectionSwitch;
     UITableViewCell *boardWidthCell;
     UITextField *boardWidthTextField;
     UITableViewCell *boardHeightCell;
@@ -53,6 +55,8 @@
 @property (nonatomic, retain) IBOutlet UISwitch *additionalRedTurnSwitch;
 @property (nonatomic, retain) IBOutlet UITableViewCell *reuseLineCell;
 @property (nonatomic, retain) IBOutlet UISwitch *reuseLineSwitch;
+@property (nonatomic, retain) IBOutlet UITableViewCell *playerSelectionCell;
+@property (nonatomic, retain) IBOutlet UISwitch *playerSelectionSwitch;
 
 @property (nonatomic, retain) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, assign) MainViewController *mvc;

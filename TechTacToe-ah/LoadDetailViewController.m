@@ -124,7 +124,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 4;
+    return 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -144,6 +144,9 @@
             return 4;
             break;
         case 3:
+            // player color - of interest if the game should be continued over bluetooth
+            return 1;
+        case 4:
             // points: blue points, red points
             return 2;
             break;
@@ -161,6 +164,14 @@
         return [savegame stringByAppendingString:self.gameName];
     }
     return @"";
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    if (section == 3) {
+        return NSLocalizedString(@"LOAD_DETAIL_VIEW_FOOTER_PLAYER_COLOR", @"In a bluetooth game, the local player will have this color.");
+    }
+    return  @"";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -270,6 +281,14 @@
             }
             break;
         case 3:
+            // local player information
+            cell.textLabel.text = NSLocalizedString(@"LOAD_DETAIL_VIEW_CELL_PLAYER_COLOR", @"Player color");
+            if (self.gameInformation.isLocalPlayerBlue)
+                cell.detailTextLabel.text = NSLocalizedString(@"BLUE", @"blue");
+            else
+                cell.detailTextLabel.text = NSLocalizedString(@"RED", @"red");
+            break;
+        case 4:
             switch (indexPath.row) {
                 case 0:
                     // blue points
@@ -278,7 +297,6 @@
                     break;
                 case 1:
                     // red points
-                    // blue points
                     cell.textLabel.text = NSLocalizedString(@"LOAD_DETAIL_VIEW_CELL_RED_PLAYER_SCORE", @"Red Player Score");
                     cell.detailTextLabel.text = [NSString stringWithFormat:@"%i",self.gameInformation.redPoints];
                     break;
@@ -358,6 +376,12 @@
     self.mvc.currentGame.gameData = self.gameInformation;
     GameViewController *tempGameViewController = [[GameViewController alloc] initWithSize:CGSizeMake(MAX(FIELDSIZE * (self.mvc.currentGame.gameData.boardWidth + 2), FIELDSIZE * 9), MAX(FIELDSIZE * (self.mvc.currentGame.gameData.boardHeight + 2), FIELDSIZE * 9)) gameData:self.mvc.currentGame.gameData];
     self.mvc.currentGame.gameViewController = tempGameViewController;
+    
+    // on a bluetooth game, send game data to the opponent
+    if (self.mvc.dataHandler.currentSession) {
+        [self.mvc.dataHandler transmitCurrentGameData];
+    }
+    
     [self.navigationController pushViewController:self.mvc.currentGame.gameViewController animated:YES];
     [tempGameViewController release];
 }

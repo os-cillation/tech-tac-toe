@@ -25,6 +25,8 @@
 		CE81460B1433145D006E7099 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE8146091433145D006E7099 /* SettingsViewController.xib */; };
 		CE8168F414485DD9009A637F /* BluetoothDataHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8168F314485DD8009A637F /* BluetoothDataHandler.m */; };
 		CE8B90E0143C41B700E41250 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE8B90E2143C41B700E41250 /* Localizable.strings */; };
+		CEA3C50B144C537E0084E8DB /* Bluetooth.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA3C509144C537E0084E8DB /* Bluetooth.png */; };
+		CEA3C50C144C537E0084E8DB /* Bluetooth@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA3C50A144C537E0084E8DB /* Bluetooth@2x.png */; };
 		CEAF498E1443255200931E99 /* blue_line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEAF49861443255200931E99 /* blue_line@2x.png */; };
 		CEAF498F1443255200931E99 /* blue_marked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEAF49871443255200931E99 /* blue_marked@2x.png */; };
 		CEAF49901443255200931E99 /* blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEAF49881443255200931E99 /* blue@2x.png */; };
@@ -84,6 +86,8 @@
 		CE8168F314485DD8009A637F /* BluetoothDataHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothDataHandler.m; sourceTree = "<group>"; };
 		CE8B90E1143C41B700E41250 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CE8B90E3143C422700E41250 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CEA3C509144C537E0084E8DB /* Bluetooth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bluetooth.png; sourceTree = "<group>"; };
+		CEA3C50A144C537E0084E8DB /* Bluetooth@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bluetooth@2x.png"; sourceTree = "<group>"; };
 		CEAF49861443255200931E99 /* blue_line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue_line@2x.png"; sourceTree = "<group>"; };
 		CEAF49871443255200931E99 /* blue_marked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue_marked@2x.png"; sourceTree = "<group>"; };
 		CEAF49881443255200931E99 /* blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue@2x.png"; sourceTree = "<group>"; };
@@ -154,6 +158,8 @@
 				CE27B562144596AB005BAA35 /* Default@2x.png */,
 				CE759D1C144336C600DAB57E /* icon.png */,
 				CE759D1F144336D100DAB57E /* icon@2x.png */,
+				CEA3C509144C537E0084E8DB /* Bluetooth.png */,
+				CEA3C50A144C537E0084E8DB /* Bluetooth@2x.png */,
 				E16F86CA14287E7A00DF7722 /* unavailable.png */,
 				CEAF498D1443255200931E99 /* unavailable@2x.png */,
 				E16F86C214287E6700DF7722 /* free.png */,
@@ -372,6 +378,8 @@
 				CE80560F1446E3FE00CE90C8 /* groupplus-icon.png in Resources */,
 				CE8056111446E3FE00CE90C8 /* os.png in Resources */,
 				CE8056141446E9F700CE90C8 /* iVideoShow-icon.png in Resources */,
+				CEA3C50B144C537E0084E8DB /* Bluetooth.png in Resources */,
+				CEA3C50C144C537E0084E8DB /* Bluetooth@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

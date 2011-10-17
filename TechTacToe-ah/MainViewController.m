@@ -15,6 +15,7 @@
 
 @synthesize currentGame=_currentGame;
 @synthesize dataHandler=_dataHandler;
+@synthesize bluetoothIndicator=_bluetoothIndicator;
 
 #pragma mark - Initializer and memory management
 
@@ -29,6 +30,8 @@
 
 - (void)dealloc {
     [_currentGame release];
+    [_dataHandler release];
+    [_bluetoothIndicator release];
     [super dealloc];
 }
 
@@ -50,10 +53,26 @@
     self.navigationItem.backBarButtonItem = tempButton;
     [tempButton release];
     
+    // get image for bluetooth button (freeware, commercial use allowed)
+    NSString *path = [[NSBundle mainBundle]pathForResource:@"ImagePaths" ofType:@"plist"];
+    NSDictionary *plist = [[NSDictionary alloc] initWithContentsOfFile:path];
+    
+    UIImageView *bluetoothImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[plist objectForKey:@"bluetooth icon"]]];
+    self.bluetoothIndicator = bluetoothImageView;
+    [bluetoothImageView release];
+    
+    UIBarButtonItem *btIcon = [[UIBarButtonItem alloc] initWithCustomView:bluetoothImageView];
+    self.navigationItem.leftBarButtonItem = btIcon;
+    
+    [btIcon release];
+    [plist release];
+    
     // make a data handler if none exists
     if (!self.dataHandler) {
-        self.dataHandler = [BluetoothDataHandler new];
+        BluetoothDataHandler *btdh = [BluetoothDataHandler new];
+        self.dataHandler = btdh;
         self.dataHandler.mvc = self;
+        [btdh release];
     }
     
     [super viewDidLoad];
@@ -70,18 +89,26 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    self.bluetoothIndicator = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.navigationController.navigationBar.tintColor = nil; 
+    // reset nav bar color
+    self.navigationController.navigationBar.tintColor = nil;
+    
+    // hide or show bluetooth icon
+    if (self.dataHandler.currentSession) {
+        self.bluetoothIndicator.hidden = NO;
+    } else
+        self.bluetoothIndicator.hidden = YES;
     [super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    // disables the contiune cell if no running game is present or enables it if there is
-    if (self.currentGame) {
+    // disables the contiune cell if no running game is present or we have a bluetooth game or enables it otherwise
+    if (self.currentGame && !self.dataHandler.currentSession) {
         [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]].textLabel.enabled = YES;
         [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]] setSelectionStyle:UITableViewCellSelectionStyleBlue];
     } else {
@@ -121,9 +148,14 @@
 {
 
     // Return the number of rows in the section.
-    if (section == 2 || section == 3) {
+    
+    // section 0: 4
+    // section 1: 2
+    // section 2: 2
+    // section 3: 1
+    if (section == 3) {
         return 1;
-    } else if (section == 1) {
+    } else if (section == 1 || section == 2) {
         return 2;
     } else {
         return 4;
@@ -139,7 +171,18 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
+    static NSString *DetailCellIdentifier = @"DetailCell";
+    
+    UITableViewCell *detailCell = [tableView dequeueReusableCellWithIdentifier:DetailCellIdentifier];
+    if (detailCell == nil) {
+        detailCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:DetailCellIdentifier] autorelease];
+    }
+    
     // Configure the cell...
+    cell.textLabel.enabled = YES;
+    [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
+    detailCell.textLabel.enabled = YES;
+    [detailCell setSelectionStyle:UITableViewCellSelectionStyleBlue];
     switch (indexPath.section) {
         case 0:
             switch (indexPath.row) {
@@ -147,21 +190,38 @@
                     // new default game cell
                     cell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_DEFAULT_SETTINGS", @"Default Settings");
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    // if a session exists and we are not server, disable every cell except to disconnect
+                    if (self.dataHandler.currentSession && !self.dataHandler.doesLocalUserActAsServer) {
+                        cell.textLabel.enabled = NO;
+                        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+                    } 
                     break;
                 case 1:
                     // new tictactoe game cell
                     cell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_TICTACTOE", @"TicTacToe");
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    if (self.dataHandler.currentSession && !self.dataHandler.doesLocalUserActAsServer) {
+                        cell.textLabel.enabled = NO;
+                        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+                    }
                     break;
                 case 2:
                     // new gomoku game cell
                     cell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_GOMOKU", @"Gomoku");
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    if (self.dataHandler.currentSession && !self.dataHandler.doesLocalUserActAsServer) {
+                        cell.textLabel.enabled = NO;
+                        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+                    }
                     break;
                 case 3:
                     // new custom game cell
                     cell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_CUSTOMIZED_GAME", @"Customized Game");
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    if (self.dataHandler.currentSession && !self.dataHandler.doesLocalUserActAsServer) {
+                        cell.textLabel.enabled = NO;
+                        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+                    }
                     break;
                 default:
                     break;
@@ -173,28 +233,63 @@
                     // continue cell
                     cell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_CONTINUE", @"Continue");
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    // don't ever continue on bluetooth games - save and load instead
+                    if (self.dataHandler.currentSession || !self.currentGame) {
+                        cell.textLabel.enabled = NO;
+                        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+                    }
                     break;
                 case 1:
                     // load game cell
                     cell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_LOAD", @"Load Game");
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    if (self.dataHandler.currentSession && !self.dataHandler.doesLocalUserActAsServer) {
+                        cell.textLabel.enabled = NO;
+                        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+                    }
                     break;
                 default:
                     break;
             }
             break;
         case 2:
-            // connect/disconnect to/from bluetooth
-            if (!self.dataHandler.currentSession) {
-                cell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_CONNECT", @"Connect Via Bluetooth");
-            } else {
-                cell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_DISCONNECT", @"Disconnect");
+            switch (indexPath.row) {
+                case 0:
+                    // connect/disconnect to/from bluetooth
+                    if (!self.dataHandler.currentSession) {
+                        cell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_CONNECT", @"Connect Via Bluetooth");
+                    } else {
+                        cell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_DISCONNECT", @"Disconnect");
+                    }
+                    break;
+                case 1:
+                    // revoke control and give it to the other device
+                    // special cell - only one, so configure AND return it here
+                    detailCell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_REVOKE_CONTROL", @"Pass Game Control To:");
+                    detailCell.detailTextLabel.text = @" ";
+                    if (self.dataHandler.currentSession) {
+                        NSString *peerID = [[self.dataHandler.currentSession peersWithConnectionState:GKPeerStateConnected] objectAtIndex:0];
+                        NSString *peerName = [self.dataHandler.currentSession displayNameForPeer:peerID];
+                        detailCell.detailTextLabel.text = peerName;
+                    }
+                    if (!self.dataHandler.currentSession || !self.dataHandler.doesLocalUserActAsServer) {
+                        detailCell.textLabel.enabled = NO;
+                        [detailCell setSelectionStyle:UITableViewCellSelectionStyleNone];
+                    }
+                    return detailCell;
+                    break;
+                default:
+                    break;
             }
             break;
         case 3:
             // about screen cell
             cell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_ABOUT", @"About");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            if (self.dataHandler.currentSession && !self.dataHandler.doesLocalUserActAsServer) {
+                cell.textLabel.enabled = NO;
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            }
             break;
         default:
             break;
@@ -280,71 +375,127 @@
         if (indexPath.row == 0) {
             // new default game cell
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            // if a session exists and we are not server, disable every cell except to disconnect
+            if (self.dataHandler.currentSession && !self.dataHandler.doesLocalUserActAsServer) {
+                return;
+            }
             Game *newGame = [[Game alloc]initInMode:DEFAULT_GAME withBoardSize:CGSizeMake(0, 0)];
             self.currentGame = newGame;
             [newGame release];
+            
+            // on a bluetooth game, send game data to the opponent
+            if (self.dataHandler.currentSession) {
+                [self.dataHandler transmitCurrentGameData];
+            }
             [self.navigationController pushViewController:self.currentGame.gameViewController animated:YES];
         } else if (indexPath.row == 1) {
              // new tictactoe game cell
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            // if a session exists and we are not server, disable every cell except to disconnect
+            if (self.dataHandler.currentSession && !self.dataHandler.doesLocalUserActAsServer) {
+                return;
+            }
             Game *newGame = [[Game alloc]initInMode:TICTACTOE withBoardSize:CGSizeMake(3, 3)];
             self.currentGame = newGame;
             [newGame release];
+            
+            // on a bluetooth game, send game data to the opponent
+            if (self.dataHandler.currentSession) {
+                [self.dataHandler transmitCurrentGameData];
+            }
             [self.navigationController pushViewController:self.currentGame.gameViewController animated:YES];  
         } else if (indexPath.row == 2) {
             // new gomoku game cell
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            // if a session exists and we are not server, disable every cell except to disconnect
+            if (self.dataHandler.currentSession && !self.dataHandler.doesLocalUserActAsServer) {
+                return;
+            }
             Game *newGame = [[Game alloc]initInMode:GOMOKU withBoardSize:CGSizeMake(19, 19)];
             self.currentGame = newGame;
             [newGame release];
+            
+            // on a bluetooth game, send game data to the opponent
+            if (self.dataHandler.currentSession) {
+                [self.dataHandler transmitCurrentGameData];
+            }
             [self.navigationController pushViewController:self.currentGame.gameViewController animated:YES];
         } else if (indexPath.row == 3) {
             // new custom game cell
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            // if a session exists and we are not server, disable every cell except to disconnect
+            if (self.dataHandler.currentSession && !self.dataHandler.doesLocalUserActAsServer) {
+                return;
+            }
             SettingsViewController *settings = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:nil];
+             settings.mvc = self;
             [self.navigationController pushViewController:settings animated:YES];
-            settings.mvc = self;
             [settings release];
         }    
     } else if (indexPath.section == 1) {
         if (indexPath.row == 0) {
             // continue running game
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            // never continue on a bluetooth game
+            if (self.dataHandler.currentSession) {
+                return;
+            }
             if (self.currentGame) {
                 [self.navigationController pushViewController:self.currentGame.gameViewController animated:YES];
             }
         } else if (indexPath.row == 1) {
             // load game from file
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            // if a session exists and we are not server, disable every cell except to disconnect
+            if (self.dataHandler.currentSession && !self.dataHandler.doesLocalUserActAsServer) {
+                return;
+            }
             LoadViewController *loadView = [[LoadViewController alloc] initWithNibName:@"LoadViewController" bundle:nil];
-            [self.navigationController pushViewController:loadView animated:YES];
             loadView.mvc = self;
+            [self.navigationController pushViewController:loadView animated:YES];
             [loadView release];
         }
     } else if (indexPath.section == 2) {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        // find and establish connection to other device or disconnect
-        if (!self.dataHandler.currentSession) {
-            // find/connect
-            GKPeerPickerController *picker = [[GKPeerPickerController alloc] init];
-            picker.delegate = self;
-            picker.connectionTypesMask = GKPeerPickerConnectionTypeNearby;
-            [picker show];
-        } else {
-            // disconnect
-            [self.dataHandler.currentSession disconnectFromAllPeers];
-            if (self.dataHandler.currentSession) {
-                self.dataHandler.currentSession.available = NO;
-                [self.dataHandler.currentSession setDataReceiveHandler:nil withContext:NULL];
-                self.dataHandler.currentSession.delegate = nil;
-                self.dataHandler.currentSession = nil;
-                [self.dataHandler.currentSession release];
+        if (indexPath.row == 0) {
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            // find and establish connection to other device or disconnect
+            if (!self.dataHandler.currentSession) {
+                // find/connect
+                GKPeerPickerController *picker = [[GKPeerPickerController alloc] init];
+                picker.delegate = self;
+                picker.connectionTypesMask = GKPeerPickerConnectionTypeNearby;
+                [picker show];
+            } else {
+                // disconnect
+                [self.dataHandler.currentSession disconnectFromAllPeers];
+                if (self.dataHandler.currentSession) {
+                    self.dataHandler.currentSession.available = NO;
+                    [self.dataHandler.currentSession setDataReceiveHandler:nil withContext:NULL];
+                    self.dataHandler.currentSession.delegate = nil;
+                    self.dataHandler.currentSession = nil;
+                    
+                    self.bluetoothIndicator.hidden = YES;
+                }
+                [self.tableView reloadData]; 
             }
-            [self.tableView reloadData]; 
+        } else if (indexPath.row == 1) {
+            // revoke control if you have it
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            // if a session exists and we are not server, disable every cell except to disconnect
+            if (self.dataHandler.currentSession && !self.dataHandler.doesLocalUserActAsServer) {
+                return;
+            }
+            [self.dataHandler doRevokeControl];
+            // reloading data is done in doRevokeControl, so don't need to do it here
+            // [self.tableView reloadData];
         }
     } else if (indexPath.section == 3) {
         // about screen with information about the app
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        // if a session exists and we are not server, disable every cell except to disconnect
+        if (self.dataHandler.currentSession && !self.dataHandler.doesLocalUserActAsServer) {
+            return;
+        }
         AboutViewController *aboutView = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
         [self.navigationController pushViewController:aboutView animated:YES];
         [aboutView release];

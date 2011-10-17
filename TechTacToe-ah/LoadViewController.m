@@ -193,8 +193,8 @@
     // create and navigate to detail view
     NSString *filename = [self.files objectAtIndex:indexPath.row];
     LoadDetailViewController *detailViewController = [[LoadDetailViewController alloc] initWithGameDataFromFile:filename];
-    [self.navigationController pushViewController:detailViewController animated:YES];
     detailViewController.mvc = self.mvc;
+    [self.navigationController pushViewController:detailViewController animated:YES];
     [detailViewController release];
 }
 

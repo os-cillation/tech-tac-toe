@@ -19,6 +19,7 @@
 "MAIN_VIEW_CELL_CONTINUE" = "Fortsetzen";
 "MAIN_VIEW_CELL_LOAD" = "Spiel Laden";
 "MAIN_VIEW_CELL_CONNECT" = "Bluetooth Verbindung Aufbauen";
+"MAIN_VIEW_CELL_REVOKE_CONTROL" = "Spielkontrolle abgeben an:";
 "MAIN_VIEW_CELL_DISCONNECT" = "Verbindung Trennen";
 "MAIN_VIEW_CELL_ABOUT" = "Über";
 
@@ -39,10 +40,13 @@
 "LOAD_DETAIL_VIEW_TITLE" = "Spieldetails";
 "LOAD_DETAIL_VIEW_LOAD_BUTTON" = "Laden";
 
-// section headers
+// Abschnittsüberschriften
 "LOAD_DETAIL_VIEW_HEADER_SAVEGAME" = "Spielstand: ";
 
-// cell labels
+// Abschnittsfußnoten
+"LOAD_DETAIL_VIEW_FOOTER_PLAYER_COLOR" = "In einem Bluetoothspiel wird der lokale Spieler diese Farbe haben.";
+
+// Zellen
 "LOAD_DETAIL_VIEW_CELL_CURRENT_TURN" = "Aktueller Zug";
 "LOAD_DETAIL_VIEW_CELL_MAXIMUM_NUMBER_OF_TURNS" = "Maximale Anzahl Züge";
 "LOAD_DETAIL_VIEW_CELL_BOARD_WIDTH" = "Spielbrettbreite";
@@ -52,6 +56,7 @@
 "LOAD_DETAIL_VIEW_CELL_SCORE_MODE" = "Punktespiel";
 "LOAD_DETAIL_VIEW_CELL_ADDITIONAL_RED_TURN" = "Zusätzlicher Zug";
 "LOAD_DETAIL_VIEW_CELL_REUSE_LINES" = "Reihen kreuzbar";
+"LOAD_DETAIL_VIEW_CELL_PLAYER_COLOR" = "Spielerfarbe";
 "LOAD_DETAIL_VIEW_CELL_BLUE_PLAYER_SCORE" = "Punktzahl Blau";
 "LOAD_DETAIL_VIEW_CELL_RED_PLAYER_SCORE" = "Punktzahl Rot";
 
@@ -71,10 +76,12 @@
 "SETTINGS_VIEW_CELL_SCORE_MODE" = "Punktespiel";
 "SETTINGS_VIEW_CELL_ADDITIONAL_RED_TURN" = "Zusätzlicher Zug";
 "SETTINGS_VIEW_CELL_REUSE_LINES" = "Reihen kreuzbar";
+"SETTINGS_VIEW_CELL_PLAYER_SELECTION" = "Lokaler Spieler ist Blau";
 
 // Abschnittsüberschriften
 "SETTINGS_VIEW_HEADER_BOARD_OPTIONS" = "Spielbrett-Optionen";
 "SETTINGS_VIEW_HEADER_GAME_MODE_OPTIONS" = "Spielmodus-Optionen";
+"SETTINGS_VIEW_HEADER_BLUETOOTH_GAME_OPTIONS" = "Bluetoothspiel-Optionen";
 
 // Abschnittsfußnoten
 "SETTINGS_VIEW_FOOTER_TURN_OPTIONS" = "Bestimmt die Anzahl der Züge. Kann nicht die totale Spielbrettgröße überschreiten. Sollte keine Begrenzung der Zuganzahl auf einem Brett fester Größe gesetzt sein, wird automatisch das Maximum angenommen. Auf unbegrenzten Spielbrettern ist der maximal gültige Eingabewert %i. Sollte weder eine Begrenzung der Zuganzahl, noch eine des Spielbretts gesetzt sein, so ist kein Punktespiel möglich.";
@@ -83,6 +90,7 @@
 "SETTINGS_VIEW_FOOTER_SCORE_MODE" = "Bei aktiviertem Punktespiel endet das Spiel immer nach der gesetzen Anzahl Züge. Der Gewinner wird anhand der Punktzahl bestimmt.";
 "SETTINGS_VIEW_FOOTER_ADDITIONAL_RED_TURN" = "Erlaube dem zweiten Spieler (rot) einen zusätzlichen Zug, um einen Sieg zu verhindern. Nicht verfügbar bei Punktespiel.";
 "SETTINGS_VIEW_FOOTER_REUSE_LINES" = "Wenn diese Option aktiv ist, können Reihen von anderen Reihen gekreuzt werden. Ansonsten sind Felder einer Reihe nicht weiter verwendbar.";
+"SETTINGS_VIEW_FOOTER_PLAYER_SELECTION" = "Legt fest, ob bei einem Bluetoothspiel der Spieler an diesem Gerät Blau oder Rot ist.";
 
 // Warnmeldungen
 "SETTINGS_VIEW_ALERT_TITLE_INVALID_VALUE" = "Ungültiger Wert";
@@ -180,6 +188,8 @@
 "DISABLED_CONCISE" = "aus";
 "YES" = "Ja";
 "NO" = "Nein";
+"BLUE" = "blau";
+"RED" = "rot";
 
 
 /* von iVideoShow AboutViewController */

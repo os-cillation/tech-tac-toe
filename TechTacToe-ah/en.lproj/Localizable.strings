@@ -19,6 +19,7 @@
 "MAIN_VIEW_CELL_CONTINUE" = "Continue";
 "MAIN_VIEW_CELL_LOAD" = "Load Game";
 "MAIN_VIEW_CELL_CONNECT" = "Connect Via Bluetooth";
+"MAIN_VIEW_CELL_REVOKE_CONTROL" = "Pass Game Control To:";
 "MAIN_VIEW_CELL_DISCONNECT" = "Disconnect";
 "MAIN_VIEW_CELL_ABOUT" = "About";
 
@@ -42,6 +43,9 @@
 // section headers
 "LOAD_DETAIL_VIEW_HEADER_SAVEGAME" = "Savegame: ";
 
+// section footers
+"LOAD_DETAIL_VIEW_FOOTER_PLAYER_COLOR" = "In a bluetooth game, the local player will have this color.";
+
 // cell labels
 "LOAD_DETAIL_VIEW_CELL_CURRENT_TURN" = "Current Turn";
 "LOAD_DETAIL_VIEW_CELL_MAXIMUM_NUMBER_OF_TURNS" = "Maximum Number of Turns";
@@ -52,6 +56,7 @@
 "LOAD_DETAIL_VIEW_CELL_SCORE_MODE" = "Score Mode";
 "LOAD_DETAIL_VIEW_CELL_ADDITIONAL_RED_TURN" = "Additional Red Turn";
 "LOAD_DETAIL_VIEW_CELL_REUSE_LINES" = "Reuse Lines";
+"LOAD_DETAIL_VIEW_CELL_PLAYER_COLOR" = "Player color";
 "LOAD_DETAIL_VIEW_CELL_BLUE_PLAYER_SCORE" = "Blue Player Score";
 "LOAD_DETAIL_VIEW_CELL_RED_PLAYER_SCORE" = "Red Player Score";
 
@@ -71,10 +76,12 @@
 "SETTINGS_VIEW_CELL_SCORE_MODE" = "Score Mode";
 "SETTINGS_VIEW_CELL_ADDITIONAL_RED_TURN" = "Additional Red Turn";
 "SETTINGS_VIEW_CELL_REUSE_LINES" = "Reuse Lines";
+"SETTINGS_VIEW_CELL_PLAYER_SELECTION" = "Local Player is Blue";
 
 // section headers
 "SETTINGS_VIEW_HEADER_BOARD_OPTIONS" = "Board Options";
 "SETTINGS_VIEW_HEADER_GAME_MODE_OPTIONS" = "Game Mode Options";
+"SETTINGS_VIEW_HEADER_BLUETOOTH_GAME_OPTIONS" = "Bluetooth Game Options";
 
 // section footers
 "SETTINGS_VIEW_FOOTER_TURN_OPTIONS" = "Sets the number of turns. Cannot be higher than the total board size. If no turn limit is set but the board has a limit, the maximum number of turns will be used. On unlimited boards, the highest valid value is %i. Also, if no turn limit and no board limit is set, game will not be in score mode.";
@@ -83,6 +90,7 @@
 "SETTINGS_VIEW_FOOTER_SCORE_MODE" = "If enabled, the game will always end after a set number of turns with the player with a higher score winning.";
 "SETTINGS_VIEW_FOOTER_ADDITIONAL_RED_TURN" = "Allow the second (red) player a chance to counter a line with an additional turn on non-score mode games.";
 "SETTINGS_VIEW_FOOTER_REUSE_LINES" = "Either allow lines to be crossed (but not extended) by any new line or effectively remove fields of a line from the game.";
+"SETTINGS_VIEW_FOOTER_PLAYER_SELECTION" = "On a bluetooth game, set if the player on this device will be the blue player or the red player.";
 
 // alert views
 "SETTINGS_VIEW_ALERT_TITLE_INVALID_VALUE" = "Invalid Value";
@@ -180,6 +188,8 @@
 "DISABLED_CONCISE" = "off";
 "YES" = "Yes";
 "NO" = "No";
+"BLUE" = "blue";
+"RED" = "red";
 
 
 /* from iVideoShow AboutViewController */

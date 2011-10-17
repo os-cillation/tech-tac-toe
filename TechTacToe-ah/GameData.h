@@ -11,10 +11,12 @@
 #import "Rules.h"
 
 // game modes
-#define DEFAULT_GAME 0
-#define CUSTOM_GAME 1
-#define TICTACTOE 2
-#define GOMOKU 3
+typedef enum {
+    DEFAULT_GAME,
+    CUSTOM_GAME,
+    TICTACTOE,
+    GOMOKU
+} gameModes;
 
 // change this to allow for bigger (extendable) boards - right now, it deactivates further expansion after board reaches or exceeds 25x25 fields
 #define MAX_FIELDS 625
@@ -23,7 +25,7 @@
 {
     NSMutableDictionary *fields; // contains all field objects
     CGPoint positionOfLastMarkedField; // the position of the current or last selected field
-    BOOL selection, bluePlayerTurn, gameOver, blueDidLeadOnPreviousTurn, blueResigned, redResigned; // is something selected? is it the blue player's turn? will the game end this turn? did blue score last turn (used for survival mode games with additional turn)? has anyone resigned the game?
+    BOOL selection, bluePlayerTurn, gameOver, blueDidLeadOnPreviousTurn, blueResigned, redResigned, localPlayerBlue; // is something selected? is it the blue player's turn? will the game end this turn? did blue score last turn (used for survival mode games with additional turn)? has anyone resigned the game? on a bluetooth game, is the local device the blue player? (on non-bluetooth games always YES, but won't matter)
     int mode, numberOfTurn, bluePoints, redPoints, redPointsLastTurn, bluePointsLastTurn; // statistics of the game - will be used to display labels and trigger game over
     Rules *rules; // the rules of the current game
     int boardWidth, boardHeight; // if not (0,0) then board will be limited
@@ -39,6 +41,7 @@
 @property (nonatomic) BOOL blueDidLeadOnPreviousTurn;
 @property (nonatomic, getter = hasBlueResigned) BOOL blueResigned;
 @property (nonatomic, getter = hasRedResigned) BOOL redResigned;
+@property (nonatomic, getter = isLocalPlayerBlue) BOOL localPlayerBlue;
 @property (nonatomic) int numberOfTurn, bluePoints, redPoints, redPointsLastTurn, bluePointsLastTurn;
 @property (nonatomic, retain) Rules *rules;
 @property (nonatomic) int boardWidth, boardHeight;

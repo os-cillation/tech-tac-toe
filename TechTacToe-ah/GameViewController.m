@@ -645,14 +645,14 @@
         self.rulesButton.frame = frame;
     } else {
         // frame setups for landscape orientations
-        frame = CGRectMake(0, 0, self.currentSize.height, self.currentSize.width);
+        frame = CGRectMake(0, 0, self.currentSize.width, self.currentSize.height);
         self.containerView.frame = frame;
         frame = [[UIScreen mainScreen]applicationFrame];
         frame.size = CGSizeMake(frame.size.height, frame.size.width);
         self.view.frame = frame;
         frame.size.height -= 55;
         self.gameScrollView.frame = frame;
-        self.gameScrollView.contentSize = CGSizeMake(self.containerView.frame.size.width, self.containerView.frame.size.height);
+        self.gameScrollView.contentSize = CGSizeMake(self.containerView.frame.size.height, self.containerView.frame.size.width);
         frame = CGRectMake(5, 255, 300, 50);
         self.gameInfo.frame = frame;
         frame = CGRectMake(440, 255, 44, 44);

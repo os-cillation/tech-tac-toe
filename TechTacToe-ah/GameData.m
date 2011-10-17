@@ -16,6 +16,7 @@
 @synthesize blueDidLeadOnPreviousTurn=_blueDidLeadOnPreviousTurn;
 @synthesize blueResigned=_blueResigned;
 @synthesize redResigned=_redResigned;
+@synthesize localPlayerBlue=_localPlayerBlue;
 @synthesize positionOfLastMarkedField=_positionOfLastMarkedField;
 @synthesize selection=_selection;
 @synthesize mode=_mode;
@@ -38,6 +39,9 @@
     _mode = gameMode;
     _boardWidth = (int)sizeOrNil.width;
     _boardHeight = (int)sizeOrNil.height;
+    
+    // might be changed in bluetooth games, but for now set it to YES
+    self.localPlayerBlue = YES;
     
     // new game: no points yet, nothing selected
     self.redPoints = 0;
@@ -226,6 +230,7 @@
     _blueDidLeadOnPreviousTurn = [aDecoder decodeBoolForKey:@"blue did lead on previous turn"];
     _blueResigned = [aDecoder decodeBoolForKey:@"blue resigned"];
     _redResigned = [aDecoder decodeBoolForKey:@"red resigned"];
+    _localPlayerBlue = [aDecoder decodeBoolForKey:@"local player blue"];
     _positionOfLastMarkedField = CGPointMake([aDecoder decodeFloatForKey:@"position of last marked field x"], [aDecoder decodeFloatForKey:@"position of last marked field y"]);
     _selection = [aDecoder decodeBoolForKey:@"selection"];
     _mode = [aDecoder decodeIntForKey:@"game mode"];
@@ -247,6 +252,7 @@
     [aCoder encodeBool:_blueDidLeadOnPreviousTurn forKey:@"blue did lead on previous turn"];
     [aCoder encodeBool:_blueResigned forKey:@"blue resigned"];
     [aCoder encodeBool:_redResigned forKey:@"red resigned"];
+    [aCoder encodeBool:_localPlayerBlue forKey:@"local player blue"];
     [aCoder encodeFloat:_positionOfLastMarkedField.x forKey:@"position of last marked field x"];
     [aCoder encodeFloat:_positionOfLastMarkedField.y forKey:@"position of last marked field y"];
     [aCoder encodeBool:_selection forKey:@"selection"];

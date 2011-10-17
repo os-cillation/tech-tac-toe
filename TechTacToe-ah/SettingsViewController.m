@@ -28,6 +28,8 @@
 @synthesize additionalRedTurnSwitch;
 @synthesize reuseLineCell;
 @synthesize reuseLineSwitch;
+@synthesize playerSelectionCell;
+@synthesize playerSelectionSwitch;
 @synthesize tapGestureRecognizer;
 @synthesize mvc;
 
@@ -62,6 +64,8 @@
     [boardLimitCell release];
     [boardLimitSwitch release];
     [tapGestureRecognizer release];
+    [playerSelectionCell release];
+    [playerSelectionSwitch release];
     [super dealloc];
 }
 
@@ -115,6 +119,14 @@
     self.additionalRedTurnCell.accessoryView = self.additionalRedTurnSwitch;
     self.reuseLineCell.textLabel.text = NSLocalizedString(@"SETTINGS_VIEW_CELL_REUSE_LINES", @"Reuse Lines");
     self.reuseLineCell.accessoryView = self.reuseLineSwitch;
+    self.playerSelectionCell.textLabel.text = NSLocalizedString(@"SETTINGS_VIEW_CELL_PLAYER_SELECTION", @"Local Player is Blue");
+    self.playerSelectionCell.accessoryView = self.playerSelectionSwitch;
+    
+    // disable the bluetooth options if we don't have a bluetooth game
+    if (!self.mvc.dataHandler.currentSession) {
+        self.playerSelectionCell.textLabel.enabled = NO;
+        self.playerSelectionSwitch.enabled = NO;
+    }
     
     //add a tap gesture recognizer so we can dismiss the keyboard on a background tap
     UITapGestureRecognizer *temp = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissAllKeyboards)];
@@ -145,6 +157,8 @@
     [self setBoardLimitCell:nil];
     [self setBoardLimitSwitch:nil];
     [self setTapGestureRecognizer:nil];
+    [self setPlayerSelectionCell:nil];
+    [self setPlayerSelectionSwitch:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -182,7 +196,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 6;
+    return 7;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -205,6 +219,9 @@
             return 1;
             break;
         case 5:
+            return 1;
+            break;
+        case 6:
             return 1;
             break;
         default:
@@ -252,6 +269,9 @@
         case 5:
             return self.reuseLineCell;
             break;
+        case 6:
+            return self.playerSelectionCell;
+            break;
         default:
             return 0;
             break;
@@ -279,6 +299,9 @@
         case 5:
             return @"";
             break;
+        case 6:
+            return NSLocalizedString(@"SETTINGS_VIEW_HEADER_BLUETOOTH_GAME_OPTIONS", @"Bluetooth Game Options");
+            break;
         default:
             return @"";
             break;
@@ -305,6 +328,9 @@
             break;
         case 5:
             return NSLocalizedString(@"SETTINGS_VIEW_FOOTER_REUSE_LINES", @"Either allow lines to be crossed (but not extended) by any new line or effectively remove fields of a line from the game.");
+            break;
+        case 6:
+            return NSLocalizedString(@"SETTINGS_VIEW_FOOTER_PLAYER_SELECTION", @"On a bluetooth game, set if the player on this device will be the blue player or the red player.");
             break;
         default:
             return @"";
@@ -769,9 +795,15 @@
     Rules *customRules = [[Rules alloc] initWithMinFieldsForLine:self.minimumForLineTextField.text.intValue numberOfTurns:turns extendableBoard:extendable survivalMode:!self.scoreModeSwitch.isOn additionalRedTurn:self.additionalRedTurnSwitch.isOn reuseOfLines:self.reuseLineSwitch.isOn];
     Game *newGame = [[Game alloc]initInMode:CUSTOM_GAME withBoardSize:boardSize];
     newGame.gameData.rules = customRules;
+    newGame.gameData.localPlayerBlue = self.playerSelectionSwitch.isOn;
     self.mvc.currentGame = newGame;
     [customRules release];
     [newGame release];
+    
+    // on a bluetooth game, send game data to the opponent
+    if (self.mvc.dataHandler.currentSession) {
+        [self.mvc.dataHandler transmitCurrentGameData];
+    }
     
     [self.navigationController pushViewController:self.mvc.currentGame.gameViewController animated:YES];
 }

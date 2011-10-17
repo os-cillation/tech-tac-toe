@@ -9,14 +9,16 @@
 #import <Foundation/Foundation.h>
 
 // field status
-#define UNAVAILABLE_FIELD 0
-#define FREE_FIELD 1
-#define RED_FIELD 2
-#define RED_MARKED 3
-#define RED_LINE 4
-#define BLUE_FIELD 5
-#define BLUE_MARKED 6
-#define BLUE_LINE 7
+typedef enum {
+    UNAVAILABLE_FIELD,
+    FREE_FIELD,
+    RED_FIELD,
+    RED_MARKED,
+    RED_LINE,
+    BLUE_FIELD,
+    BLUE_MARKED,
+    BLUE_LINE
+} fieldStatus;
 
 @interface Field : NSObject <NSCoding> {
     int positionX, positionY; // the position of the field on the board
