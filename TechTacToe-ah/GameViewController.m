@@ -7,6 +7,7 @@
 //
 
 #import "GameViewController.h"
+#import "BluetoothDataHandler.h"
 
 @implementation GameViewController
 
@@ -28,6 +29,7 @@
 @synthesize tapGestureRecognizer=_tapGestureRecognizer;
 @synthesize turnInfo=_turnInfo;
 @synthesize gameInfo=_gameInfo;
+@synthesize btDataHandler=_btDataHandler;
 
 #pragma mark - Initializer and memory management
 
@@ -129,10 +131,15 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0) {
-        // resign: display alert view for confirmation, but only if the game is still ongoing
-        if (!self.gameData.isGameOver) {
+        // resign: display alert view for confirmation, but only if the game is still ongoing and it is your turn on bluetooth games
+        if (!self.gameData.isGameOver && ((self.btDataHandler.currentSession && self.gameData.isLocalPlayerBlue == self.gameData.isBluePlayerTurn) || !self.btDataHandler.currentSession)) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_CONFIRMATION_TITLE", @"Resigning") message:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_CONFIRMATION_MESSAGE", @"Really resign the game?") delegate:self cancelButtonTitle:NSLocalizedString(@"NO", @"no") otherButtonTitles:NSLocalizedString(@"YES", @"yes"), nil];
             alert.tag = 12;
+            [alert show];
+            [alert release];
+        } else {
+            // display an alert view with a message that you cannot resign the game at this moment
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_UNAVAILBLE_TITLE", @"Resigning Not Possible") message:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_UNAVAILABLE_MESSAGE", @"Resigning the game is only possible if the game is not already over and if it is your turn on a game via Bluetooth.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
             [alert release];
         }
@@ -155,6 +162,7 @@
     if (buttonIndex == 2) {
         // main menu
         [self.navigationController popToRootViewControllerAnimated:YES];
+        // TODO ask for confirmation on bluetooth games, send remote device notification to go back to menu as well or to disconnect and stay - if someone starts a new game while the old one is still running, memory will leak - so do not EVER allow only one peer to go back to menu!
     }
     // buttonIndex == 3 is the cancel button - don't do anything if it's clicked
 }
@@ -171,6 +179,7 @@
         } else if (buttonIndex == 1) {
             // back to menu
             [self.navigationController popToRootViewControllerAnimated:YES];
+            // TODO ask for confirmation on bluetooth games, send remote device notification to go back to menu as well or to disconnect and stay - if someone starts a new game while the old one is still running, memory will leak - so do not EVER allow only one peer to go back to menu!
         }
     } // resign confirmation alert view 
     else if (alertView.tag == 12) {
@@ -179,22 +188,28 @@
         } else if (buttonIndex == 1) {
             // do resign
             
-            // first clear any selection, so we don't keep them even when the game is already over
+            // first clear any selection, so we don't keep them even when the game is already over - on bluetooth games, there should be no marked field so skip it
             if (self.gameData.hasSelection) {
                 self.gameData.selection = NO;
-                [self.gameData changeDataAtPoint:self.gameData.positionOfLastMarkedField withStatus:FREE_FIELD];
+                [self.gameData changeDataAtPoint:CGPointMake(self.gameData.positionOfLastMarkedFieldX, self.gameData.positionOfLastMarkedFieldY)  withStatus:FREE_FIELD];
                 NSMutableArray *needsDrawing = [NSMutableArray arrayWithCapacity:1];
-                Field *drawMe = [[Field alloc] initWithStatus:FREE_FIELD atPositionX:self.gameData.positionOfLastMarkedField.x atPositionY:self.gameData.positionOfLastMarkedField.y];
+                Field *drawMe = [[Field alloc] initWithStatus:FREE_FIELD atPositionX:self.gameData.positionOfLastMarkedFieldX atPositionY:self.gameData.positionOfLastMarkedFieldY];
                 [needsDrawing addObject:drawMe];
                 [drawMe release];
                 // reset position of our last selection
-                self.gameData.positionOfLastMarkedField = CGPointMake(-1, -1);
+                self.gameData.positionOfLastMarkedFieldX = -1;
+                self.gameData.positionOfLastMarkedFieldY = -1;
                 // draw the field we deselected
                 [self changeGameFields:needsDrawing orDrawAll:NO];
             }
             // at last, do the resigning and declare game over
             [self.gameData resignGame];
-        [self cleanUpAfterGameOver];
+            [self cleanUpAfterGameOver];
+            
+            // on bluetooth games, tell the other player you have resigned
+            if (self.btDataHandler.currentSession && self.gameData.isBluePlayerTurn == self.gameData.isLocalPlayerBlue) {
+                [self.btDataHandler sendResign];
+            }
         }
     }
 }
@@ -288,18 +303,19 @@
     // we put every field that needs a redraw into this (maximum: 2)
     NSMutableArray *needsDrawing = [NSMutableArray arrayWithCapacity:2];
     
-    BOOL sameLocation = (tapLocation.x == self.gameData.positionOfLastMarkedField.x) && (tapLocation.y == self.gameData.positionOfLastMarkedField.y);
+    BOOL sameLocation = (tapLocation.x == self.gameData.positionOfLastMarkedFieldX) && (tapLocation.y == self.gameData.positionOfLastMarkedFieldY);
     
     // first clear an old selection if it exists and we did not tap the same field
     if (self.gameData.hasSelection && !sameLocation) {
         self.gameData.selection = NO;
-        [self.gameData changeDataAtPoint:self.gameData.positionOfLastMarkedField withStatus:FREE_FIELD];
+        [self.gameData changeDataAtPoint:CGPointMake(self.gameData.positionOfLastMarkedFieldX, self.gameData.positionOfLastMarkedFieldY) withStatus:FREE_FIELD];
         // just create a new field with the data here - doesn't matter if it is not from the data since it is identical to it
-        Field *drawMe = [[Field alloc] initWithStatus:FREE_FIELD atPositionX:self.gameData.positionOfLastMarkedField.x atPositionY:self.gameData.positionOfLastMarkedField.y];
+        Field *drawMe = [[Field alloc] initWithStatus:FREE_FIELD atPositionX:self.gameData.positionOfLastMarkedFieldX atPositionY:self.gameData.positionOfLastMarkedFieldY];
         [needsDrawing addObject:drawMe];
         [drawMe release];
         // reset position of our last selection
-        self.gameData.positionOfLastMarkedField = CGPointMake(-1, -1);
+        self.gameData.positionOfLastMarkedFieldX = -1;
+        self.gameData.positionOfLastMarkedFieldY = -1;
     }
     // get the field for the tap
     NSString *key = [NSString stringWithFormat:@"%i, %i", (int)tapLocation.x, (int)tapLocation.y];
@@ -376,11 +392,12 @@
     // we can use this to determine if we need to do a complete redraw
     BOOL needsCompleteRedraw = NO;
     
+    // if this is not set to yes before the bluetooth send would be made, nothing will be sent (since nothing changed)
+    BOOL validTurn = NO;
+    
     // check if there is a valid selection
     if (self.gameData.hasSelection) {
-        CGPoint position = self.gameData.positionOfLastMarkedField;
-        // reset position of last marked field to normally unattainable value to avoid having the wrong field after resizing at the coordinates
-        self.gameData.positionOfLastMarkedField = CGPointMake(-1, -1);
+        CGPoint position = CGPointMake(self.gameData.positionOfLastMarkedFieldX, self.gameData.positionOfLastMarkedFieldY);
         
         NSString *key = [NSString stringWithFormat:@"%i, %i", (int)position.x, (int)position.y];
         Field *fieldToCommit = [self.gameData.fields objectForKey:key];
@@ -388,6 +405,9 @@
         // compare the status of the field with the active player (redundant check for security)        
         // everything that should be executed if a turn is successfully committed should be in here
         if ((fieldToCommit.status == BLUE_MARKED && self.gameData.isBluePlayerTurn) || (fieldToCommit.status == RED_MARKED && !self.gameData.isBluePlayerTurn)) {
+            
+            // it is a valid turn, so we need to send data on a bluetooth game
+            validTurn = YES;
             
             // set up a container with all changes - we need to use this if we don't do a complete redraw
             NSMutableArray *needsDrawing = [NSMutableArray arrayWithCapacity:35];
@@ -416,16 +436,6 @@
             
             // consult the rules (which will add points - if any and switch active player), add every field that needs drawing because it now belongs to a line to our array - will change self.isGameOver to YES on winning conditions
             [needsDrawing addObjectsFromArray:[self.gameData consultRulesForFieldAtPoint:position]];
-            
-            // check for game over - on game over, just draw changes, call cleanUpAfterGameOver and return and don't bother with resizing/scroller offset calculation
-            if (self.gameData.isGameOver) {
-                [self changeGameFields:needsDrawing orDrawAll:NO];
-                // call "game over method" here
-                [self cleanUpAfterGameOver];
-                return;
-            }
-            // let the gameData know a turn has been made
-            self.gameData.numberOfTurn ++;
             
             // we need these to calculate the new offset
             CGPoint offset = self.gameScrollView.contentOffset;
@@ -506,9 +516,30 @@
                 // just draw the changes
                 [self changeGameFields:needsDrawing orDrawAll:NO];
             }
+            // on a bluetooth game, send the other player the turn if it is valid and it was made locally (of course) - but since the game data already changed active turns, check the opposite
+            if (self.btDataHandler.currentSession && validTurn && self.gameData.isBluePlayerTurn != self.gameData.isLocalPlayerBlue) {
+                [self.btDataHandler sendCommittedTurn];
+                
+                // deactivate controls (the data handler will re-activate them for us
+                [self.tapGestureRecognizer setEnabled:NO];
+                [self.navigationItem.rightBarButtonItem setEnabled:NO];
+            }
+            
+            // reset position of last marked field to normally unattainable value to avoid having the wrong field after resizing at the coordinates
+            self.gameData.positionOfLastMarkedFieldX = -1; 
+            self.gameData.positionOfLastMarkedFieldY = -1;
+            
+            // check for game over - on game over, call cleanUpAfterGameOver and return and don't bother with updating labels or incrementing turn numbers
+            if (self.gameData.isGameOver) {
+                [self cleanUpAfterGameOver];
+                return;
+            }
+            
+            // let the gameData know a turn has been made
+            self.gameData.numberOfTurn ++;
+            
             // update the game and turn information
             [self updateLabels];
-            
         }
     }
 }
@@ -533,24 +564,35 @@
     
     // turn information for on-going game
     if (!self.gameData.isGameOver) {
-        // set color
+        
+        // set color depending on whose turn it is
         if (self.gameData.isBluePlayerTurn) {
             [self.turnInfo setTextColor:[UIColor blueColor]];
         }
         else {
             [self.turnInfo setTextColor:[UIColor redColor]];
         }
-        // set text - we don't need to tell the player that classic modes with a limited board and no special turn limit have a natural maximum number of turns, also if we do not set a maximum number, we cannot tell it
-        if (self.gameData.mode == TICTACTOE || self.gameData.mode == GOMOKU || self.gameData.rules.maxNumberOfTurns == 0) {
-            NSString *tts = NSLocalizedString(@"GAME_VIEW_TURN_TEXT_SHORT", @"Turn %i");
-            NSString *turnText = [NSString stringWithFormat:tts, self.gameData.numberOfTurn];
-            [self.turnInfo setText:turnText];
+        
+        if (self.btDataHandler.currentSession && (self.gameData.isLocalPlayerBlue != self.gameData.isBluePlayerTurn)) {
+            [self.turnInfo setFont:[UIFont boldSystemFontOfSize:13.0f]];
+            // display "waiting for other device" message
+            [self.turnInfo setText:NSLocalizedString(@"GAME_VIEW_TURN_TEXT_WAITING", @"Waiting for other player")];
+            
         } else {
-            NSString *ttn = NSLocalizedString(@"GAME_VIEW_TURN_TEXT_NORMAL", @"Turn %i of %i");
-            NSString *turnText = [NSString stringWithFormat:ttn, self.gameData.numberOfTurn,  self.gameData.rules.maxNumberOfTurns];
-            [self.turnInfo setText:turnText];
+            // it's a valid turn
+            [self.turnInfo setFont:[UIFont boldSystemFontOfSize:19.0f]];
+            // set text - we don't need to tell the player that classic modes with a limited board and no special turn limit have a natural maximum number of turns, also if we do not set a maximum number, we cannot tell it
+            if (self.gameData.mode == TICTACTOE || self.gameData.mode == GOMOKU || self.gameData.rules.maxNumberOfTurns == 0) {
+                NSString *tts = NSLocalizedString(@"GAME_VIEW_TURN_TEXT_SHORT", @"Turn %i");
+                NSString *turnText = [NSString stringWithFormat:tts, self.gameData.numberOfTurn];
+                [self.turnInfo setText:turnText];
+            } else {
+                NSString *ttn = NSLocalizedString(@"GAME_VIEW_TURN_TEXT_NORMAL", @"Turn %i of %i");
+                NSString *turnText = [NSString stringWithFormat:ttn, self.gameData.numberOfTurn,  self.gameData.rules.maxNumberOfTurns];
+                [self.turnInfo setText:turnText];
+            }
         }
-    } else {
+    }else {
         // game over information
         
         // if a game was resigned
@@ -688,7 +730,6 @@
     [self.gameData updateBoardSize];
     
     //set up the scroller
-    // TODO: make the scroller behave well on small unlimited boards!
     UIScrollView *tempScrollView = [[UIScrollView alloc] initWithFrame:frame];
     self.gameScrollView = tempScrollView;
     [tempScrollView release];
@@ -704,13 +745,11 @@
         self.gameScrollView.zoomScale = self.gameScrollView.maximumZoomScale;
     else
         self.gameScrollView.zoomScale = 1.0f;
-    // in tictactoe mode, do not zoom or scroll (board too small)
+    // in tictactoe mode, do not zoom (board too small anyway)
     if (self.gameData.mode == TICTACTOE) {
-        [self.gameScrollView setScrollEnabled:NO];
         self.gameScrollView.maximumZoomScale = 1.2f;
         self.gameScrollView.minimumZoomScale = 1.2f;
         self.gameScrollView.zoomScale = 1.2f;
-        self.gameScrollView.bounces = NO;
         self.gameScrollView.bouncesZoom = NO;
     }
     
@@ -774,9 +813,6 @@
     //[self.gameInfo setShadowOffset:CGSizeMake(1, -1)];
     //[self.gameInfo setShadowColor:[UIColor blackColor]];
     
-    //update the labels with initial data
-    [self updateLabels];
-    
     // set the navbar title with turn information, make it black
     self.navigationItem.titleView = self.turnInfo;
     
@@ -789,6 +825,15 @@
     UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_MENU_BUTTON", @"Menu") style:UIBarButtonItemStyleBordered target:self action:@selector(showMenu)];
     self.navigationItem.leftBarButtonItem = menuButton;
     [menuButton release];
+    
+    // we are not able to make a move on: bluetooth sessions when it is not the local player's turn
+    if (self.btDataHandler.currentSession && (self.gameData.isLocalPlayerBlue != self.gameData.isBluePlayerTurn)) {
+        [self.tapGestureRecognizer setEnabled:NO];
+        [self.navigationItem.rightBarButtonItem setEnabled:NO];
+    }
+    
+    //update the labels with initial data
+    [self updateLabels];
     
     // if the view did get unloaded (e.g. by a memory warning) and there was a finished game displayed before, immediately clean up on reloading
     if (self.gameData.isGameOver)
@@ -805,9 +850,20 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    // layout if orientation changed: always assume portrait after leaving another view
     [self layoutElements:UIInterfaceOrientationPortrait];
     
-    self.navigationController.navigationBar.tintColor = [UIColor grayColor]; 
+    // set tint of the navbar to something more fitting
+    self.navigationController.navigationBar.tintColor = [UIColor grayColor];
+    
+    // check if we are able to make a move (especially on bt games) and update labels
+    // we are not able to make a move on: game over and bluetooth sessions when it is not the local player's turn
+    if (self.gameData.gameOver || (self.btDataHandler.currentSession && (self.gameData.isLocalPlayerBlue != self.gameData.isBluePlayerTurn))) {
+        [self.tapGestureRecognizer setEnabled:NO];
+        [self.navigationItem.rightBarButtonItem setEnabled:NO];
+    }
+    [self updateLabels];
+    
     [super viewWillAppear:animated];
 }
 

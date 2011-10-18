@@ -17,7 +17,8 @@ typedef enum {
     MESSAGE_COINTOSS,
     MESSAGE_REVOKE_CONTROL,
     MESSAGE_GAME_DATA,
-    MESSAGE_COMMIT
+    MESSAGE_COMMIT,
+    MESSAGE_RESIGN
 } messageTypes;
 
 @interface BluetoothDataHandler : NSObject <GKSessionDelegate>
@@ -32,6 +33,9 @@ typedef enum {
 @property (nonatomic, getter = doesLocalUserActAsServer) BOOL localUserActAsServer;
 @property (nonatomic) int cointossResult;
 
+// handle disconnecting from and closing a session
+-(void) doDisconnect;
+
 // will be sent as first message when establishing a session - the winner will be able to start or load a game which both devices will be playing
 -(void) doCointoss;
 
@@ -40,5 +44,11 @@ typedef enum {
 
 // will send everything the other device needs to recreate a copy of the current game - right now, it should never be bigger than at about 70KB even on very large loaded games, but if it ever grows in size we might need to send 2 messages (max limit for message is 86K)
 -(void) transmitCurrentGameData;
+
+// will send information about the turn the other player has made so it can be recreated on the local device
+-(void) sendCommittedTurn;
+
+// send resign notification to the other player, so the game can end early
+-(void) sendResign;
 
 @end

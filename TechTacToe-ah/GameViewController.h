@@ -13,6 +13,8 @@
 // change this to have smaller (faster, less memory consuming) or bigger (prettier) fields - between 40 and 100 should work - do only use integer values!
 #define FIELDSIZE 50
 
+@class BluetoothDataHandler;
+
 @interface GameViewController : UIViewController <UIScrollViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
 {
     UIScrollView *gameScrollView; // the scroller for the big board
@@ -25,6 +27,7 @@
     UIButton *rulesButton; // the button to display the rules of the current game in a new view
     UITapGestureRecognizer *tapGestureRecognizer; // this is used to select fields in the containerView
     UILabel *turnInfo, *gameInfo; // labels describing player turn by color and turn number and current score
+    BluetoothDataHandler *btDataHandler; // the data handler for a bluetooth-enabled game - use this to check for status and send data to remote
 }
 
 @property (nonatomic, retain) UIScrollView *gameScrollView;
@@ -38,6 +41,8 @@
 @property (nonatomic, retain) UIButton *rulesButton;
 @property (nonatomic, retain) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, retain) UILabel *turnInfo, *gameInfo;
+// the bluetooth data handler belongs to the main view controller, but we need it - so just assign
+@property (nonatomic, assign) BluetoothDataHandler *btDataHandler;
 
 // creates a new gamefield - if no field data is present a new field will be generated; if no second player is set, the game will use hotseat mode - don't use the standard init
 -(GameViewController*) initWithSize:(CGSize) size gameData:(GameData*) data;

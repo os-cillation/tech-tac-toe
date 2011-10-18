@@ -99,7 +99,7 @@
     }
     
     // minimum line size - if the first one to score wins, save the explanation about additional points
-    if (!gameData.rules.survivalMode || gameData.rules.allowAdditionalRedTurn) {
+    if (gameData.rules.inScoreMode || gameData.rules.doesAllowAdditionalRedTurn) {
         NSString *lmfld = NSLocalizedString(@"RULES_VIEW_MINIMUM_LINE_SIZE", @"-  A line has to be at least %i fields long to be counted. Longer lines will score for one or more additional points.\n");
         minimumForLineDescription = [NSString stringWithFormat:lmfld,gameData.rules.minFieldsForLine];
     } else {
@@ -110,18 +110,18 @@
     self.numericValuesLabel.text = [NSString stringWithFormat:@"%@\n%@\n%@", sizeDescription, minimumForLineDescription, turnsDescription];
     
     // score mode or not, additional turn or not
-    if (!gameData.rules.survivalMode) {
+    if (gameData.rules.inScoreMode) {
         scoreModeDescription = NSLocalizedString(@"RULES_VIEW_SCORE_MODE_ENABLED", @"-  The game will end after the set number of turns and the winner will be determined by score only.\n");
     } else {
         scoreModeDescription = NSLocalizedString(@"RULES_VIEW_SCORE_MODE_DISABLED", @"-  The first player to get a line of at least minimum size will be declared the winner.\n");
     } 
-    if (gameData.rules.allowAdditionalRedTurn) {
+    if (gameData.rules.doesAllowAdditionalRedTurn) {
         additionalTurnDescription = NSLocalizedString(@"RULES_VIEW_ADDITIONAL_TURN", @"-  The red player has one extra turn to counter a blue line with one of his own. However, if the red player has a higher score than the blue player at any time, he will win.\n");
     }
     
     // reuse of lines or not (do not display if first to score wins anyway)
-    if (!gameData.rules.survivalMode || gameData.rules.allowAdditionalRedTurn) {
-        if (gameData.rules.allowReuseOfLines) {
+    if (gameData.rules.inScoreMode || gameData.rules.doesAllowAdditionalRedTurn) {
+        if (gameData.rules.doesAllowReuseOfLines) {
             reuseLinesDescription = NSLocalizedString(@"RULES_VIEW_REUSE_LINES_ENABLED", @"-  Fields of a line may be crossed (but not extended) by fields in any direction and do count towards a new line.");
         } else {
             reuseLinesDescription = NSLocalizedString(@"RULES_VIEW_REUSE_LINES_DISABLED", @"-  Fields belonging to a line cannot be used again. They are effectively out of the game.");

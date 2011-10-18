@@ -17,7 +17,8 @@
 @synthesize blueResigned=_blueResigned;
 @synthesize redResigned=_redResigned;
 @synthesize localPlayerBlue=_localPlayerBlue;
-@synthesize positionOfLastMarkedField=_positionOfLastMarkedField;
+@synthesize positionOfLastMarkedFieldX=_positionOfLastMarkedFieldX;
+@synthesize positionOfLastMarkedFieldY=_positionOfLastMarkedFieldY;
 @synthesize selection=_selection;
 @synthesize mode=_mode;
 @synthesize numberOfTurn=_numberOfTurn;
@@ -49,7 +50,8 @@
     self.redPointsLastTurn = 0;
     self.bluePointsLastTurn = 0;
     self.selection = NO;
-    self.positionOfLastMarkedField = CGPointMake(-1, -1);
+    self.positionOfLastMarkedFieldX = -1;
+    self.positionOfLastMarkedFieldY = -1;
     self.gameOver = NO;
     self.blueDidLeadOnPreviousTurn = NO;
     self.blueResigned = NO;
@@ -231,7 +233,8 @@
     _blueResigned = [aDecoder decodeBoolForKey:@"blue resigned"];
     _redResigned = [aDecoder decodeBoolForKey:@"red resigned"];
     _localPlayerBlue = [aDecoder decodeBoolForKey:@"local player blue"];
-    _positionOfLastMarkedField = CGPointMake([aDecoder decodeFloatForKey:@"position of last marked field x"], [aDecoder decodeFloatForKey:@"position of last marked field y"]);
+    _positionOfLastMarkedFieldX = [aDecoder decodeIntForKey:@"position of last marked field x"];
+    _positionOfLastMarkedFieldY = [aDecoder decodeIntForKey:@"position of last marked field y"];
     _selection = [aDecoder decodeBoolForKey:@"selection"];
     _mode = [aDecoder decodeIntForKey:@"game mode"];
     _numberOfTurn = [aDecoder decodeIntForKey:@"turn number"];
@@ -253,8 +256,8 @@
     [aCoder encodeBool:_blueResigned forKey:@"blue resigned"];
     [aCoder encodeBool:_redResigned forKey:@"red resigned"];
     [aCoder encodeBool:_localPlayerBlue forKey:@"local player blue"];
-    [aCoder encodeFloat:_positionOfLastMarkedField.x forKey:@"position of last marked field x"];
-    [aCoder encodeFloat:_positionOfLastMarkedField.y forKey:@"position of last marked field y"];
+    [aCoder encodeInt:_positionOfLastMarkedFieldX forKey:@"position of last marked field x"];
+    [aCoder encodeInt:_positionOfLastMarkedFieldY forKey:@"position of last marked field y"];
     [aCoder encodeBool:_selection forKey:@"selection"];
     [aCoder encodeInt:_mode forKey:@"game mode"];
     [aCoder encodeInt:_numberOfTurn forKey:@"turn number"];
@@ -289,7 +292,8 @@
     }
     // if we did a field selection, save the position of it for later use and set a flag
     if (stat == RED_MARKED || stat == BLUE_MARKED) {
-        self.positionOfLastMarkedField = point;
+        self.positionOfLastMarkedFieldX = point.x;
+        self.positionOfLastMarkedFieldY = point.y;
         self.selection = YES;
     }
 }
@@ -609,7 +613,7 @@
         self.blueDidLeadOnPreviousTurn = self.bluePointsLastTurn > self.redPointsLastTurn;
     BOOL lastTurn = self.numberOfTurn == self.rules.maxNumberOfTurns;
     
-    if (self.rules.inSurvivalMode) {
+    if (!self.rules.inScoreMode) {
         if ((redLeads && !self.blueDidLeadOnPreviousTurn) || (blueLeads && (!self.rules.doesAllowAdditionalRedTurn || self.blueDidLeadOnPreviousTurn)) || lastTurn)
             self.gameOver = YES;
     } else if (lastTurn)

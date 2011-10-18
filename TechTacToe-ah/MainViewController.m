@@ -59,6 +59,7 @@
     
     UIImageView *bluetoothImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[plist objectForKey:@"bluetooth icon"]]];
     self.bluetoothIndicator = bluetoothImageView;
+    self.bluetoothIndicator.frame = CGRectMake(0, 0, 32, 32);
     [bluetoothImageView release];
     
     UIBarButtonItem *btIcon = [[UIBarButtonItem alloc] initWithCustomView:bluetoothImageView];
@@ -383,6 +384,9 @@
             self.currentGame = newGame;
             [newGame release];
             
+            // set the data handler regardless of bluetooth status (will check for session in-game)
+            self.currentGame.gameViewController.btDataHandler = self.dataHandler;
+            
             // on a bluetooth game, send game data to the opponent
             if (self.dataHandler.currentSession) {
                 [self.dataHandler transmitCurrentGameData];
@@ -399,6 +403,9 @@
             self.currentGame = newGame;
             [newGame release];
             
+            // set the data handler regardless of bluetooth status (will check for session in-game)
+            self.currentGame.gameViewController.btDataHandler = self.dataHandler;
+            
             // on a bluetooth game, send game data to the opponent
             if (self.dataHandler.currentSession) {
                 [self.dataHandler transmitCurrentGameData];
@@ -414,6 +421,9 @@
             Game *newGame = [[Game alloc]initInMode:GOMOKU withBoardSize:CGSizeMake(19, 19)];
             self.currentGame = newGame;
             [newGame release];
+            
+            // set the data handler regardless of bluetooth status (will check for session in-game)
+            self.currentGame.gameViewController.btDataHandler = self.dataHandler;
             
             // on a bluetooth game, send game data to the opponent
             if (self.dataHandler.currentSession) {
@@ -467,15 +477,8 @@
                 [picker show];
             } else {
                 // disconnect
-                [self.dataHandler.currentSession disconnectFromAllPeers];
-                if (self.dataHandler.currentSession) {
-                    self.dataHandler.currentSession.available = NO;
-                    [self.dataHandler.currentSession setDataReceiveHandler:nil withContext:NULL];
-                    self.dataHandler.currentSession.delegate = nil;
-                    self.dataHandler.currentSession = nil;
-                    
-                    self.bluetoothIndicator.hidden = YES;
-                }
+                [self.dataHandler doDisconnect];
+                self.bluetoothIndicator.hidden = YES;
                 [self.tableView reloadData]; 
             }
         } else if (indexPath.row == 1) {

@@ -24,7 +24,7 @@ typedef enum {
 @interface GameData : NSObject <NSCoding>
 {
     NSMutableDictionary *fields; // contains all field objects
-    CGPoint positionOfLastMarkedField; // the position of the current or last selected field
+    int positionOfLastMarkedFieldX, positionOfLastMarkedFieldY; // the position of the current or last selected field
     BOOL selection, bluePlayerTurn, gameOver, blueDidLeadOnPreviousTurn, blueResigned, redResigned, localPlayerBlue; // is something selected? is it the blue player's turn? will the game end this turn? did blue score last turn (used for survival mode games with additional turn)? has anyone resigned the game? on a bluetooth game, is the local device the blue player? (on non-bluetooth games always YES, but won't matter)
     int mode, numberOfTurn, bluePoints, redPoints, redPointsLastTurn, bluePointsLastTurn; // statistics of the game - will be used to display labels and trigger game over
     Rules *rules; // the rules of the current game
@@ -33,7 +33,7 @@ typedef enum {
 }
 
 @property (nonatomic, retain) NSMutableDictionary *fields;
-@property (nonatomic) CGPoint positionOfLastMarkedField;
+@property (nonatomic) int positionOfLastMarkedFieldX, positionOfLastMarkedFieldY;
 @property (nonatomic, getter = hasSelection) BOOL selection;
 @property (nonatomic, readonly) int mode;
 @property (nonatomic, getter = isBluePlayerTurn) BOOL bluePlayerTurn;

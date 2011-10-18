@@ -123,6 +123,7 @@
 // Zuginformation (in der Navigationsleiste)
 "GAME_VIEW_TURN_TEXT_SHORT" = "Zug %i";
 "GAME_VIEW_TURN_TEXT_NORMAL" = "Zug %i von %i";
+"GAME_VIEW_TURN_TEXT_WAITING" = "Warte auf Mitspieler";
 "GAME_VIEW_TURN_TEXT_GAME_OVER_RED_WON" = "Rot siegt in Zug %i";
 "GAME_VIEW_TURN_TEXT_GAME_OVER_BLUE_WON" = "Blau siegt in Zug %i";
 "GAME_VIEW_TURN_TEXT_GAME_OVER_DRAW" = "Remis nach Zug %i";
@@ -149,9 +150,11 @@
 
 // Warnmeldungen
 "GAME_VIEW_ALERT_GAME_OVER_TITLE" = "Spiel Vorbei";
-"GAME_VIEW_ALERT_GAME_OVER_MESSAGE" = "Das Spiel ist vorüber. Zurück zum Menü?";
+"GAME_VIEW_ALERT_GAME_OVER_MESSAGE" = "Das Spiel ist vorüber.\nZurück zum Menü?";
 "GAME_VIEW_ALERT_RESIGN_CONFIRMATION_TITLE" = "Aufgeben";
 "GAME_VIEW_ALERT_RESIGN_CONFIRMATION_MESSAGE" = "Das Spiel wirklich aufgeben?";
+"GAME_VIEW_ALERT_RESIGN_UNAVAILBLE_TITLE" = "Aufgabe Nicht Möglich";
+"GAME_VIEW_ALERT_RESIGN_UNAVAILABLE_MESSAGE" = "Das Spiel lässt sich nicht aufgeben, wenn es entweder bereits vorbei oder - bei einem Spiel über Bluetooth - der andere Spieler am Zug ist.";
 "GAME_VIEW_ALERT_BOARD_LIMITATION_TITLE" = "Benachrichtigung";
 "GAME_VIEW_ALERT_BOARD_LIMITATION_MESSAGE" = "Das Spielbrett wurde jetzt auf %i mal %i Felder begrenzt.";
 
@@ -177,6 +180,18 @@
 
 "RULES_VIEW_REUSE_LINES_ENABLED" = "-  Felder einer Reihe dürfen in jeder Richtung gekreuzt (aber nicht erweitert) werden und zählen für neue Reihen.";
 "RULES_VIEW_REUSE_LINES_DISABLED" = "-  Bereits zu einer Reihe gehörende Felder können nicht weiter verwendet werden.";
+
+
+/* Bluetooth-bezogen */
+
+// Warnmeldungen
+"BLUETOOTH_ALERT_TITLE_PEER_DISCONNECTED" = "Bluetooth-Sitzung Beendet";
+"BLUETOOTH_ALERT_MESSAGE_PEER_DISCONNECTED" = "Die Bluetooth-Sitzung wurde beendet, weil das andere Gerät die Verbindung getrennt hat.";
+"BLUETOOTH_ALERT_TITLE_COINTOSS_LOST" = "Münzwurf Verloren";
+"BLUETOOTH_ALERT_MESSAGE_COINTOSS_LOST" = "Der virtuelle Münzwurf hat entschieden, dass das andere Gerät bestimmen wird, was gespielt wird.";
+"BLUETOOTH_ALERT_TITLE_ASSUMED_CONTROL" = "Spielkontrolle Übernommen";
+"BLUETOOTH_ALERT_MESSAGE_ASSUMED_CONTROL" = "Das andere Gerät hat die Kontrolle abgegeben.";
+
 
 /* sonst. Text */
 

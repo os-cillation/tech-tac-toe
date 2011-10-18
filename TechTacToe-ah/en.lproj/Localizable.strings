@@ -123,6 +123,7 @@
 // turn information (displayed in title)
 "GAME_VIEW_TURN_TEXT_SHORT" = "Turn %i";
 "GAME_VIEW_TURN_TEXT_NORMAL" = "Turn %i of %i";
+"GAME_VIEW_TURN_TEXT_WAITING" = "Waiting for other player";
 "GAME_VIEW_TURN_TEXT_GAME_OVER_RED_WON" = "Red won on turn %i";
 "GAME_VIEW_TURN_TEXT_GAME_OVER_BLUE_WON" = "Blue won on turn %i";
 "GAME_VIEW_TURN_TEXT_GAME_OVER_DRAW" = "Draw on turn %i";
@@ -152,6 +153,8 @@
 "GAME_VIEW_ALERT_GAME_OVER_MESSAGE" = "The game is over. Back to menu?";
 "GAME_VIEW_ALERT_RESIGN_CONFIRMATION_TITLE" = "Resigning";
 "GAME_VIEW_ALERT_RESIGN_CONFIRMATION_MESSAGE" = "Really resign the game?";
+"GAME_VIEW_ALERT_RESIGN_UNAVAILBLE_TITLE" = "Resigning Not Possible";
+"GAME_VIEW_ALERT_RESIGN_UNAVAILABLE_MESSAGE" = "Resigning the game is only possible if the game is not already over and if it is your turn on a game via Bluetooth.";
 "GAME_VIEW_ALERT_BOARD_LIMITATION_TITLE" = "Notification";
 "GAME_VIEW_ALERT_BOARD_LIMITATION_MESSAGE" = "The board is now limited to the size of %i by %i fields.";
 
@@ -177,6 +180,18 @@
 
 "RULES_VIEW_REUSE_LINES_ENABLED" = "-  Fields of a line may be crossed (but not extended) by fields in any direction and do count towards a new line.";
 "RULES_VIEW_REUSE_LINES_DISABLED" = "-  Fields belonging to a line cannot be used again. They are effectively out of the game.";
+
+
+/* bluetooth related */
+
+// alert views
+"BLUETOOTH_ALERT_TITLE_PEER_DISCONNECTED" = "Bluetooth Session Ended";
+"BLUETOOTH_ALERT_MESSAGE_PEER_DISCONNECTED" = "The bluetooth session has been terminated because the other device has disconnected.";
+"BLUETOOTH_ALERT_TITLE_COINTOSS_LOST" = "Cointoss Lost";
+"BLUETOOTH_ALERT_MESSAGE_COINTOSS_LOST" = "The virtual cointoss determined that the other device will decide on the game to be played.";
+"BLUETOOTH_ALERT_TITLE_ASSUMED_CONTROL" = "Assumed Game Control";
+"BLUETOOTH_ALERT_MESSAGE_ASSUMED_CONTROL" = "The other device has relinquished control.";
+
 
 /* misc. strings */
 

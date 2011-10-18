@@ -255,7 +255,7 @@
                 case 1:
                     // score mode
                     cell.textLabel.text = NSLocalizedString(@"LOAD_DETAIL_VIEW_CELL_SCORE_MODE", @"Score Mode");
-                    if (!self.gameInformation.rules.inSurvivalMode)
+                    if (self.gameInformation.rules.inScoreMode)
                         cell.detailTextLabel.text = NSLocalizedString(@"ENABLED", @"enabled");
                     else
                         cell.detailTextLabel.text = NSLocalizedString(@"DISABLED", @"disabled");
@@ -377,9 +377,10 @@
     GameViewController *tempGameViewController = [[GameViewController alloc] initWithSize:CGSizeMake(MAX(FIELDSIZE * (self.mvc.currentGame.gameData.boardWidth + 2), FIELDSIZE * 9), MAX(FIELDSIZE * (self.mvc.currentGame.gameData.boardHeight + 2), FIELDSIZE * 9)) gameData:self.mvc.currentGame.gameData];
     self.mvc.currentGame.gameViewController = tempGameViewController;
     
-    // on a bluetooth game, send game data to the opponent
+    // on a bluetooth game, send game data to the opponent and set the data handler for the game view controller
     if (self.mvc.dataHandler.currentSession) {
         [self.mvc.dataHandler transmitCurrentGameData];
+        self.mvc.currentGame.gameViewController.btDataHandler = self.mvc.dataHandler;
     }
     
     [self.navigationController pushViewController:self.mvc.currentGame.gameViewController animated:YES];

@@ -791,8 +791,7 @@
         boardSize = CGSizeZero;
     }
     // create the rules, the game, retain it by setter and display new game
-    // TODO (low priority) adjust the rest of the code to use "scoreMode" instead of "survivalMode" for continuity
-    Rules *customRules = [[Rules alloc] initWithMinFieldsForLine:self.minimumForLineTextField.text.intValue numberOfTurns:turns extendableBoard:extendable survivalMode:!self.scoreModeSwitch.isOn additionalRedTurn:self.additionalRedTurnSwitch.isOn reuseOfLines:self.reuseLineSwitch.isOn];
+    Rules *customRules = [[Rules alloc] initWithMinFieldsForLine:self.minimumForLineTextField.text.intValue numberOfTurns:turns extendableBoard:extendable scoreMode:self.scoreModeSwitch.isOn additionalRedTurn:self.additionalRedTurnSwitch.isOn reuseOfLines:self.reuseLineSwitch.isOn];
     Game *newGame = [[Game alloc]initInMode:CUSTOM_GAME withBoardSize:boardSize];
     newGame.gameData.rules = customRules;
     newGame.gameData.localPlayerBlue = self.playerSelectionSwitch.isOn;
@@ -800,9 +799,10 @@
     [customRules release];
     [newGame release];
     
-    // on a bluetooth game, send game data to the opponent
+    // on a bluetooth game, send game data to the opponent and set the data handler for the game view controller
     if (self.mvc.dataHandler.currentSession) {
         [self.mvc.dataHandler transmitCurrentGameData];
+        self.mvc.currentGame.gameViewController.btDataHandler = self.mvc.dataHandler;
     }
     
     [self.navigationController pushViewController:self.mvc.currentGame.gameViewController animated:YES];

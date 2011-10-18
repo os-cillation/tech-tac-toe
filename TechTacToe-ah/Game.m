@@ -28,7 +28,7 @@
         // init new classic game
         
         // Tic Tac Toe mode always has the same rules: a maximum of 9 turns, 3 fields for a line and no additional turn for the red player
-        rules = [[Rules alloc] initWithMinFieldsForLine:3 numberOfTurns:9 extendableBoard:NO survivalMode:YES additionalRedTurn:NO reuseOfLines:NO];
+        rules = [[Rules alloc] initWithMinFieldsForLine:3 numberOfTurns:9 extendableBoard:NO scoreMode:NO additionalRedTurn:NO reuseOfLines:NO];
         
         // set the rules for the gameData - since gameData retains them, it should be safe to release here
         self.gameData.rules = rules;
@@ -43,7 +43,7 @@
         // init new gomoku game
         
         // gomoku mode always has the same rules: a maximum of 361 turns, 5 fields for a line and no additional turn for the red player
-        rules = [[Rules alloc] initWithMinFieldsForLine:5 numberOfTurns:361 extendableBoard:NO survivalMode:YES additionalRedTurn:NO reuseOfLines:NO];
+        rules = [[Rules alloc] initWithMinFieldsForLine:5 numberOfTurns:361 extendableBoard:NO scoreMode:NO additionalRedTurn:NO reuseOfLines:NO];
         
         // set the rules for the gameData - since gameData retains them, it should be safe to release here
         self.gameData.rules = rules;
@@ -56,7 +56,7 @@
     }
     else {
         // set standard values if we have no special rules
-        rules = [[Rules alloc] initWithMinFieldsForLine:4 numberOfTurns:0 extendableBoard:YES survivalMode:YES additionalRedTurn:YES reuseOfLines:NO];
+        rules = [[Rules alloc] initWithMinFieldsForLine:4 numberOfTurns:0 extendableBoard:YES scoreMode:NO additionalRedTurn:YES reuseOfLines:NO];
         
         // set the rules for the gameData - since gameData retains them, it should be safe to release here
         self.gameData.rules = rules;

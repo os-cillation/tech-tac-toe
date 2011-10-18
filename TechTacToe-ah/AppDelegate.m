@@ -69,8 +69,6 @@
      Save data if appropriate.
      See also applicationDidEnterBackground:.
      */
-    
-    // TODO: autosave data if game was running
 }
 
 @end
