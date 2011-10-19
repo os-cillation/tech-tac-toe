@@ -25,7 +25,7 @@ typedef enum {
 {
     NSMutableDictionary *fields; // contains all field objects
     int positionOfLastMarkedFieldX, positionOfLastMarkedFieldY; // the position of the current or last selected field
-    BOOL selection, bluePlayerTurn, gameOver, blueDidLeadOnPreviousTurn, blueResigned, redResigned, localPlayerBlue; // is something selected? is it the blue player's turn? will the game end this turn? did blue score last turn (used for survival mode games with additional turn)? has anyone resigned the game? on a bluetooth game, is the local device the blue player? (on non-bluetooth games always YES, but won't matter)
+    BOOL selection, bluePlayerTurn, gameOver, blueDidLeadOnPreviousTurn, blueResigned, redResigned, localPlayerBlue; // is something selected? is it the blue player's turn? will the game end this turn? did blue score last turn (used for survival mode games with additional turn)? has anyone resigned the game? on a Bluetooth game, is the local device the blue player? (on non-Bluetooth games always YES, but won't matter)
     int mode, numberOfTurn, bluePoints, redPoints, redPointsLastTurn, bluePointsLastTurn; // statistics of the game - will be used to display labels and trigger game over
     Rules *rules; // the rules of the current game
     int boardWidth, boardHeight; // if not (0,0) then board will be limited

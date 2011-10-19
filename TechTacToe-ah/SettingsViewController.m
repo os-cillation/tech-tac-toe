@@ -122,7 +122,7 @@
     self.playerSelectionCell.textLabel.text = NSLocalizedString(@"SETTINGS_VIEW_CELL_PLAYER_SELECTION", @"Local Player is Blue");
     self.playerSelectionCell.accessoryView = self.playerSelectionSwitch;
     
-    // disable the bluetooth options if we don't have a bluetooth game
+    // disable the Bluetooth options if we don't have a Bluetooth game
     if (!self.mvc.dataHandler.currentSession) {
         self.playerSelectionCell.textLabel.enabled = NO;
         self.playerSelectionSwitch.enabled = NO;
@@ -330,7 +330,7 @@
             return NSLocalizedString(@"SETTINGS_VIEW_FOOTER_REUSE_LINES", @"Either allow lines to be crossed (but not extended) by any new line or effectively remove fields of a line from the game.");
             break;
         case 6:
-            return NSLocalizedString(@"SETTINGS_VIEW_FOOTER_PLAYER_SELECTION", @"On a bluetooth game, set if the player on this device will be the blue player or the red player.");
+            return NSLocalizedString(@"SETTINGS_VIEW_FOOTER_PLAYER_SELECTION", @"On a Bluetooth game, set if the player on this device will be the blue player or the red player.");
             break;
         default:
             return @"";
@@ -799,7 +799,7 @@
     [customRules release];
     [newGame release];
     
-    // on a bluetooth game, send game data to the opponent and set the data handler for the game view controller
+    // on a Bluetooth game, send game data to the opponent and set the data handler for the game view controller
     if (self.mvc.dataHandler.currentSession) {
         [self.mvc.dataHandler transmitCurrentGameData];
         self.mvc.currentGame.gameViewController.btDataHandler = self.mvc.dataHandler;

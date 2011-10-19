@@ -27,7 +27,9 @@
     UIButton *rulesButton; // the button to display the rules of the current game in a new view
     UITapGestureRecognizer *tapGestureRecognizer; // this is used to select fields in the containerView
     UILabel *turnInfo, *gameInfo; // labels describing player turn by color and turn number and current score
-    BluetoothDataHandler *btDataHandler; // the data handler for a bluetooth-enabled game - use this to check for status and send data to remote
+    BluetoothDataHandler *btDataHandler; // the data handler for a Bluetooth-enabled game - use this to check for status and send data to remote
+    UIAlertView *backToMenuGameOver, *backToMenuReqView, *backToMenuWaitView, *backToMenuAckView; // alert views we need to reuse and be able to dismiss from elsewhere on certain conditions: going back to menu on a Bluetooth game and waiting for the other device to confirm
+    UIActivityIndicatorView *activityIndicator; // we use this for the waiting dialogue on going back to menu
 }
 
 @property (nonatomic, retain) UIScrollView *gameScrollView;
@@ -41,8 +43,10 @@
 @property (nonatomic, retain) UIButton *rulesButton;
 @property (nonatomic, retain) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, retain) UILabel *turnInfo, *gameInfo;
-// the bluetooth data handler belongs to the main view controller, but we need it - so just assign
+// the Bluetooth data handler belongs to the main view controller, but we need it - so just assign
 @property (nonatomic, assign) BluetoothDataHandler *btDataHandler;
+@property (nonatomic, retain) UIAlertView *backToMenuGameOver, *backToMenuReqView, *backToMenuWaitView, *backToMenuAckView;
+@property (nonatomic, retain) UIActivityIndicatorView *activityIndicator;
 
 // creates a new gamefield - if no field data is present a new field will be generated; if no second player is set, the game will use hotseat mode - don't use the standard init
 -(GameViewController*) initWithSize:(CGSize) size gameData:(GameData*) data;

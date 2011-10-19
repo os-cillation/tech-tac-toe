@@ -144,7 +144,7 @@
             return 4;
             break;
         case 3:
-            // player color - of interest if the game should be continued over bluetooth
+            // player color - of interest if the game should be continued over Bluetooth
             return 1;
         case 4:
             // points: blue points, red points
@@ -169,7 +169,7 @@
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     if (section == 3) {
-        return NSLocalizedString(@"LOAD_DETAIL_VIEW_FOOTER_PLAYER_COLOR", @"In a bluetooth game, the local player will have this color.");
+        return NSLocalizedString(@"LOAD_DETAIL_VIEW_FOOTER_PLAYER_COLOR", @"In a Bluetooth game, the local player will have this color.");
     }
     return  @"";
 }
@@ -377,7 +377,7 @@
     GameViewController *tempGameViewController = [[GameViewController alloc] initWithSize:CGSizeMake(MAX(FIELDSIZE * (self.mvc.currentGame.gameData.boardWidth + 2), FIELDSIZE * 9), MAX(FIELDSIZE * (self.mvc.currentGame.gameData.boardHeight + 2), FIELDSIZE * 9)) gameData:self.mvc.currentGame.gameData];
     self.mvc.currentGame.gameViewController = tempGameViewController;
     
-    // on a bluetooth game, send game data to the opponent and set the data handler for the game view controller
+    // on a Bluetooth game, send game data to the opponent and set the data handler for the game view controller
     if (self.mvc.dataHandler.currentSession) {
         [self.mvc.dataHandler transmitCurrentGameData];
         self.mvc.currentGame.gameViewController.btDataHandler = self.mvc.dataHandler;

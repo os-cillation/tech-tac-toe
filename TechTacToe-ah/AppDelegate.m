@@ -7,11 +7,13 @@
 //
 
 #import "AppDelegate.h"
+#import "BluetoothDataHandler.h"
 
 @implementation AppDelegate
 
 @synthesize mainWindow = _mainWindow;
 @synthesize navigationController = _navigationController;
+@synthesize btdh=_btdh;
 
 #pragma mark
 
@@ -69,6 +71,11 @@
      Save data if appropriate.
      See also applicationDidEnterBackground:.
      */
+    
+    // if our application had an open Bluetooth connection, close it before termination
+    if (self.btdh.currentSession) {
+        [self.btdh doDisconnect];
+    }
 }
 
 @end

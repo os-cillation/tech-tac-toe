@@ -8,6 +8,7 @@
 
 #import "BluetoothDataHandler.h"
 #import "MainViewController.h"
+#import "AppDelegate.h"
 
 @implementation BluetoothDataHandler
 
@@ -15,6 +16,8 @@
 @synthesize mvc;
 @synthesize localUserActAsServer=_localUserActAsServer;
 @synthesize cointossResult=_cointossResult;
+
+#pragma mark - Initializer and memory management
 
 - (id)init
 {
@@ -28,6 +31,10 @@
         // roll once for cointoss now
         int coinValue = arc4random() % 1000;
         self.cointossResult = coinValue;
+        
+        // tell the application delegate about this object
+        AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+        appDelegate.btdh = self;
     }
     
     return self;
@@ -35,6 +42,10 @@
 
 - (void)dealloc
 {
+    // if a session was active, disconnect and clean-up before deallocating
+    if (self.currentSession)
+        [self doDisconnect];
+    
     [_currentSession release];
     [super dealloc];
 }
@@ -45,7 +56,7 @@
     switch (state)
     {
         case GKPeerStateConnected:
-            NSLog(@"connected");
+            //NSLog(@"connected");
             if (self.mvc.bluetoothIndicator) {
                 self.mvc.bluetoothIndicator.hidden = NO;
             }
@@ -56,27 +67,13 @@
         case GKPeerStateDisconnected:
             // since we only ever have one peer connected, thrash the session if he leaves
             if (self.currentSession) {
-                self.currentSession.available = NO;
-                [self.currentSession setDataReceiveHandler:nil withContext:NULL];
-                self.currentSession.delegate = nil;
-                self.currentSession = nil;
-                [self.mvc.tableView reloadData];
-                self.mvc.bluetoothIndicator.hidden = YES;
+                [self doDisconnect];
                 // display alert telling about the session ending
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"BLUETOOTH_ALERT_TITLE_PEER_DISCONNECTED", @"Bluetooth Session Ended") message:NSLocalizedString(@"BLUETOOTH_ALERT_MESSAGE_PEER_DISCONNECTED", @"The bluetooth session has been terminated because the other device has disconnected.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"BLUETOOTH_ALERT_TITLE_PEER_DISCONNECTED", @"Bluetooth Session Ended") message:NSLocalizedString(@"BLUETOOTH_ALERT_MESSAGE_PEER_DISCONNECTED", @"The Bluetooth session has been terminated because the other device has disconnected.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [alert show];
                 [alert release];
-                
-                // if there was a running game open when the peer disconnected, set everything back to be able to run in hotseat mode
-                if (self.mvc.currentGame) {
-                    if (!self.mvc.currentGame.gameData.isGameOver) {
-                        [self.mvc.currentGame.gameViewController.tapGestureRecognizer setEnabled:YES];
-                        [self.mvc.currentGame.gameViewController.navigationItem.rightBarButtonItem setEnabled:YES];
-                        [self.mvc.currentGame.gameViewController updateLabels];
-                    }
-                }
             }
-            NSLog(@"disconnected");    
+            //NSLog(@"disconnected");    
             break;
             
         default:
@@ -84,14 +81,40 @@
     }
 }
 
-#pragma mark - Data transmission
+#pragma mark - Manual or triggered disconnection
 
-- (void) mySendDataToPeers:(NSData *) data
+- (void)doDisconnect
 {
     if (self.currentSession) {
-        [self.currentSession sendDataToAllPeers:data withDataMode:GKSendDataReliable error:nil];    
+        // first, disconnect and close the session
+        [self.currentSession disconnectFromAllPeers];
+        self.currentSession.available = NO;
+        [self.currentSession setDataReceiveHandler:nil withContext:NULL];
+        self.currentSession.delegate = nil;
+        self.currentSession = nil;
+    }
+    // update the main menu to reflect new status
+    [self.mvc.tableView reloadData];
+    self.mvc.bluetoothIndicator.hidden = YES;
+    
+    // then, if we had a running game open, set it to hotseat mode again by reactivating controls and updating labels
+    // also, dismiss any open dialogues (alert views) regarding going back to menu or waiting for the other device and stop the activity indicator
+    if (self.mvc.currentGame) {
+        [self.mvc.currentGame.gameViewController.backToMenuGameOver dismissWithClickedButtonIndex:-1 animated:YES];
+        [self.mvc.currentGame.gameViewController.backToMenuWaitView dismissWithClickedButtonIndex:-1 animated:YES];
+        [self.mvc.currentGame.gameViewController.backToMenuReqView dismissWithClickedButtonIndex:-1 animated:YES];
+        [self.mvc.currentGame.gameViewController.backToMenuAckView dismissWithClickedButtonIndex:-1 animated:YES];
+        [self.mvc.currentGame.gameViewController.activityIndicator stopAnimating];
+        
+        if (!self.mvc.currentGame.gameData.isGameOver) {
+            [self.mvc.currentGame.gameViewController.tapGestureRecognizer setEnabled:YES];
+            [self.mvc.currentGame.gameViewController.navigationItem.rightBarButtonItem setEnabled:YES];
+            [self.mvc.currentGame.gameViewController updateLabels];
+        }
     }
 }
+
+#pragma mark - Receiving and handling data
 
 - (void) receiveData:(NSData *)data fromPeer:(NSString *)peer inSession:(GKSession *)session context:(void *)context
 {
@@ -182,32 +205,32 @@
         // handle resign of the other player
         [self.mvc.currentGame.gameData resignGame];
         [self.mvc.currentGame.gameViewController cleanUpAfterGameOver];
-    }
     
+    } else if (type == MESSAGE_MENU_REQ) { 
+        // menu-related message handling: req and ack
+        // show the confirmation alert view to the other player - in case of both players sending requests at the same time, dismiss both of the waiting dialogues (not pretty, but it should work - might be a future thing to improve), also dismiss the back to menu on game over view
+        [self.mvc.currentGame.gameViewController.backToMenuGameOver dismissWithClickedButtonIndex:-1 animated:YES];
+        [self.mvc.currentGame.gameViewController.backToMenuWaitView dismissWithClickedButtonIndex:-1 animated:YES];
+        [self.mvc.currentGame.gameViewController.backToMenuAckView show];
+    
+    } else if (type == MESSAGE_MENU_ACK) {
+        // dismiss the waiting dialogue / back to menu on game over view, stop the indicator and go to menu
+        [self.mvc.currentGame.gameViewController.backToMenuGameOver dismissWithClickedButtonIndex:-1 animated:YES];
+        [self.mvc.currentGame.gameViewController.backToMenuWaitView dismissWithClickedButtonIndex:-1 animated:YES];
+        [self.mvc.currentGame.gameViewController.activityIndicator stopAnimating];
+        [self.mvc.currentGame.gameViewController.navigationController popToRootViewControllerAnimated:YES];
+    }
     // clean up
     [unarchiver finishDecoding];
     [unarchiver release];
 }
 
-- (void)doDisconnect
+#pragma mark - Sending data
+
+- (void) mySendDataToPeers:(NSData *) data
 {
-    // first, disconnect and close the session
-    [self.currentSession disconnectFromAllPeers];
-    
     if (self.currentSession) {
-        self.currentSession.available = NO;
-        [self.currentSession setDataReceiveHandler:nil withContext:NULL];
-        self.currentSession.delegate = nil;
-        self.currentSession = nil;
-    }
-    
-    // then, if we had a running game open, set it to hotseat mode again by reactivating controls and updating labels
-    if (self.mvc.currentGame) {
-        if (!self.mvc.currentGame.gameData.isGameOver) {
-            [self.mvc.currentGame.gameViewController.tapGestureRecognizer setEnabled:YES];
-            [self.mvc.currentGame.gameViewController.navigationItem.rightBarButtonItem setEnabled:YES];
-            [self.mvc.currentGame.gameViewController updateLabels];
-        }
+        [self.currentSession sendDataToAllPeers:data withDataMode:GKSendDataReliable error:nil];    
     }
 }
 
@@ -292,6 +315,36 @@
 	
     // prepare object for transmission
     [archiver encodeInt:MESSAGE_RESIGN forKey:@"messageType"];
+    [archiver finishEncoding];
+    
+    [self mySendDataToPeers:data];
+    
+    [archiver release];
+    [data release];
+}
+
+- (void)sendBackToMenuRequest
+{
+    NSMutableData *data = [[NSMutableData alloc] init];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+	
+    // prepare object for transmission
+    [archiver encodeInt:MESSAGE_MENU_REQ forKey:@"messageType"];
+    [archiver finishEncoding];
+    
+    [self mySendDataToPeers:data];
+    
+    [archiver release];
+    [data release];
+}
+
+- (void)sendBackToMenuAcknowledge
+{
+    NSMutableData *data = [[NSMutableData alloc] init];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+	
+    // prepare object for transmission
+    [archiver encodeInt:MESSAGE_MENU_ACK forKey:@"messageType"];
     [archiver finishEncoding];
     
     [self mySendDataToPeers:data];

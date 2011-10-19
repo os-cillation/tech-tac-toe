@@ -30,6 +30,11 @@
 @synthesize turnInfo=_turnInfo;
 @synthesize gameInfo=_gameInfo;
 @synthesize btDataHandler=_btDataHandler;
+@synthesize backToMenuGameOver=_backToMenuGameOver;
+@synthesize backToMenuReqView=_backToMenuReqView;
+@synthesize backToMenuWaitView=_backToMenuWaitView;
+@synthesize backToMenuAckView=_backToMenuAckView;
+@synthesize activityIndicator=_activityIndicator;
 
 #pragma mark - Initializer and memory management
 
@@ -104,6 +109,11 @@
     [_tapGestureRecognizer release];
     [_turnInfo release];
     [_gameInfo release];
+    [_backToMenuGameOver release];
+    [_backToMenuReqView release];
+    [_backToMenuWaitView release];
+    [_backToMenuAckView release];
+    [_activityIndicator release];
     
     // release the image context - if we don't do this, a big chunk of memory will leak if we go back to menu and start a new game
     UIGraphicsEndImageContext();
@@ -131,7 +141,7 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0) {
-        // resign: display alert view for confirmation, but only if the game is still ongoing and it is your turn on bluetooth games
+        // resign: display alert view for confirmation, but only if the game is still ongoing and it is your turn on Bluetooth games
         if (!self.gameData.isGameOver && ((self.btDataHandler.currentSession && self.gameData.isLocalPlayerBlue == self.gameData.isBluePlayerTurn) || !self.btDataHandler.currentSession)) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_CONFIRMATION_TITLE", @"Resigning") message:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_CONFIRMATION_MESSAGE", @"Really resign the game?") delegate:self cancelButtonTitle:NSLocalizedString(@"NO", @"no") otherButtonTitles:NSLocalizedString(@"YES", @"yes"), nil];
             alert.tag = 12;
@@ -161,8 +171,13 @@
     }
     if (buttonIndex == 2) {
         // main menu
-        [self.navigationController popToRootViewControllerAnimated:YES];
-        // TODO ask for confirmation on bluetooth games, send remote device notification to go back to menu as well or to disconnect and stay - if someone starts a new game while the old one is still running, memory will leak - so do not EVER allow only one peer to go back to menu!
+        // back to menu if we are in hotseat mode - in a Bluetooth game we need to notify the other device and ask for confirmation
+        if (!self.btDataHandler.currentSession)
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        else {
+            // ask for confirmation on Bluetooth games, send remote device notification to go back to menu as well or to disconnect and stay - if someone starts a new game while the old one is still running, memory will leak - so do not EVER allow only one peer to go back to menu!
+            [self.backToMenuReqView show];
+        }
     }
     // buttonIndex == 3 is the cancel button - don't do anything if it's clicked
 }
@@ -177,9 +192,13 @@
         if (buttonIndex == 0) {
             // cancel
         } else if (buttonIndex == 1) {
-            // back to menu
-            [self.navigationController popToRootViewControllerAnimated:YES];
-            // TODO ask for confirmation on bluetooth games, send remote device notification to go back to menu as well or to disconnect and stay - if someone starts a new game while the old one is still running, memory will leak - so do not EVER allow only one peer to go back to menu!
+            // back to menu if we are in hotseat mode - in a Bluetooth game we need to notify the other device and ask for confirmation
+            if (!self.btDataHandler.currentSession)
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            else {
+            // ask for confirmation on Bluetooth games, send remote device notification to go back to menu as well or to disconnect and stay - if someone starts a new game while the old one is still running, memory will leak - so do not EVER allow only one peer to go back to menu!
+                [self.backToMenuReqView show];
+            }
         }
     } // resign confirmation alert view 
     else if (alertView.tag == 12) {
@@ -188,7 +207,7 @@
         } else if (buttonIndex == 1) {
             // do resign
             
-            // first clear any selection, so we don't keep them even when the game is already over - on bluetooth games, there should be no marked field so skip it
+            // first clear any selection, so we don't keep them even when the game is already over - on Bluetooth games, there should be no marked field so skip it automatically
             if (self.gameData.hasSelection) {
                 self.gameData.selection = NO;
                 [self.gameData changeDataAtPoint:CGPointMake(self.gameData.positionOfLastMarkedFieldX, self.gameData.positionOfLastMarkedFieldY)  withStatus:FREE_FIELD];
@@ -206,10 +225,45 @@
             [self.gameData resignGame];
             [self cleanUpAfterGameOver];
             
-            // on bluetooth games, tell the other player you have resigned
+            // on Bluetooth games, tell the other player you have resigned
             if (self.btDataHandler.currentSession && self.gameData.isBluePlayerTurn == self.gameData.isLocalPlayerBlue) {
                 [self.btDataHandler sendResign];
             }
+        }
+    } // back to menu alert view on a running Bluetooth game
+    else if (alertView.tag == 13) {
+        if (buttonIndex == 0) {
+            // cancel
+        } else if (buttonIndex == 1) {
+            // send a MESSAGE_MENU_REQ to the other device and display another dialogue
+            [self.btDataHandler sendBackToMenuRequest];
+            // waiting dialogue with the option to disconnect early
+            [self.backToMenuWaitView show];
+            // start the activity indicator
+            [self.activityIndicator startAnimating];
+            
+        } else if (buttonIndex == 2) {
+            // disconnect from the session and go back to menu
+            [self.btDataHandler doDisconnect];
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+    } // waiting alert view - will be dismissed by the other device by sending a MESSAGE_MENU_ACK or by clicking the disconnect button
+    else if (alertView.tag == 14) {
+        if (buttonIndex == 0) {
+            // disconnect button - we don't have a cancel button per sé, but this is as close as it can get (stopping the activity indicator will be done in doDisconnect)
+            [self.btDataHandler doDisconnect];
+            // also, we can go back to the menu now
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+    } // the alert view requesting an acknowledgement to go back to menu
+    else if (alertView.tag == 15) {
+        if (buttonIndex == 0) {
+            // 'No' means that the session will be ended, so disconnect from this device since we don't agree with the other device
+            [self.btDataHandler doDisconnect];
+        } else if (buttonIndex == 1) {
+            // we agree to go back to menu, tell the other device, go back to menu
+            [self.btDataHandler sendBackToMenuAcknowledge];
+            [self.navigationController popToRootViewControllerAnimated:YES];
         }
     }
 }
@@ -392,7 +446,7 @@
     // we can use this to determine if we need to do a complete redraw
     BOOL needsCompleteRedraw = NO;
     
-    // if this is not set to yes before the bluetooth send would be made, nothing will be sent (since nothing changed)
+    // if this is not set to yes before the Bluetooth send would be made, nothing will be sent (since nothing changed)
     BOOL validTurn = NO;
     
     // check if there is a valid selection
@@ -406,7 +460,7 @@
         // everything that should be executed if a turn is successfully committed should be in here
         if ((fieldToCommit.status == BLUE_MARKED && self.gameData.isBluePlayerTurn) || (fieldToCommit.status == RED_MARKED && !self.gameData.isBluePlayerTurn)) {
             
-            // it is a valid turn, so we need to send data on a bluetooth game
+            // it is a valid turn, so we need to send data on a Bluetooth game
             validTurn = YES;
             
             // set up a container with all changes - we need to use this if we don't do a complete redraw
@@ -516,7 +570,7 @@
                 // just draw the changes
                 [self changeGameFields:needsDrawing orDrawAll:NO];
             }
-            // on a bluetooth game, send the other player the turn if it is valid and it was made locally (of course) - but since the game data already changed active turns, check the opposite
+            // on a Bluetooth game, send the other player the turn if it is valid and it was made locally (of course) - but since the game data already changed active turns, check the opposite
             if (self.btDataHandler.currentSession && validTurn && self.gameData.isBluePlayerTurn != self.gameData.isLocalPlayerBlue) {
                 [self.btDataHandler sendCommittedTurn];
                 
@@ -658,10 +712,7 @@
     [self updateLabels];
     
     // show alert view with the option to go back to main menu directly - this will also show on loading a game which is over. this behaviour is intended.
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_GAME_OVER_TITLE", @"Game Over") message:NSLocalizedString(@"GAME_VIEW_ALERT_GAME_OVER_MESSAGE", @"The game is over. Back to menu?") delegate:self cancelButtonTitle:NSLocalizedString(@"NO", @"no") otherButtonTitles:NSLocalizedString(@"YES", @"yes"), nil];
-    alert.tag = 11;
-    [alert show];
-    [alert release];
+    [self.backToMenuGameOver show];
 }
 
 - (void)layoutElements:(UIInterfaceOrientation)orientation {
@@ -826,7 +877,36 @@
     self.navigationItem.leftBarButtonItem = menuButton;
     [menuButton release];
     
-    // we are not able to make a move on: bluetooth sessions when it is not the local player's turn
+    // init and config the alert views we might need on a Bluetooth game
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_GAME_OVER_TITLE", @"Game Over") message:NSLocalizedString(@"GAME_VIEW_ALERT_GAME_OVER_MESSAGE", @"The game is over. Back to menu?") delegate:self cancelButtonTitle:NSLocalizedString(@"NO", @"no") otherButtonTitles:NSLocalizedString(@"YES", @"yes"), nil];
+    alert.tag = 11;
+    self.backToMenuGameOver = alert;
+    [alert release];
+    
+    UIAlertView *alertReq = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_TITLE_BACK_TO_MENU_REQUEST", @"Back to Menu") message:NSLocalizedString(@"GAME_VIEW_ALERT_MESSAGE_BACK_TO_MENU_REQUEST", @"Going back to menu on a Bluetooth game will require confirmation from the other device.\nSend request to go back to menu or disconnect from the session?") delegate:self cancelButtonTitle:NSLocalizedString(@"CANCEL", @"Cancel") otherButtonTitles:NSLocalizedString(@"SEND", @"Send"),NSLocalizedString(@"DISCONNECT", @"Disconnect"),nil];
+    alertReq.tag = 13;
+    self.backToMenuReqView = alertReq;
+    [alertReq release];
+    
+    UIAlertView *alertWaitAck = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_TITLE_BACK_TO_MENU_WAIT_FOR_ACK", @"Waiting for Response") message:NSLocalizedString(@"GAME_VIEW_ALERT_MESSAGE_BACK_TO_MENU_WAIT_FOR_ACK", @"The request to go back to menu has been sent.\nWaiting for the other device to respond...") delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"DISCONNECT", @"Disconnect"),nil];
+    alertWaitAck.tag = 14;
+    self.backToMenuWaitView = alertWaitAck;
+    [alertWaitAck release];
+    
+    UIAlertView *alertAck = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_TITLE_BACK_TO_MENU_ACKNOWLEDGE", @"Peer Wants Back to Menu") message:NSLocalizedString(@"GAME_VIEW_ALERT_MESSAGE_BACK_TO_MENU_ACKNOWLEDGE", @"The peer has send a request to go back to menu. Do it?\n(Selecting 'no' will end the session.)") delegate:self cancelButtonTitle:NSLocalizedString(@"NO", @"No") otherButtonTitles:NSLocalizedString(@"YES", @"Yes"),nil];
+    alertAck.tag = 15;
+    self.backToMenuAckView = alertAck;
+    [alertAck release];
+    
+    // init the activity indicator view and add it to the alert view for waiting
+    UIActivityIndicatorView *tempAcInView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    frame = CGRectMake(130, 132, 20, 20);
+    tempAcInView.frame = frame;
+    self.activityIndicator = tempAcInView;
+    [self.backToMenuWaitView addSubview:self.activityIndicator];
+    [tempAcInView release];
+    
+    // we are not able to make a move on: Bluetooth sessions when it is not the local player's turn
     if (self.btDataHandler.currentSession && (self.gameData.isLocalPlayerBlue != self.gameData.isBluePlayerTurn)) {
         [self.tapGestureRecognizer setEnabled:NO];
         [self.navigationItem.rightBarButtonItem setEnabled:NO];
@@ -857,7 +937,7 @@
     self.navigationController.navigationBar.tintColor = [UIColor grayColor];
     
     // check if we are able to make a move (especially on bt games) and update labels
-    // we are not able to make a move on: game over and bluetooth sessions when it is not the local player's turn
+    // we are not able to make a move on: game over and Bluetooth sessions when it is not the local player's turn
     if (self.gameData.gameOver || (self.btDataHandler.currentSession && (self.gameData.isLocalPlayerBlue != self.gameData.isBluePlayerTurn))) {
         [self.tapGestureRecognizer setEnabled:NO];
         [self.navigationItem.rightBarButtonItem setEnabled:NO];
@@ -885,6 +965,11 @@
     self.tapGestureRecognizer = nil;
     self.turnInfo = nil;
     self.gameInfo = nil;
+    self.backToMenuGameOver = nil;
+    self.backToMenuReqView = nil;
+    self.backToMenuWaitView = nil;
+    self.backToMenuAckView = nil;
+    self.activityIndicator = nil;
     
     // release the image context
     UIGraphicsEndImageContext();

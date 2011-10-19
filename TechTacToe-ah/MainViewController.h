@@ -14,7 +14,7 @@
 {
     Game *currentGame; // the game that will be started either from self, the settings view or from the load detail view
     BluetoothDataHandler *dataHandler; // handles data transfer from one device to another
-    UIImageView *bluetoothIndicator; // an icon showing if bluetooth is activated, hidden if not
+    UIImageView *bluetoothIndicator; // an icon showing if Bluetooth is activated, hidden if not
 }
 
 @property (nonatomic, retain) Game *currentGame;

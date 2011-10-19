@@ -27,6 +27,9 @@
 "MAIN_VIEW_HEADER_START_NEW_GAME" = "Neues Spiel";
 "MAIN_VIEW_HEADER_ONGOING_GAMES" = "Laufende Spiele";
 
+// Abschnittsfußnoten
+"MAIN_VIEW_FOOTER_ONGOING_GAMES" = "Fortsetzen ist nicht verfügbar bei einem Spiel über Bluetooth. Gespeicherte Spiele können allerdings geladen werden.";
+
 
 /* Laden: Übersicht */
 "LOAD_VIEW_TITLE" = "Spiel Laden";
@@ -157,6 +160,12 @@
 "GAME_VIEW_ALERT_RESIGN_UNAVAILABLE_MESSAGE" = "Das Spiel lässt sich nicht aufgeben, wenn es entweder bereits vorbei oder - bei einem Spiel über Bluetooth - der andere Spieler am Zug ist.";
 "GAME_VIEW_ALERT_BOARD_LIMITATION_TITLE" = "Benachrichtigung";
 "GAME_VIEW_ALERT_BOARD_LIMITATION_MESSAGE" = "Das Spielbrett wurde jetzt auf %i mal %i Felder begrenzt.";
+"GAME_VIEW_ALERT_TITLE_BACK_TO_MENU_REQUEST" = "Zurück zum Menü";
+"GAME_VIEW_ALERT_MESSAGE_BACK_TO_MENU_REQUEST" = "Um bei einer aktiven Bluetooth-Sitzung zum Menü zurück zu gehen, braucht es die Bestätigung des anderen Gerätes. Anfrage an das andere Gerät senden oder die Verbindung trennen?";
+"GAME_VIEW_ALERT_TITLE_BACK_TO_MENU_WAIT_FOR_ACK" = "Warte auf Antwort";
+"GAME_VIEW_ALERT_MESSAGE_BACK_TO_MENU_WAIT_FOR_ACK" = "Die Anfrage zum Menü zurück zu gehen wurde gesendet.\nWarte auf Antwort vom anderen Gerät ...\n ";
+"GAME_VIEW_ALERT_TITLE_BACK_TO_MENU_ACKNOWLEDGE" = "Mitspieler Will Zum Menü";
+"GAME_VIEW_ALERT_MESSAGE_BACK_TO_MENU_ACKNOWLEDGE" = "Der Mitspieler will zurück zum Menü. Ausführen?\n('Nein' wird die Sitzung beenden.)";
 
 
 /* Regelansicht */
@@ -205,6 +214,9 @@
 "NO" = "Nein";
 "BLUE" = "blau";
 "RED" = "rot";
+"CANCEL" = "Abbrechen";
+"SEND" = "Senden";
+"DISCONNECT" = "Trennen";
 
 
 /* von iVideoShow AboutViewController */

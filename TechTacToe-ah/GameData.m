@@ -41,7 +41,7 @@
     _boardWidth = (int)sizeOrNil.width;
     _boardHeight = (int)sizeOrNil.height;
     
-    // might be changed in bluetooth games, but for now set it to YES
+    // might be changed in Bluetooth games, but for now set it to YES
     self.localPlayerBlue = YES;
     
     // new game: no points yet, nothing selected
