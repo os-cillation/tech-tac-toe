@@ -208,9 +208,10 @@
     
     } else if (type == MESSAGE_MENU_REQ) { 
         // menu-related message handling: req and ack
-        // show the confirmation alert view to the other player - in case of both players sending requests at the same time, dismiss both of the waiting dialogues (not pretty, but it should work - might be a future thing to improve), also dismiss the back to menu on game over view
+        // show the confirmation alert view to the other player - in case of both players sending requests at the same time, dismiss both of the waiting dialogues (not pretty, but it should work - might be a future thing to improve), also dismiss the back to menu request and back to menu on game over view
         [self.mvc.currentGame.gameViewController.backToMenuGameOver dismissWithClickedButtonIndex:-1 animated:YES];
         [self.mvc.currentGame.gameViewController.backToMenuWaitView dismissWithClickedButtonIndex:-1 animated:YES];
+        [self.mvc.currentGame.gameViewController.backToMenuReqView dismissWithClickedButtonIndex:-1 animated:YES];
         [self.mvc.currentGame.gameViewController.backToMenuAckView show];
     
     } else if (type == MESSAGE_MENU_ACK) {

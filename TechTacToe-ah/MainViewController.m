@@ -234,8 +234,10 @@
                     // connect/disconnect to/from Bluetooth
                     if (!self.dataHandler.currentSession) {
                         cell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_CONNECT", @"Connect Via Bluetooth");
+                        cell.accessoryType = UITableViewCellAccessoryNone;
                     } else {
                         cell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_DISCONNECT", @"Disconnect");
+                        cell.accessoryType = UITableViewCellAccessoryNone;
                     }
                     break;
                 case 1:
@@ -243,6 +245,7 @@
                     // special cell - only one, so configure AND return it here
                     detailCell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_REVOKE_CONTROL", @"Pass Game Control To:");
                     detailCell.detailTextLabel.text = @" ";
+                    detailCell.accessoryType = UITableViewCellAccessoryNone;
                     if (self.dataHandler.currentSession) {
                         NSString *peerID = [[self.dataHandler.currentSession peersWithConnectionState:GKPeerStateConnected] objectAtIndex:0];
                         NSString *peerName = [self.dataHandler.currentSession displayNameForPeer:peerID];
