@@ -19,7 +19,7 @@
 "MAIN_VIEW_CELL_CONTINUE" = "Continue";
 "MAIN_VIEW_CELL_LOAD" = "Load Game";
 "MAIN_VIEW_CELL_CONNECT" = "Connect Via Bluetooth";
-"MAIN_VIEW_CELL_REVOKE_CONTROL" = "Pass Game Control To:";
+"MAIN_VIEW_CELL_REVOKE_CONTROL" = "Pass Game Control to:";
 "MAIN_VIEW_CELL_DISCONNECT" = "Disconnect";
 "MAIN_VIEW_CELL_ABOUT" = "About";
 
@@ -59,7 +59,7 @@
 "LOAD_DETAIL_VIEW_CELL_SCORE_MODE" = "Score Mode";
 "LOAD_DETAIL_VIEW_CELL_ADDITIONAL_RED_TURN" = "Additional Red Turn";
 "LOAD_DETAIL_VIEW_CELL_REUSE_LINES" = "Reuse Lines";
-"LOAD_DETAIL_VIEW_CELL_PLAYER_COLOR" = "Player color";
+"LOAD_DETAIL_VIEW_CELL_PLAYER_COLOR" = "Player Color";
 "LOAD_DETAIL_VIEW_CELL_BLUE_PLAYER_SCORE" = "Blue Player Score";
 "LOAD_DETAIL_VIEW_CELL_RED_PLAYER_SCORE" = "Red Player Score";
 
@@ -87,13 +87,13 @@
 "SETTINGS_VIEW_HEADER_BLUETOOTH_GAME_OPTIONS" = "Bluetooth Game Options";
 
 // section footers
-"SETTINGS_VIEW_FOOTER_TURN_OPTIONS" = "Sets the number of turns. Cannot be higher than the total board size. If no turn limit is set but the board has a limit, the maximum number of turns will be used. On unlimited boards, the highest valid value is %i. Also, if no turn limit and no board limit is set, game will not be in score mode.";
+"SETTINGS_VIEW_FOOTER_TURN_OPTIONS" = "Sets the number of turns. Cannot be higher than the total board size. If no turn limit is set but the board has a limit, the maximum number of turns will be used. On unlimited boards, the highest valid value is %i. Also, if no turn limit and no board limit is set, the game will not be in score mode.";
 "SETTINGS_VIEW_FOOTER_BOARD_OPTIONS" = "Determines the size of the board. Values cannot be lower than the minimum line size or higher than 25. On games with deactivated size limit, the blue player will already have set and players cannot set more than two fields away from any previously set field. Also, if the total number of possible fields reaches or exceeds %i, the board will be limited during the game.";
 "SETTINGS_VIEW_FOOTER_MINIMUM_LINE_SIZE" = "The minimum number of fields in a row for a line. Lines with more than this value will score for additional points. Values range from three to six.";
 "SETTINGS_VIEW_FOOTER_SCORE_MODE" = "If enabled, the game will always end after a set number of turns with the player with a higher score winning.";
 "SETTINGS_VIEW_FOOTER_ADDITIONAL_RED_TURN" = "Allow the second (red) player a chance to counter a line with an additional turn on non-score mode games.";
 "SETTINGS_VIEW_FOOTER_REUSE_LINES" = "Either allow lines to be crossed (but not extended) by any new line or effectively remove fields of a line from the game.";
-"SETTINGS_VIEW_FOOTER_PLAYER_SELECTION" = "On a Bluetooth game, set if the player on this device will be the blue player or the red player.";
+"SETTINGS_VIEW_FOOTER_PLAYER_SELECTION" = "On a Bluetooth game, set if the player on this device will be the blue player or the red player. Also, if a game was started locally, saved and loaded as a Bluetooth game later, the player on this device will be this color.";
 
 // alert views
 "SETTINGS_VIEW_ALERT_TITLE_INVALID_VALUE" = "Invalid Value";
@@ -111,7 +111,7 @@
 "SETTINGS_VIEW_ALERT_MINIMUM_FOR_LINE_EDIT_END_INVALID_VALUE" = "Please enter a value between three and six.\nDefaulting to minimum (three).";
 "SETTINGS_VIEW_ALERT_MINIMUM_FOR_LINE_EDIT_CHANGED" = "Please enter a value between three and six.\nDefaulting to maximum (six).\nAuto-adjusting board size if necessary.";
 
-"SETTINGS_VIEW_ALERT_BOARD_WIDTH_EDIT_END_INVALID_VALUE" = "Please enter a value equal or greater than the minimum line size.\nIf you do not want the board to be of set size, switch the limiter off instead. Defaulting to current minimum (%i).\nAuto-adjusting turn limit if necessary.";
+"SETTINGS_VIEW_ALERT_BOARD_WIDTH_EDIT_END_INVALID_VALUE" = "Please enter a value equal to or greater than the minimum line size.\nIf you do not want the board to be of set size, switch the limiter off instead. Defaulting to current minimum (%i).\nAuto-adjusting turn limit if necessary.";
 "SETTINGS_VIEW_ALERT_BOARD_WIDTH_EDIT_END_AUTO-ADJUSTMENT" = "Changing the board width has made it necessary to adjust the number of turns to the new maximum value of %i.";
 "SETTINGS_VIEW_ALERT_BOARD_WIDTH_EDIT_CHANGED" = "The value is too high. Make sure it does not exceed the maximum, which is 25.";
 
@@ -142,7 +142,6 @@
 
 // action sheet
 "GAME_VIEW_ACTION_SHEET_TITLE" = "Game Menu";
-"GAME_VIEW_ACTION_SHEET_CANCEL_BUTTON" = "Cancel";
 "GAME_VIEW_ACTION_SHEET_RESIGN_BUTTON" = "Resign Game";
 "GAME_VIEW_ACTION_SHEET_MAIN_MENU_BUTTON" = "Back to Main Menu";
 "GAME_VIEW_ACTION_SHEET_SAVE_BUTTON" = "Save Game";
@@ -157,15 +156,15 @@
 "GAME_VIEW_ALERT_RESIGN_CONFIRMATION_TITLE" = "Resigning";
 "GAME_VIEW_ALERT_RESIGN_CONFIRMATION_MESSAGE" = "Really resign the game?";
 "GAME_VIEW_ALERT_RESIGN_UNAVAILBLE_TITLE" = "Resigning Not Possible";
-"GAME_VIEW_ALERT_RESIGN_UNAVAILABLE_MESSAGE" = "Resigning the game is only possible if the game is not already over and if it is your turn on a game via Bluetooth.";
+"GAME_VIEW_ALERT_RESIGN_UNAVAILABLE_MESSAGE" = "Resigning the game is only possible if the game is not already over and if it is your turn in a game via Bluetooth.";
 "GAME_VIEW_ALERT_BOARD_LIMITATION_TITLE" = "Notification";
 "GAME_VIEW_ALERT_BOARD_LIMITATION_MESSAGE" = "The board is now limited to the size of %i by %i fields.";
-"GAME_VIEW_ALERT_TITLE_BACK_TO_MENU_REQUEST" = "Back to Menu";
-"GAME_VIEW_ALERT_MESSAGE_BACK_TO_MENU_REQUEST" = "Going back to menu on a Bluetooth game will require confirmation from the other device. Send request to go back to menu or disconnect from the session?";
-"GAME_VIEW_ALERT_TITLE_BACK_TO_MENU_WAIT_FOR_ACK" = "Waiting for Response";
-"GAME_VIEW_ALERT_MESSAGE_BACK_TO_MENU_WAIT_FOR_ACK" = "The request to go back to menu has been sent.\nWaiting for the other device to respond ...\n ";
-"GAME_VIEW_ALERT_TITLE_BACK_TO_MENU_ACKNOWLEDGE" = "Peer Wants Back to Menu";
-"GAME_VIEW_ALERT_MESSAGE_BACK_TO_MENU_ACKNOWLEDGE" = "The peer has send a request to go back to menu. Do it?\n(Selecting 'no' will end the session.)";
+"GAME_VIEW_ALERT_BACK_TO_MENU_REQUEST_TITLE" = "Back to Menu";
+"GAME_VIEW_ALERT_BACK_TO_MENU_REQUEST_MESSAGE" = "Going back to the main menu on a Bluetooth game will require confirmation from the other device. Send request to go back to menu or disconnect from the session?";
+"GAME_VIEW_ALERT_BACK_TO_MENU_WAIT_FOR_ACK_TITLE" = "Waiting for Response";
+"GAME_VIEW_ALERT_BACK_TO_MENU_WAIT_FOR_ACK_MESSAGE" = "The request to go back to the main menu has been sent.\nWaiting for the other device to respond ...\n ";
+"GAME_VIEW_ALERT_BACK_TO_MENU_ACKNOWLEDGE_TITLE" = "Peer Wants Back to Menu";
+"GAME_VIEW_ALERT_BACK_TO_MENU_ACKNOWLEDGE_MESSAGE" = "The peer has send a request to go back to the main menu. Agree?\n(Selecting 'no' will end the session.)";
 
 
 /* rules view */
@@ -194,12 +193,12 @@
 /* Bluetooth related */
 
 // alert views
-"BLUETOOTH_ALERT_TITLE_PEER_DISCONNECTED" = "Bluetooth Session Ended";
-"BLUETOOTH_ALERT_MESSAGE_PEER_DISCONNECTED" = "The Bluetooth session has been terminated because the other device has disconnected.";
-"BLUETOOTH_ALERT_TITLE_COINTOSS_LOST" = "Cointoss Lost";
-"BLUETOOTH_ALERT_MESSAGE_COINTOSS_LOST" = "The virtual cointoss determined that the other device will decide on the game to be played.";
-"BLUETOOTH_ALERT_TITLE_ASSUMED_CONTROL" = "Assumed Game Control";
-"BLUETOOTH_ALERT_MESSAGE_ASSUMED_CONTROL" = "The other device has relinquished control.";
+"BLUETOOTH_ALERT_PEER_DISCONNECTED_TITLE" = "Bluetooth Session Ended";
+"BLUETOOTH_ALERT_PEER_DISCONNECTED_MESSAGE" = "The Bluetooth session has been terminated because the other device has disconnected.";
+"BLUETOOTH_ALERT_COINTOSS_LOST_TITLE" = "Cointoss Lost";
+"BLUETOOTH_ALERT_COINTOSS_LOST_MESSAGE" = "The virtual cointoss determined that the other device will decide on the game to be played.";
+"BLUETOOTH_ALERT_ASSUMED_CONTROL_TITLE" = "Assumed Game Control";
+"BLUETOOTH_ALERT_ASSUMED_CONTROL_MESSAGE" = "The other device has relinquished control of the game.";
 
 
 /* misc. strings */

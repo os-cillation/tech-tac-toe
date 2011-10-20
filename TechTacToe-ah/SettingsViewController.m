@@ -122,11 +122,12 @@
     self.playerSelectionCell.textLabel.text = NSLocalizedString(@"SETTINGS_VIEW_CELL_PLAYER_SELECTION", @"Local Player is Blue");
     self.playerSelectionCell.accessoryView = self.playerSelectionSwitch;
     
-    // disable the Bluetooth options if we don't have a Bluetooth game
-    if (!self.mvc.dataHandler.currentSession) {
-        self.playerSelectionCell.textLabel.enabled = NO;
-        self.playerSelectionSwitch.enabled = NO;
-    }
+    // code disabled so we can choose the local player even on a hotseat game, because if you can save it and load it as a Bluetooth game later, you should be able to choose player colors
+//    // disable the Bluetooth options if we don't have a Bluetooth game
+//    if (!self.mvc.dataHandler.currentSession) {
+//        self.playerSelectionCell.textLabel.enabled = NO;
+//        self.playerSelectionSwitch.enabled = NO;
+//    }
     
     //add a tap gesture recognizer so we can dismiss the keyboard on a background tap
     UITapGestureRecognizer *temp = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissAllKeyboards)];
@@ -330,7 +331,7 @@
             return NSLocalizedString(@"SETTINGS_VIEW_FOOTER_REUSE_LINES", @"Either allow lines to be crossed (but not extended) by any new line or effectively remove fields of a line from the game.");
             break;
         case 6:
-            return NSLocalizedString(@"SETTINGS_VIEW_FOOTER_PLAYER_SELECTION", @"On a Bluetooth game, set if the player on this device will be the blue player or the red player.");
+            return NSLocalizedString(@"SETTINGS_VIEW_FOOTER_PLAYER_SELECTION", @"On a Bluetooth game, set if the player on this device will be the blue player or the red player. Also, if a game was started locally, saved and loaded as a Bluetooth game later, the player on this device will be this color.");
             break;
         default:
             return @"";

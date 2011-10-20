@@ -19,7 +19,7 @@
 "MAIN_VIEW_CELL_CONTINUE" = "Fortsetzen";
 "MAIN_VIEW_CELL_LOAD" = "Spiel Laden";
 "MAIN_VIEW_CELL_CONNECT" = "Bluetooth Verbindung Aufbauen";
-"MAIN_VIEW_CELL_REVOKE_CONTROL" = "Spielkontrolle abgeben an:";
+"MAIN_VIEW_CELL_REVOKE_CONTROL" = "Spielkontrolle Abgeben an:";
 "MAIN_VIEW_CELL_DISCONNECT" = "Verbindung Trennen";
 "MAIN_VIEW_CELL_ABOUT" = "Über";
 
@@ -58,7 +58,7 @@
 "LOAD_DETAIL_VIEW_CELL_MINIMUM_LINE_SIZE" = "Kleinste Reihe";
 "LOAD_DETAIL_VIEW_CELL_SCORE_MODE" = "Punktespiel";
 "LOAD_DETAIL_VIEW_CELL_ADDITIONAL_RED_TURN" = "Zusätzlicher Zug";
-"LOAD_DETAIL_VIEW_CELL_REUSE_LINES" = "Reihen kreuzbar";
+"LOAD_DETAIL_VIEW_CELL_REUSE_LINES" = "Reihen Kreuzbar";
 "LOAD_DETAIL_VIEW_CELL_PLAYER_COLOR" = "Spielerfarbe";
 "LOAD_DETAIL_VIEW_CELL_BLUE_PLAYER_SCORE" = "Punktzahl Blau";
 "LOAD_DETAIL_VIEW_CELL_RED_PLAYER_SCORE" = "Punktzahl Rot";
@@ -78,7 +78,7 @@
 "SETTINGS_VIEW_CELL_MINIMUM_LINE_SIZE" = "Kleinste Reihe";
 "SETTINGS_VIEW_CELL_SCORE_MODE" = "Punktespiel";
 "SETTINGS_VIEW_CELL_ADDITIONAL_RED_TURN" = "Zusätzlicher Zug";
-"SETTINGS_VIEW_CELL_REUSE_LINES" = "Reihen kreuzbar";
+"SETTINGS_VIEW_CELL_REUSE_LINES" = "Reihen Kreuzbar";
 "SETTINGS_VIEW_CELL_PLAYER_SELECTION" = "Lokaler Spieler ist Blau";
 
 // Abschnittsüberschriften
@@ -93,15 +93,15 @@
 "SETTINGS_VIEW_FOOTER_SCORE_MODE" = "Bei aktiviertem Punktespiel endet das Spiel immer nach der gesetzen Anzahl Züge. Der Gewinner wird anhand der Punktzahl bestimmt.";
 "SETTINGS_VIEW_FOOTER_ADDITIONAL_RED_TURN" = "Erlaube dem zweiten Spieler (rot) einen zusätzlichen Zug, um einen Sieg zu verhindern. Nicht verfügbar bei Punktespiel.";
 "SETTINGS_VIEW_FOOTER_REUSE_LINES" = "Wenn diese Option aktiv ist, können Reihen von anderen Reihen gekreuzt werden. Ansonsten sind Felder einer Reihe nicht weiter verwendbar.";
-"SETTINGS_VIEW_FOOTER_PLAYER_SELECTION" = "Legt fest, ob bei einem Bluetoothspiel der Spieler an diesem Gerät Blau oder Rot ist.";
+"SETTINGS_VIEW_FOOTER_PLAYER_SELECTION" = "Legt fest, ob bei einem Bluetoothspiel der Spieler an diesem Gerät Blau oder Rot ist. Sollte ein Spiel lokal gestartet und gespeichert werden um es später über Bluetooth zu beenden, so wird der Spieler an diesem Gerät die hier eingestellte Farbe haben.";
 
 // Warnmeldungen
 "SETTINGS_VIEW_ALERT_TITLE_INVALID_VALUE" = "Ungültiger Wert";
 "SETTINGS_VIEW_ALERT_TITLE_AUTO-ADJUSTMENT" = "Automatische Anpassung";
 "SETTINGS_VIEW_ALERT_TITLE_VALUE_TOO_HIGH" = "Wert zu Hoch";
 
-"SETTINGS_VIEW_ALERT_NUMBER_OF_TURNS_EDIT_END_BOARD_LIMITED" = "Bitte einen gültigen Wert eingeben.\nSollte keine Zugbegrenzug gewünscht sein, so lässt sich diese ausschalten. Setze auf Maximum (%i) zurück.";
-"SETTINGS_VIEW_ALERT_NUMBER_OF_TURNS_EDIT_END_BOARD_UNLIMITED" = "Bitte einen gültigen Wert eingeben.\nSollte keine Zugbegrenzug gewünscht sein, so lässt sich diese ausschalten. Rücksetzung auf 100 Züge.";
+"SETTINGS_VIEW_ALERT_NUMBER_OF_TURNS_EDIT_END_BOARD_LIMITED" = "Bitte einen gültigen Wert eingeben.\nSollte keine Zugbegrenzug erwünscht sein, so lässt sich diese ausschalten. Setze auf Maximum (%i) zurück.";
+"SETTINGS_VIEW_ALERT_NUMBER_OF_TURNS_EDIT_END_BOARD_UNLIMITED" = "Bitte einen gültigen Wert eingeben.\nSollte keine Zugbegrenzug erwünscht sein, so lässt sich diese ausschalten. Rücksetzung auf 100 Züge.";
 "SETTINGS_VIEW_ALERT_NUMBER_OF_TURNS_EDIT_CHANGED_BOARD_LIMITED" = "Der Wert ist zu hoch. Das mögliche Maximum liegt bei der Anzahl der Felder, welche momentan %i beträgt.";
 "SETTINGS_VIEW_ALERT_NUMBER_OF_TURNS_EDIT_CHANGED_BOARD_UNLIMITED" = "Der Wert ist zu hoch. Das mögliche Maximum liegt bei %i.";
 
@@ -111,11 +111,11 @@
 "SETTINGS_VIEW_ALERT_MINIMUM_FOR_LINE_EDIT_END_INVALID_VALUE" = "Bitte einen Wert zwischen drei und sechs eingeben. Setze auf minimale Größe (drei) zurück.";
 "SETTINGS_VIEW_ALERT_MINIMUM_FOR_LINE_EDIT_CHANGED" = "Bitte einen Wert zwischen drei und sechs eingeben. Setze auf maximale Größe (sechs) zurück.\nSollte eine Anpassung der Spielbrettgröße nötig sein, wird diese automatisch vorgenommen.";
 
-"SETTINGS_VIEW_ALERT_BOARD_WIDTH_EDIT_END_INVALID_VALUE" = "Der Wert muss mindestens so groß wie die Anzahl der Felder für die kleinste Reihe sein. Sollte keine Spielbrettbegrenzung gewünscht sein, so lässt sich diese ausschalten. Es wird eine Rücksetzung auf das gültige Minimum (%i) und, falls dadurch nötig, eine automatische Anpassung der Zuganzahl durchgeführt.";
+"SETTINGS_VIEW_ALERT_BOARD_WIDTH_EDIT_END_INVALID_VALUE" = "Der Wert muss mindestens so groß wie die Anzahl der Felder für die kleinste Reihe sein. Sollte keine Spielbrettbegrenzung erwünscht sein, so lässt sich diese ausschalten. Es wird eine Rücksetzung auf das gültige Minimum (%i) und, falls dadurch nötig, eine automatische Anpassung der Zuganzahl durchgeführt.";
 "SETTINGS_VIEW_ALERT_BOARD_WIDTH_EDIT_END_AUTO-ADJUSTMENT" = "Die Veränderung der Spielbrettbreite hat eine Anpassung der Anzahl Züge auf das neue Maximum von %i ausgelöst.";
 "SETTINGS_VIEW_ALERT_BOARD_WIDTH_EDIT_CHANGED" = "Der Wert ist zu hoch. Das Maximum von 25 kann nicht überschritten werden.";
 
-"SETTINGS_VIEW_ALERT_BOARD_HEIGHT_EDIT_END_INVALID_VALUE" = "Der Wert muss mindestens so groß wie die Anzahl der Felder für die kleinste Reihe sein. Sollte keine Spielbrettbegrenzung gewünscht sein, so lässt sich diese ausschalten. Es wird eine Rücksetzung auf das gültige Minimum (%i) und, falls dadurch nötig, eine automatische Anpassung der Zuganzahl durchgeführt.";
+"SETTINGS_VIEW_ALERT_BOARD_HEIGHT_EDIT_END_INVALID_VALUE" = "Der Wert muss mindestens so groß wie die Anzahl der Felder für die kleinste Reihe sein. Sollte keine Spielbrettbegrenzung erwünscht sein, so lässt sich diese ausschalten. Es wird eine Rücksetzung auf das gültige Minimum (%i) und, falls dadurch nötig, eine automatische Anpassung der Zuganzahl durchgeführt.";
 "SETTINGS_VIEW_ALERT_BOARD_HEIGHT_EDIT_END_AUTO-ADJUSTMENT" = "Die Veränderung der Spielbretthöhe hat eine Anpassung der Anzahl Züge auf das neue Maximum von %i ausgelöst.";
 "SETTINGS_VIEW_ALERT_BOARD_HEIGHT_EDIT_CHANGED" = "Der Wert ist zu hoch. Das Maximum von 25 kann nicht überschritten werden.";
 "SETTINGS_VIEW_ALERT_BOARD_LIMIT_SWITCHED_ON" = "Das Zuglimit wurde automatisch auf das Maximum von %i gesetzt.";
@@ -142,7 +142,6 @@
 
 // Kontextmenü
 "GAME_VIEW_ACTION_SHEET_TITLE" = "Spielmenü";
-"GAME_VIEW_ACTION_SHEET_CANCEL_BUTTON" = "Abbrechen";
 "GAME_VIEW_ACTION_SHEET_RESIGN_BUTTON" = "Spiel aufgeben";
 "GAME_VIEW_ACTION_SHEET_MAIN_MENU_BUTTON" = "Zum Hauptmenü";
 "GAME_VIEW_ACTION_SHEET_SAVE_BUTTON" = "Spiel speichern";
@@ -160,12 +159,12 @@
 "GAME_VIEW_ALERT_RESIGN_UNAVAILABLE_MESSAGE" = "Das Spiel lässt sich nicht aufgeben, wenn es entweder bereits vorbei oder - bei einem Spiel über Bluetooth - der andere Spieler am Zug ist.";
 "GAME_VIEW_ALERT_BOARD_LIMITATION_TITLE" = "Benachrichtigung";
 "GAME_VIEW_ALERT_BOARD_LIMITATION_MESSAGE" = "Das Spielbrett wurde jetzt auf %i mal %i Felder begrenzt.";
-"GAME_VIEW_ALERT_TITLE_BACK_TO_MENU_REQUEST" = "Zurück zum Menü";
-"GAME_VIEW_ALERT_MESSAGE_BACK_TO_MENU_REQUEST" = "Um bei einer aktiven Bluetooth-Sitzung zum Menü zurück zu gehen, braucht es die Bestätigung des anderen Gerätes. Anfrage an das andere Gerät senden oder die Verbindung trennen?";
-"GAME_VIEW_ALERT_TITLE_BACK_TO_MENU_WAIT_FOR_ACK" = "Warte auf Antwort";
-"GAME_VIEW_ALERT_MESSAGE_BACK_TO_MENU_WAIT_FOR_ACK" = "Die Anfrage zum Menü zurück zu gehen wurde gesendet.\nWarte auf Antwort vom anderen Gerät ...\n ";
-"GAME_VIEW_ALERT_TITLE_BACK_TO_MENU_ACKNOWLEDGE" = "Mitspieler Will Zum Menü";
-"GAME_VIEW_ALERT_MESSAGE_BACK_TO_MENU_ACKNOWLEDGE" = "Der Mitspieler will zurück zum Menü. Ausführen?\n('Nein' wird die Sitzung beenden.)";
+"GAME_VIEW_ALERT_BACK_TO_MENU_REQUEST_TITLE" = "Zurück zum Menü";
+"GAME_VIEW_ALERT_BACK_TO_MENU_REQUEST_MESSAGE" = "Um bei einer aktiven Bluetooth-Sitzung zum Hauptmenü zurück zu gehen, braucht es die Bestätigung des anderen Gerätes. Anfrage an das andere Gerät senden oder die Verbindung trennen?";
+"GAME_VIEW_ALERT_BACK_TO_MENU_WAIT_FOR_ACK_TITLE" = "Warte auf Antwort";
+"GAME_VIEW_ALERT_BACK_TO_MENU_WAIT_FOR_ACK_MESSAGE" = "Die Anfrage zum Hauptmenü zurück zu gehen wurde gesendet.\nWarte auf Antwort vom anderen Gerät ...\n ";
+"GAME_VIEW_ALERT_BACK_TO_MENU_ACKNOWLEDGE_TITLE" = "Mitspieler Will Zum Menü";
+"GAME_VIEW_ALERT_BACK_TO_MENU_ACKNOWLEDGE_MESSAGE" = "Der Mitspieler will zurück zum Hauptmenü. Ausführen?\n('Nein' wird die Sitzung beenden.)";
 
 
 /* Regelansicht */
@@ -194,12 +193,12 @@
 /* Bluetooth-bezogen */
 
 // Warnmeldungen
-"BLUETOOTH_ALERT_TITLE_PEER_DISCONNECTED" = "Bluetooth-Sitzung Beendet";
-"BLUETOOTH_ALERT_MESSAGE_PEER_DISCONNECTED" = "Die Bluetooth-Sitzung wurde beendet, weil das andere Gerät die Verbindung getrennt hat.";
-"BLUETOOTH_ALERT_TITLE_COINTOSS_LOST" = "Münzwurf Verloren";
-"BLUETOOTH_ALERT_MESSAGE_COINTOSS_LOST" = "Der virtuelle Münzwurf hat entschieden, dass das andere Gerät bestimmen wird, was gespielt wird.";
-"BLUETOOTH_ALERT_TITLE_ASSUMED_CONTROL" = "Spielkontrolle Übernommen";
-"BLUETOOTH_ALERT_MESSAGE_ASSUMED_CONTROL" = "Das andere Gerät hat die Kontrolle abgegeben.";
+"BLUETOOTH_ALERT_PEER_DISCONNECTED_TITLE" = "Bluetooth-Sitzung Beendet";
+"BLUETOOTH_ALERT_PEER_DISCONNECTED_MESSAGE" = "Die Bluetooth-Sitzung wurde beendet, weil das andere Gerät die Verbindung getrennt hat.";
+"BLUETOOTH_ALERT_COINTOSS_LOST_TITLE" = "Münzwurf Verloren";
+"BLUETOOTH_ALERT_COINTOSS_LOST_MESSAGE" = "Der virtuelle Münzwurf hat entschieden, dass das andere Gerät bestimmen wird, was gespielt wird.";
+"BLUETOOTH_ALERT_ASSUMED_CONTROL_TITLE" = "Spielkontrolle Übernommen";
+"BLUETOOTH_ALERT_ASSUMED_CONTROL_MESSAGE" = "Das andere Gerät hat die Spielkontrolle abgegeben.";
 
 
 /* sonst. Text */

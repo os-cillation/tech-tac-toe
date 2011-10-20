@@ -602,7 +602,7 @@
     // show in-game menu
     // display action sheet with options (save game, save and quit, resign, just quit)
     
-    UIActionSheet *menu = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_TITLE", @"Game Menu") delegate:self cancelButtonTitle:NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_CANCEL_BUTTON", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_RESIGN_BUTTON", @"Resign Game") otherButtonTitles:NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_SAVE_BUTTON", @"Save Game"), NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_MAIN_MENU_BUTTON", @"Back to Main Menu"), nil];
+    UIActionSheet *menu = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_TITLE", @"Game Menu") delegate:self cancelButtonTitle:NSLocalizedString(@"CANCEL", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_RESIGN_BUTTON", @"Resign Game") otherButtonTitles:NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_SAVE_BUTTON", @"Save Game"), NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_MAIN_MENU_BUTTON", @"Back to Main Menu"), nil];
     [menu showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
     [menu release];
 }
@@ -883,17 +883,17 @@
     self.backToMenuGameOver = alert;
     [alert release];
     
-    UIAlertView *alertReq = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_TITLE_BACK_TO_MENU_REQUEST", @"Back to Menu") message:NSLocalizedString(@"GAME_VIEW_ALERT_MESSAGE_BACK_TO_MENU_REQUEST", @"Going back to menu on a Bluetooth game will require confirmation from the other device.\nSend request to go back to menu or disconnect from the session?") delegate:self cancelButtonTitle:NSLocalizedString(@"CANCEL", @"Cancel") otherButtonTitles:NSLocalizedString(@"SEND", @"Send"),NSLocalizedString(@"DISCONNECT", @"Disconnect"),nil];
+    UIAlertView *alertReq = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_BACK_TO_MENU_REQUEST_TITLE", @"Back to Menu") message:NSLocalizedString(@"GAME_VIEW_ALERT_BACK_TO_MENU_REQUEST_MESSAGE", @"Going back to menu on a Bluetooth game will require confirmation from the other device.\nSend request to go back to menu or disconnect from the session?") delegate:self cancelButtonTitle:NSLocalizedString(@"CANCEL", @"Cancel") otherButtonTitles:NSLocalizedString(@"SEND", @"Send"),NSLocalizedString(@"DISCONNECT", @"Disconnect"),nil];
     alertReq.tag = 13;
     self.backToMenuReqView = alertReq;
     [alertReq release];
     
-    UIAlertView *alertWaitAck = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_TITLE_BACK_TO_MENU_WAIT_FOR_ACK", @"Waiting for Response") message:NSLocalizedString(@"GAME_VIEW_ALERT_MESSAGE_BACK_TO_MENU_WAIT_FOR_ACK", @"The request to go back to menu has been sent.\nWaiting for the other device to respond...") delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"DISCONNECT", @"Disconnect"),nil];
+    UIAlertView *alertWaitAck = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_BACK_TO_MENU_WAIT_FOR_ACK_TITLE", @"Waiting for Response") message:NSLocalizedString(@"GAME_VIEW_ALERT_BACK_TO_MENU_WAIT_FOR_ACK_MESSAGE", @"The request to go back to menu has been sent.\nWaiting for the other device to respond...") delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"DISCONNECT", @"Disconnect"),nil];
     alertWaitAck.tag = 14;
     self.backToMenuWaitView = alertWaitAck;
     [alertWaitAck release];
     
-    UIAlertView *alertAck = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_TITLE_BACK_TO_MENU_ACKNOWLEDGE", @"Peer Wants Back to Menu") message:NSLocalizedString(@"GAME_VIEW_ALERT_MESSAGE_BACK_TO_MENU_ACKNOWLEDGE", @"The peer has send a request to go back to menu. Do it?\n(Selecting 'no' will end the session.)") delegate:self cancelButtonTitle:NSLocalizedString(@"NO", @"No") otherButtonTitles:NSLocalizedString(@"YES", @"Yes"),nil];
+    UIAlertView *alertAck = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_BACK_TO_MENU_ACKNOWLEDGE_TITLE", @"Peer Wants Back to Menu") message:NSLocalizedString(@"GAME_VIEW_ALERT_BACK_TO_MENU_ACKNOWLEDGE_MESSAGE", @"The peer has send a request to go back to menu. Do it?\n(Selecting 'no' will end the session.)") delegate:self cancelButtonTitle:NSLocalizedString(@"NO", @"No") otherButtonTitles:NSLocalizedString(@"YES", @"Yes"),nil];
     alertAck.tag = 15;
     self.backToMenuAckView = alertAck;
     [alertAck release];

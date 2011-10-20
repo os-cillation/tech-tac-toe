@@ -69,7 +69,7 @@
             if (self.currentSession) {
                 [self doDisconnect];
                 // display alert telling about the session ending
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"BLUETOOTH_ALERT_TITLE_PEER_DISCONNECTED", @"Bluetooth Session Ended") message:NSLocalizedString(@"BLUETOOTH_ALERT_MESSAGE_PEER_DISCONNECTED", @"The Bluetooth session has been terminated because the other device has disconnected.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"BLUETOOTH_ALERT_PEER_DISCONNECTED_TITLE", @"Bluetooth Session Ended") message:NSLocalizedString(@"BLUETOOTH_ALERT_PEER_DISCONNECTED_MESSAGE", @"The Bluetooth session has been terminated because the other device has disconnected.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [alert show];
                 [alert release];
             }
@@ -131,7 +131,7 @@
             [self doRevokeControl];
             
             // on a lost cointoss, we should inform the user that he does not have control (but not on intentional revoking, so do it here)
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"BLUETOOTH_ALERT_TITLE_COINTOSS_LOST", @"Cointoss Lost") message:NSLocalizedString(@"BLUETOOTH_ALERT_MESSAGE_COINTOSS_LOST", @"The virtual cointoss determined that the other device will decide on the game to be played.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"BLUETOOTH_ALERT_COINTOSS_LOST_TITLE", @"Cointoss Lost") message:NSLocalizedString(@"BLUETOOTH_ALERT_COINTOSS_LOST_MESSAGE", @"The virtual cointoss determined that the other device will decide on the game to be played.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
             [alert release];
             
@@ -142,7 +142,7 @@
         // handle revoking control of main menu
         self.localUserActAsServer = YES;
         [self.mvc.tableView reloadData];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"BLUETOOTH_ALERT_TITLE_ASSUMED_CONTROL", @"Assumed Game Control") message:NSLocalizedString(@"BLUETOOTH_ALERT_MESSAGE_ASSUMED_CONTROL", @"The other device has relinquished control.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"BLUETOOTH_ALERT_ASSUMED_CONTROL_TITLE", @"Assumed Game Control") message:NSLocalizedString(@"BLUETOOTH_ALERT_ASSUMED_CONTROL_MESSAGE", @"The other device has relinquished control.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
         [alert release];
         
