@@ -50,6 +50,12 @@
     [self presentModalViewController:viewController animated:NO];
     [self dismissModalViewControllerAnimated:NO];
     [viewController release];
+    
+    // set up the background view
+    NSString *path = [[NSBundle mainBundle]pathForResource:@"ImagePaths" ofType:@"plist"];
+    NSDictionary *plist = [[NSDictionary alloc] initWithContentsOfFile:path];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[plist objectForKey:@"main view background"]]];
+    [plist release];
 }
 
 - (void)viewDidUnload
@@ -63,7 +69,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.navigationController.navigationBar.tintColor = nil; 
+    self.navigationController.navigationBar.tintColor = [UIColor grayColor]; 
     [super viewWillAppear:animated];
 }
 

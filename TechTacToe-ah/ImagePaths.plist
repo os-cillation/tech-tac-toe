@@ -20,5 +20,7 @@
 	<string>blue_line.png</string>
 	<key>bluetooth icon</key>
 	<string>Bluetooth.png</string>
+	<key>main view background</key>
+	<string>background.png</string>
 </dict>
 </plist>

@@ -143,10 +143,37 @@
     if (buttonIndex == 0) {
         // resign: display alert view for confirmation, but only if the game is still ongoing and it is your turn on Bluetooth games
         if (!self.gameData.isGameOver && ((self.btDataHandler.currentSession && self.gameData.isLocalPlayerBlue == self.gameData.isBluePlayerTurn) || !self.btDataHandler.currentSession)) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_CONFIRMATION_TITLE", @"Resigning") message:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_CONFIRMATION_MESSAGE", @"Really resign the game?") delegate:self cancelButtonTitle:NSLocalizedString(@"NO", @"no") otherButtonTitles:NSLocalizedString(@"YES", @"yes"), nil];
-            alert.tag = 12;
-            [alert show];
-            [alert release];
+            // code deactivated: don't ask for confirmation - do it! activate this code for old behaviour
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_CONFIRMATION_TITLE", @"Resigning") message:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_CONFIRMATION_MESSAGE", @"Really resign the game?") delegate:self cancelButtonTitle:NSLocalizedString(@"NO", @"no") otherButtonTitles:NSLocalizedString(@"YES", @"yes"), nil];
+//            alert.tag = 12;
+//            [alert show];
+//            [alert release];
+            
+            // deactivate this code for old confirmation dialogue
+            // do resign
+            
+            // first clear any selection, so we don't keep them even when the game is already over - on Bluetooth games, there should be no marked field so skip it automatically
+            if (self.gameData.hasSelection) {
+                self.gameData.selection = NO;
+                [self.gameData changeDataAtPoint:CGPointMake(self.gameData.positionOfLastMarkedFieldX, self.gameData.positionOfLastMarkedFieldY)  withStatus:FREE_FIELD];
+                NSMutableArray *needsDrawing = [NSMutableArray arrayWithCapacity:1];
+                Field *drawMe = [[Field alloc] initWithStatus:FREE_FIELD atPositionX:self.gameData.positionOfLastMarkedFieldX atPositionY:self.gameData.positionOfLastMarkedFieldY];
+                [needsDrawing addObject:drawMe];
+                [drawMe release];
+                // reset position of our last selection
+                self.gameData.positionOfLastMarkedFieldX = -1;
+                self.gameData.positionOfLastMarkedFieldY = -1;
+                // draw the field we deselected
+                [self changeGameFields:needsDrawing orDrawAll:NO];
+            }
+            // at last, do the resigning and declare game over
+            [self.gameData resignGame];
+            [self cleanUpAfterGameOver];
+            
+            // on Bluetooth games, tell the other player you have resigned
+            if (self.btDataHandler.currentSession && self.gameData.isBluePlayerTurn == self.gameData.isLocalPlayerBlue) {
+                [self.btDataHandler sendResign];
+            }
         } else {
             // display an alert view with a message that you cannot resign the game at this moment
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_UNAVAILBLE_TITLE", @"Resigning Not Possible") message:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_UNAVAILABLE_MESSAGE", @"Resigning the game is only possible if the game is not already over and if it is your turn on a game via Bluetooth.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -200,7 +227,7 @@
                 [self.backToMenuReqView show];
             }
         }
-    } // resign confirmation alert view 
+    } // resign confirmation alert view - currently will not be called as we scrapped the confirmation dialogue
     else if (alertView.tag == 12) {
         if (buttonIndex == 0) {
             // cancel

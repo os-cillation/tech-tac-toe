@@ -135,6 +135,12 @@
     [temp release];
     self.tapGestureRecognizer.delegate = self;
     [self.view addGestureRecognizer:self.tapGestureRecognizer];
+    
+    // set up the background view
+    NSString *path = [[NSBundle mainBundle]pathForResource:@"ImagePaths" ofType:@"plist"];
+    NSDictionary *plist = [[NSDictionary alloc] initWithContentsOfFile:path];
+    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[plist objectForKey:@"main view background"]]];
+    [plist release];
 }
 
 - (void)viewDidUnload
@@ -167,7 +173,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.navigationController.navigationBar.tintColor = nil; 
+    self.navigationController.navigationBar.tintColor = [UIColor grayColor]; 
     [super viewWillAppear:animated];
 }
 

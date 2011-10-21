@@ -66,7 +66,7 @@
     self.navigationItem.leftBarButtonItem = btIcon;
     
     [btIcon release];
-    [plist release];
+    
     
     // make a data handler if none exists
     if (!self.dataHandler) {
@@ -75,6 +75,12 @@
         self.dataHandler.mvc = self;
         [btdh release];
     }
+    
+    // set up the background view
+    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[plist objectForKey:@"main view background"]]];
+    //self.tableView.bounces = NO;
+    
+    [plist release];
     
     [super viewDidLoad];
 
@@ -96,7 +102,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     // reset nav bar color
-    self.navigationController.navigationBar.tintColor = nil;
+    self.navigationController.navigationBar.tintColor = [UIColor grayColor];
     
     // hide or show Bluetooth icon
     if (self.dataHandler.currentSession) {

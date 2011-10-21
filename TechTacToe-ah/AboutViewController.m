@@ -60,6 +60,10 @@
     return UIInterfaceOrientationIsPortrait(interfaceOrientation);
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.navigationController.navigationBar.tintColor = [UIColor grayColor];
+}
 
 #pragma mark -
 #pragma mark Actions

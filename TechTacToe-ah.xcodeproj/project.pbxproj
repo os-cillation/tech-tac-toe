@@ -35,6 +35,8 @@
 		CEAF49931443255200931E99 /* red_marked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEAF498B1443255200931E99 /* red_marked@2x.png */; };
 		CEAF49941443255200931E99 /* red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEAF498C1443255200931E99 /* red@2x.png */; };
 		CEAF49951443255200931E99 /* unavailable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEAF498D1443255200931E99 /* unavailable@2x.png */; };
+		CEB15E3814517635004A0A9B /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB15E3714517635004A0A9B /* background.png */; };
+		CEB15E3B14517786004A0A9B /* background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB15E3A14517786004A0A9B /* background@2x.png */; };
 		CEC1E9291434557F0053266F /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEC1E9281434557F0053266F /* MainWindow.xib */; };
 		CEC1E92E14345B320053266F /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC1E92C14345B320053266F /* MainViewController.m */; };
 		CEE6E616143B2EA500402251 /* RulesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE6E614143B2EA400402251 /* RulesViewController.m */; };
@@ -96,6 +98,8 @@
 		CEAF498B1443255200931E99 /* red_marked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red_marked@2x.png"; sourceTree = "<group>"; };
 		CEAF498C1443255200931E99 /* red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red@2x.png"; sourceTree = "<group>"; };
 		CEAF498D1443255200931E99 /* unavailable@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unavailable@2x.png"; sourceTree = "<group>"; };
+		CEB15E3714517635004A0A9B /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
+		CEB15E3A14517786004A0A9B /* background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background@2x.png"; sourceTree = "<group>"; };
 		CEC1E9281434557F0053266F /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		CEC1E92B14345B320053266F /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		CEC1E92C14345B320053266F /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
@@ -158,6 +162,8 @@
 				CE27B562144596AB005BAA35 /* Default@2x.png */,
 				CE759D1C144336C600DAB57E /* icon.png */,
 				CE759D1F144336D100DAB57E /* icon@2x.png */,
+				CEB15E3714517635004A0A9B /* background.png */,
+				CEB15E3A14517786004A0A9B /* background@2x.png */,
 				CEA3C509144C537E0084E8DB /* Bluetooth.png */,
 				CEA3C50A144C537E0084E8DB /* Bluetooth@2x.png */,
 				E16F86CA14287E7A00DF7722 /* unavailable.png */,
@@ -380,6 +386,8 @@
 				CE8056141446E9F700CE90C8 /* iVideoShow-icon.png in Resources */,
 				CEA3C50B144C537E0084E8DB /* Bluetooth.png in Resources */,
 				CEA3C50C144C537E0084E8DB /* Bluetooth@2x.png in Resources */,
+				CEB15E3814517635004A0A9B /* background.png in Resources */,
+				CEB15E3B14517786004A0A9B /* background@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
