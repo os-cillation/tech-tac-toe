@@ -10,7 +10,7 @@
 #import "Game.h"
 #import "MainViewController.h"
 
-@interface SettingsViewController : UITableViewController <UITextFieldDelegate, UIGestureRecognizerDelegate> {
+@interface SettingsViewController : UITableViewController {
     
     // Interface Builder outlets
     UITableViewCell *minimumForLineCell;
@@ -34,7 +34,7 @@
     UITableViewCell *boardLimitCell;
     UISwitch *boardLimitSwitch;
     
-    UITapGestureRecognizer *tapGestureRecognizer; // this gesture recognizer will be used to dismiss keyboards on background tap
+    MainViewController *mvc;
 }
 
 @property (nonatomic, retain) IBOutlet UITableViewCell *boardLimitCell;
@@ -58,23 +58,11 @@
 @property (nonatomic, retain) IBOutlet UITableViewCell *playerSelectionCell;
 @property (nonatomic, retain) IBOutlet UISwitch *playerSelectionSwitch;
 
-@property (nonatomic, retain) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, assign) MainViewController *mvc;
 
--(void) dismissAllKeyboards; // will be called by the tap gesture recognizer to dismiss the keyboard if we tap anywhere except a text field
+// Interface Builder actions will handle activating/deactivating controls depending on current setting
 
-- (IBAction)keyboardAppeared:(id)sender; // shared action called by any textfield on keyboard appearence - will disable navigation items to avoid starting a game or going back to main menu and getting an alert of the settings menu for invalid values or auto-adjusting
-
-// Interface Builder actions will handle correct values in text fields and activating/deactivating controls depending on current setting
-- (IBAction)numberOfTurnsEditEnd:(id)sender;
-- (IBAction)numberOfTurnsEditChanged:(id)sender;
-- (IBAction)minimumForLineEditEnd:(id)sender;
-- (IBAction)minimumForLineEditChanged:(id)sender;
 - (IBAction)boardLimitChanged:(id)sender;
-- (IBAction)boardWidthEditEnd:(id)sender;
-- (IBAction)boardWidthEditChanged:(id)sender;
-- (IBAction)boardHeightEditEnd:(id)sender;
-- (IBAction)boardHeightEditChanged:(id)sender;
 - (IBAction)limitTurnsChanged:(id)sender;
 - (IBAction)scoreModeChanged:(id)sender;
 

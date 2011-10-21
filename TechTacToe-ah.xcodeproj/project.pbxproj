@@ -39,6 +39,8 @@
 		CEB15E3B14517786004A0A9B /* background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB15E3A14517786004A0A9B /* background@2x.png */; };
 		CEC1E9291434557F0053266F /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEC1E9281434557F0053266F /* MainWindow.xib */; };
 		CEC1E92E14345B320053266F /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC1E92C14345B320053266F /* MainViewController.m */; };
+		CEC6C64A145187D00089827D /* SettingsPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC6C648145187D00089827D /* SettingsPickerViewController.m */; };
+		CEC6C64B145187D00089827D /* SettingsPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEC6C649145187D00089827D /* SettingsPickerViewController.xib */; };
 		CEE6E616143B2EA500402251 /* RulesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE6E614143B2EA400402251 /* RulesViewController.m */; };
 		CEE6E617143B2EA500402251 /* RulesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEE6E615143B2EA400402251 /* RulesViewController.xib */; };
 		E16F86BF14287E5D00DF7722 /* blue_line.png in Resources */ = {isa = PBXBuildFile; fileRef = E16F86BC14287E5D00DF7722 /* blue_line.png */; };
@@ -103,6 +105,9 @@
 		CEC1E9281434557F0053266F /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		CEC1E92B14345B320053266F /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		CEC1E92C14345B320053266F /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		CEC6C647145187D00089827D /* SettingsPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsPickerViewController.h; sourceTree = "<group>"; };
+		CEC6C648145187D00089827D /* SettingsPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsPickerViewController.m; sourceTree = "<group>"; };
+		CEC6C649145187D00089827D /* SettingsPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsPickerViewController.xib; sourceTree = "<group>"; };
 		CEE6E613143B2EA400402251 /* RulesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulesViewController.h; sourceTree = "<group>"; };
 		CEE6E614143B2EA400402251 /* RulesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulesViewController.m; sourceTree = "<group>"; };
 		CEE6E615143B2EA400402251 /* RulesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RulesViewController.xib; sourceTree = "<group>"; };
@@ -200,6 +205,8 @@
 				CE320ED8143F226500A688AB /* LoadDetailViewController.m */,
 				CE8146071433145D006E7099 /* SettingsViewController.h */,
 				CE8146081433145D006E7099 /* SettingsViewController.m */,
+				CEC6C647145187D00089827D /* SettingsPickerViewController.h */,
+				CEC6C648145187D00089827D /* SettingsPickerViewController.m */,
 				CE8056071446E2AE00CE90C8 /* AboutViewController.h */,
 				CE8056081446E2AE00CE90C8 /* AboutViewController.m */,
 				CEE6E613143B2EA400402251 /* RulesViewController.h */,
@@ -215,6 +222,7 @@
 				CE7C3350143F0BB7005EE0D9 /* LoadViewController.xib */,
 				CE320ED9143F226500A688AB /* LoadDetailViewController.xib */,
 				CE8146091433145D006E7099 /* SettingsViewController.xib */,
+				CEC6C649145187D00089827D /* SettingsPickerViewController.xib */,
 				CE8056091446E2AE00CE90C8 /* AboutViewController.xib */,
 				CEE6E615143B2EA400402251 /* RulesViewController.xib */,
 			);
@@ -388,6 +396,7 @@
 				CEA3C50C144C537E0084E8DB /* Bluetooth@2x.png in Resources */,
 				CEB15E3814517635004A0A9B /* background.png in Resources */,
 				CEB15E3B14517786004A0A9B /* background@2x.png in Resources */,
+				CEC6C64B145187D00089827D /* SettingsPickerViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,6 +439,7 @@
 				CE320EDA143F226500A688AB /* LoadDetailViewController.m in Sources */,
 				CE80560A1446E2AE00CE90C8 /* AboutViewController.m in Sources */,
 				CE8168F414485DD9009A637F /* BluetoothDataHandler.m in Sources */,
+				CEC6C64A145187D00089827D /* SettingsPickerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

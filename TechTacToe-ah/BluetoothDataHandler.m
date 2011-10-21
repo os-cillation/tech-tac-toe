@@ -204,10 +204,12 @@
         // do the commit
         [self.mvc.currentGame.gameViewController commitTurn];
         
-        // re-activate the controls since it's the local device's turn now
-        [self.mvc.currentGame.gameViewController.tapGestureRecognizer setEnabled:YES];
-        [self.mvc.currentGame.gameViewController.navigationItem.rightBarButtonItem setEnabled:YES];
-    
+        // re-activate the controls since it's the local device's turn now if it's not already game over
+        if (!self.mvc.currentGame.gameData.isGameOver) {
+            [self.mvc.currentGame.gameViewController.tapGestureRecognizer setEnabled:YES];
+            [self.mvc.currentGame.gameViewController.navigationItem.rightBarButtonItem setEnabled:YES];
+        }
+        
     } else if (type == MESSAGE_RESIGN) {
         // handle resign of the other player
         [self.mvc.currentGame.gameData resignGame];

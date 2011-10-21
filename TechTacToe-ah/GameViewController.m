@@ -183,6 +183,20 @@
     }
     if (buttonIndex == 1) {
         // save
+        // first clear any selection
+        if (self.gameData.hasSelection) {
+            self.gameData.selection = NO;
+            [self.gameData changeDataAtPoint:CGPointMake(self.gameData.positionOfLastMarkedFieldX, self.gameData.positionOfLastMarkedFieldY)  withStatus:FREE_FIELD];
+            NSMutableArray *needsDrawing = [NSMutableArray arrayWithCapacity:1];
+            Field *drawMe = [[Field alloc] initWithStatus:FREE_FIELD atPositionX:self.gameData.positionOfLastMarkedFieldX atPositionY:self.gameData.positionOfLastMarkedFieldY];
+            [needsDrawing addObject:drawMe];
+            [drawMe release];
+            // reset position of our last selection
+            self.gameData.positionOfLastMarkedFieldX = -1;
+            self.gameData.positionOfLastMarkedFieldY = -1;
+            // draw the field we deselected
+            [self changeGameFields:needsDrawing orDrawAll:NO];
+        }
         NSString *filename = [NSDateFormatter localizedStringFromDate:[NSDate date] dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterShortStyle];
         if([self.gameData saveGameToFile:filename]) {
             NSString *message = NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_SAVE_GAME_ALERT_SUCCESSFUL_MESSAGE", @"The game was successfully saved as \"%@\".");

@@ -7,6 +7,7 @@
 //
 
 #import "SettingsViewController.h"
+#import "SettingsPickerViewController.h"
 
 @implementation SettingsViewController
 
@@ -30,7 +31,6 @@
 @synthesize reuseLineSwitch;
 @synthesize playerSelectionCell;
 @synthesize playerSelectionSwitch;
-@synthesize tapGestureRecognizer;
 @synthesize mvc;
 
 #pragma mark - Initializer and memory management
@@ -63,7 +63,6 @@
     [limitTurnsSwitch release];
     [boardLimitCell release];
     [boardLimitSwitch release];
-    [tapGestureRecognizer release];
     [playerSelectionCell release];
     [playerSelectionSwitch release];
     [super dealloc];
@@ -129,13 +128,6 @@
 //        self.playerSelectionSwitch.enabled = NO;
 //    }
     
-    //add a tap gesture recognizer so we can dismiss the keyboard on a background tap
-    UITapGestureRecognizer *temp = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissAllKeyboards)];
-    self.tapGestureRecognizer = temp;
-    [temp release];
-    self.tapGestureRecognizer.delegate = self;
-    [self.view addGestureRecognizer:self.tapGestureRecognizer];
-    
     // set up the background view
     NSString *path = [[NSBundle mainBundle]pathForResource:@"ImagePaths" ofType:@"plist"];
     NSDictionary *plist = [[NSDictionary alloc] initWithContentsOfFile:path];
@@ -163,7 +155,6 @@
     [self setLimitTurnsSwitch:nil];
     [self setBoardLimitCell:nil];
     [self setBoardLimitSwitch:nil];
-    [self setTapGestureRecognizer:nil];
     [self setPlayerSelectionCell:nil];
     [self setPlayerSelectionSwitch:nil];
     [super viewDidUnload];
@@ -173,7 +164,24 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.navigationController.navigationBar.tintColor = [UIColor grayColor]; 
+    self.navigationController.navigationBar.tintColor = [UIColor grayColor];
+    
+    // check for invalid settings combinations we might have got from the picker view and correct them
+    // minimum line size might change the board size:
+    int value = self.minimumForLineTextField.text.intValue;
+    int oldWidth = self.boardWidthTextField.text.intValue;
+    int oldHeight = self.boardHeightTextField.text.intValue;
+    if (oldWidth < value) {
+        self.boardWidthTextField.text = [NSString stringWithFormat:@"%i",value];
+    }
+    if (oldHeight < value) {
+        self.boardHeightTextField.text = [NSString stringWithFormat:@"%i",value];
+    }
+    // (maybe already changed) board size might change the turn limit:
+    if (self.numberOfTurnsTextField.text.intValue > self.boardHeightTextField.text.intValue * self.boardWidthTextField.text.intValue) {
+        self.numberOfTurnsTextField.text = [NSString stringWithFormat:@"%i", self.boardHeightTextField.text.intValue * self.boardWidthTextField.text.intValue];
+    }
+    
     [super viewWillAppear:animated];
 }
 
@@ -397,190 +405,32 @@
      [detailViewController release];
      */
     
-    /* code deactivated: nice idea, but won't cooperate with the tap gesture recognizer which dismisses the keyboard again - will be kept for reference if another approach is desired */
-//    // activate the keyboard of the cell selected
-//    if (indexPath.section == 0 && indexPath.row == 1) {
-//        [self.numberOfTurnsTextField becomeFirstResponder];
-//    } else if (indexPath.section == 1) {
-//        if (indexPath.row == 1) {
-//            [self.boardWidthTextField becomeFirstResponder];
-//        } else if (indexPath.row == 2) {
-//            [self.boardHeightTextField becomeFirstResponder];
-//        }
-//    } else if (indexPath.section == 2) {
-//        [self.minimumForLineTextField becomeFirstResponder];
-//    }
-}
-
-#pragma mark - Utility
-
--(void) dismissAllKeyboards
-{
-    // on a tap anywhere except the navbar and another textfield, this will be called
-    [self.boardHeightTextField resignFirstResponder];
-    [self.boardWidthTextField resignFirstResponder];
-    [self.numberOfTurnsTextField resignFirstResponder];
-    [self.minimumForLineTextField resignFirstResponder];
-}
-
-#pragma mark - Text field delegate
-
--(BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    return YES;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField 
-{
-    // enable navigation items again
-    [self.navigationItem setHidesBackButton:NO animated:YES];
-    self.navigationItem.rightBarButtonItem.enabled = YES; 
-    
-    // also reactivate all switches that should be reactivated
-    self.limitTurnsSwitch.enabled = YES;
-    self.boardLimitSwitch.enabled = YES;
-    if (self.limitTurnsSwitch.isOn || self.boardLimitSwitch.isOn)
-        self.scoreModeSwitch.enabled = YES;
-    if (!self.scoreModeSwitch.isOn)
-        self.additionalRedTurnSwitch.enabled = YES;
-    self.reuseLineSwitch.enabled = YES;
+    // create and display a picker depending on cell clicked
+    SettingsPickerViewController *pickerView;
+    if (indexPath.section == 0 && indexPath.row == 1 && self.limitTurnsSwitch.isOn) {
+        pickerView = [[SettingsPickerViewController alloc] initWithPickerID:NUMBER_OF_TURNS fromSettingsView:self];
+        [self.navigationController pushViewController:pickerView animated:YES];
+        [pickerView release];
+    } else if (indexPath.section == 1 && self.boardLimitSwitch.isOn) {
+        if (indexPath.row == 1) {
+            pickerView = [[SettingsPickerViewController alloc] initWithPickerID:BOARD_WIDTH fromSettingsView:self];
+            [self.navigationController pushViewController:pickerView animated:YES];
+            [pickerView release];
+        } else if (indexPath.row == 2) {
+            pickerView = [[SettingsPickerViewController alloc] initWithPickerID:BOARD_HEIGHT fromSettingsView:self];
+            [self.navigationController pushViewController:pickerView animated:YES];
+            [pickerView release];
+        }
+    } else if (indexPath.section == 2) {
+        pickerView = [[SettingsPickerViewController alloc] initWithPickerID:MINIMUM_LINE_SIZE fromSettingsView:self];
+        [self.navigationController pushViewController:pickerView animated:YES];
+        [pickerView release];
+    }
 }
 
 #pragma mark - Interface Builder actions
-
-- (IBAction)keyboardAppeared:(id)sender {
-    // deactivate navigation controls if any keyboard is open
-    [self.navigationItem setHidesBackButton:YES animated:YES];
-    self.navigationItem.rightBarButtonItem.enabled = NO;
-    
-    // also deactivate all switches
-    self.limitTurnsSwitch.enabled = NO;
-    self.boardLimitSwitch.enabled = NO;
-    self.scoreModeSwitch.enabled = NO;
-    self.additionalRedTurnSwitch.enabled = NO;
-    self.reuseLineSwitch.enabled = NO;
-}
-
-- (IBAction)numberOfTurnsEditEnd:(id)sender {
-    // check for non-zero value, display alert if the value is invalid
-
-    int value = self.numberOfTurnsTextField.text.intValue;
-    int numberOfFields = self.boardHeightTextField.text.intValue * self.boardWidthTextField.text.intValue;
-    if (value) {
-        // good value
-        self.numberOfTurnsTextField.text = [NSString stringWithFormat:@"%i", value];
-    } else if (!self.limitTurnsSwitch.isOn) {
-        // might be bad value before dismissing numpad - correct it. since the turn limit is deactivated prior to dismissing keyboard, don't bother notifying the user (because the itention to deactivate turn limit is clear)
-        if (self.boardLimitSwitch)
-            self.numberOfTurnsTextField.text = [NSString stringWithFormat:@"%i", numberOfFields];
-        else
-            self.numberOfTurnsTextField.text = @"100";
-    } else {
-        // zero value - set default either to maximum on a limited board or 100 (which is bound to change in the future)
-        if (self.boardLimitSwitch) {
-            NSString *lnotee = NSLocalizedString(@"SETTINGS_VIEW_ALERT_NUMBER_OF_TURNS_EDIT_END_BOARD_LIMITED", @"Please enter a valid value.\nIf a turn limit is not desired, switch it off instead. Defaulting to current maximum (%i).");
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SETTINGS_VIEW_ALERT_TITLE_INVALID_VALUE", @"Invalid Value") message:[NSString stringWithFormat:lnotee,numberOfFields] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-            [alert release];       
-            self.numberOfTurnsTextField.text = [NSString stringWithFormat:@"%i", numberOfFields];
-        } else {
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SETTINGS_VIEW_ALERT_TITLE_INVALID_VALUE", @"Invalid Value") message:NSLocalizedString(@"SETTINGS_VIEW_ALERT_NUMBER_OF_TURNS_EDIT_END_BOARD_UNLIMITED", @"Please enter a valid value.\nIf a turn limit is not desired, switch it off instead. Defaulting to 100 turns.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-            [alert release];
-            self.numberOfTurnsTextField.text = @"100";  
-        }
-    }
-}
-
-- (IBAction)numberOfTurnsEditChanged:(id)sender {
-    // also check for correct input here: catch numbers too high before they are set
-    int numberOfFields = self.boardHeightTextField.text.intValue * self.boardWidthTextField.text.intValue;
-    // only alert if value too high (to avoid displaying alerts if the user deletes the current value (check for too low/no value in ...EditEnd)
-    if (self.numberOfTurnsTextField.text.intValue > numberOfFields && self.boardLimitSwitch.isOn) {
-        NSString *lnotec = NSLocalizedString(@"SETTINGS_VIEW_ALERT_NUMBER_OF_TURNS_EDIT_CHANGED_BOARD_LIMITED", @"The value is too high. Make sure it does not exceed the current number of fields, which is %i.");
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SETTINGS_VIEW_ALERT_TITLE_VALUE_TOO_HIGH", @"Value Too High") message:[NSString stringWithFormat:lnotec,numberOfFields] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-        [alert release];
-        self.numberOfTurnsTextField.text = [NSString stringWithFormat:@"%i", numberOfFields];
-    } else if (self.numberOfTurnsTextField.text.intValue > MAX_FIELDS && !self.boardLimitSwitch.isOn) {
-        // alert if the value exceeds MAX_FIELDS on a no-limit board
-        NSString *lnotec = NSLocalizedString(@"SETTINGS_VIEW_ALERT_NUMBER_OF_TURNS_EDIT_CHANGED_BOARD_UNLIMITED", @"The value is too high. Make sure it does not exceed %i.");
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SETTINGS_VIEW_ALERT_TITLE_VALUE_TOO_HIGH", @"Value Too High") message:[NSString stringWithFormat:lnotec,MAX_FIELDS] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-        [alert release];
-        self.numberOfTurnsTextField.text = [NSString stringWithFormat:@"%i", MAX_FIELDS];
-    }
-}
-
-- (IBAction)minimumForLineEditEnd:(id)sender {
-    // check for valid value, display alert if the value is invalid (less than 3)
-    
-    int value = self.minimumForLineTextField.text.intValue;
-    if (value >= 3) {
-        // good value
-        self.minimumForLineTextField.text = [NSString stringWithFormat:@"%i", value];
-        // auto-adjust board size and turn limit if necessary, display a alert with changes
-        int oldWidth = self.boardWidthTextField.text.intValue;
-        int oldHeight = self.boardHeightTextField.text.intValue;
-        NSString *widthChange = @"";
-        NSString *heightChange = @"";
-        BOOL somethingChanged = NO;
-        if (oldWidth < value) {
-            // no need to explain anything on an unlimited board
-            self.boardWidthTextField.text = [NSString stringWithFormat:@"%i",value];
-            if (self.boardLimitSwitch.isOn) {
-                somethingChanged = YES;
-                NSString *lwc = NSLocalizedString(@"SETTINGS_VIEW_ALERT_MINIMUM_FOR_LINE_EDIT_END_BOARD_WIDTH_CHANGE", @"Changed board width from %i to %i.\n");
-                widthChange = [NSString stringWithFormat:lwc,oldWidth,value];
-            }
-        }
-        if (oldHeight < value) {
-            self.boardHeightTextField.text = [NSString stringWithFormat:@"%i",value];
-            if (self.boardLimitSwitch.isOn) {
-                somethingChanged = YES;
-                NSString *lhc = NSLocalizedString(@"SETTINGS_VIEW_ALERT_MINIMUM_FOR_LINE_EDIT_END_BOARD_HEIGHT_CHANGE", @"Changed board height from %i to %i.\n");
-                heightChange = [NSString stringWithFormat:lhc,oldHeight,value];
-            }
-        }
-        if (somethingChanged) {
-            // display alert
-            NSString *lmfleeaa = NSLocalizedString(@"SETTINGS_VIEW_ALERT_MINIMUM_FOR_LINE_EDIT_END_AUTO-ADJUSTMENT", @"Setting the minimum line size to %i triggered the following adjustments:\n\n%@%@");
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SETTINGS_VIEW_ALERT_TITLE_AUTO-ADJUSTMENT", @"Auto-adjustment") message:[NSString stringWithFormat:lmfleeaa,value,widthChange,heightChange] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-            [alert release];
-        }
-    } else {
-        // too small value - feedback for user
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SETTINGS_VIEW_ALERT_TITLE_INVALID_VALUE", @"Invalid Value") message:NSLocalizedString(@"SETTINGS_VIEW_ALERT_MINIMUM_FOR_LINE_EDIT_END_INVALID_VALUE", @"Please enter a value between three and six.\nDefaulting to minimum (three).") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-        [alert release]; 
-        
-        self.minimumForLineTextField.text = @"3";
-    }
-}
-
-- (IBAction)minimumForLineEditChanged:(id)sender {
-    // also check for correct input here - values bigger than 6 will be capped to 6
-    
-    int value = self.minimumForLineTextField.text.intValue;
-    if (value > 6) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SETTINGS_VIEW_ALERT_TITLE_VALUE_TOO_HIGH", @"Value Too High") message:NSLocalizedString(@"SETTINGS_VIEW_ALERT_MINIMUM_FOR_LINE_EDIT_CHANGED", @"Please enter a value between three and six.\nDefaulting to maximum (six).\nAuto-adjusting board size if necessary.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-        [alert release]; 
-        
-        self.minimumForLineTextField.text = @"6";
-        
-        //auto-adjusting board dimensions and turn limit if necessary
-        if (self.boardWidthTextField.text.intValue < 6)
-            self.boardWidthTextField.text = @"6";
-        if (self.boardHeightTextField.text.intValue < 6) 
-            self.boardHeightTextField.text = @"6";
-        if (self.numberOfTurnsTextField.text.intValue > 36 && self.limitTurnsSwitch.isOn) {
-            self.numberOfTurnsTextField.text = @"36";
-        }
-    }
-}
 
 - (IBAction)boardLimitChanged:(id)sender {
     // disables the text field for both board size text fields or re-enables them
@@ -597,6 +447,10 @@
         self.scoreModeCell.textLabel.enabled = YES;
         self.scoreModeSwitch.enabled = YES;
         [self performSelector:@selector(scoreModeChanged:)];
+        
+        // set cells' selection style to blue
+        [self.boardWidthCell setSelectionStyle:UITableViewCellSelectionStyleBlue];
+        [self.boardHeightCell setSelectionStyle:UITableViewCellSelectionStyleBlue];
         
         // if we had a big turn limit, set it to maximum possible
         int maxTurns = self.boardWidthTextField.text.intValue * self.boardHeightTextField.text.intValue;
@@ -625,101 +479,10 @@
             self.scoreModeCell.textLabel.enabled = NO;
             [self performSelector:@selector(scoreModeChanged:)];
         }
-    }
-}
-
-- (IBAction)boardWidthEditEnd:(id)sender {
-    // check for valid value, display alert if the value is invalid
-    
-    int value = self.boardWidthTextField.text.intValue;
-    int minimum = self.minimumForLineTextField.text.intValue;
-    BOOL alreadyNotifed = NO;
-    if (value >= minimum) {
-        // good value
-        self.boardWidthTextField.text = [NSString stringWithFormat:@"%i", value];
-    } else if (!self.boardLimitSwitch.isOn) {
-        // might be bad value before dismissing numpad - correct it. since the board limit is deactivated prior to dismissing (if the user dismisses numpad by switching off board limit), don't bother notifying the user because the intention to deactivate board limit is clear and the values do not matter as much
-        self.boardWidthTextField.text = [NSString stringWithFormat:@"%i", minimum];
-    } else {
-        // invalid value - feedback for user
-        NSString *lbweeiv = NSLocalizedString(@"SETTINGS_VIEW_ALERT_BOARD_WIDTH_EDIT_END_INVALID_VALUE", @"Please enter a value equal or greater than the minimum line size.\nIf you do not want the board to be of set size, switch the limiter off instead. Defaulting to current minimum (%i).\nAuto-adjusting turn limit if necessary.");
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SETTINGS_VIEW_ALERT_TITLE_INVALID_VALUE", @"Invalid Value") message:[NSString stringWithFormat:lbweeiv,minimum] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-        [alert release];
         
-        //set this, so we don't show the other alert as well
-        alreadyNotifed = YES;
-        
-        self.boardWidthTextField.text = [NSString stringWithFormat:@"%i", minimum];
-    }
-    //auto-adjusting turn limit if necessary, display notification if no alert was shown before
-    if (self.numberOfTurnsTextField.text.intValue > self.boardWidthTextField.text.intValue * self.boardHeightTextField.text.intValue && self.boardLimitSwitch.isOn) {
-        self.numberOfTurnsTextField.text = [NSString stringWithFormat:@"%i", self.boardWidthTextField.text.intValue * self.boardHeightTextField.text.intValue];
-        if (!alreadyNotifed && self.limitTurnsSwitch.isOn) {
-            NSString *lbweeaa = NSLocalizedString(@"SETTINGS_VIEW_ALERT_BOARD_WIDTH_EDIT_END_AUTO-ADJUSTMENT", @"Changing the board width has made it necessary to adjust the number of turns to the new maximum value of %i.");
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SETTINGS_VIEW_ALERT_TITLE_AUTO-ADJUSTMENT", @"Auto-adjustment") message:[NSString stringWithFormat:lbweeaa,self.numberOfTurnsTextField.text.intValue] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-            [alert release];
-        }
-    }
-}
-
-- (IBAction)boardWidthEditChanged:(id)sender {
-    // also check for correct input here - catch & handle values that are too high
-    int value = self.boardWidthTextField.text.intValue;
-    // only alert if value too high (to avoid displaying alerts if the user deletes the current value (check for too low/no value in ...EditEnd)
-    if (value > 25) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SETTINGS_VIEW_ALERT_TITLE_VALUE_TOO_HIGH", @"Value Too High") message:NSLocalizedString(@"SETTINGS_VIEW_ALERT_BOARD_WIDTH_EDIT_CHANGED", @"The value is too high. Make sure it does not exceed the maximum, which is 25.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-        [alert release];
-        self.boardWidthTextField.text = @"25";
-    }
-}
-
-- (IBAction)boardHeightEditEnd:(id)sender {
-    // check for non-zero value, display alert if the value is invalid
-    
-    int value = self.boardHeightTextField.text.intValue;
-    int minimum = self.minimumForLineTextField.text.intValue;
-    BOOL alreadyNotifed = NO;
-    if (value >= minimum) {
-        // good value
-        self.boardHeightTextField.text = [NSString stringWithFormat:@"%i", value];
-        
-    } else if (!self.boardLimitSwitch.isOn) {
-        self.boardHeightTextField.text = [NSString stringWithFormat:@"%i", minimum];
-    } else {
-        // invalid value - feedback for user
-        NSString *lbheeiv = NSLocalizedString(@"SETTINGS_VIEW_ALERT_BOARD_WIDTH_EDIT_END_INVALID_VALUE", @"Please enter a value equal or greater than the minimum line size.\nIf you do not want the board to be of set size, switch the limiter off instead. Defaulting to current minimum (%i).\nAuto-adjusting turn limit if necessary.");
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SETTINGS_VIEW_ALERT_TITLE_INVALID_VALUE", @"Invalid Value") message:[NSString stringWithFormat:lbheeiv,minimum] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-        [alert release];
-        
-        //set this, so we don't show the other alert as well
-        alreadyNotifed = YES;
-        
-        self.boardHeightTextField.text = [NSString stringWithFormat:@"%i", minimum];
-    }
-    //auto-adjusting turn limit if necessary, display notification if no alert was shown before
-    if (self.numberOfTurnsTextField.text.intValue > self.boardHeightTextField.text.intValue * self.boardWidthTextField.text.intValue && self.boardLimitSwitch.isOn) {
-        self.numberOfTurnsTextField.text = [NSString stringWithFormat:@"%i", self.boardHeightTextField.text.intValue * self.boardWidthTextField.text.intValue];
-        if (!alreadyNotifed && self.limitTurnsSwitch.isOn && self.boardLimitSwitch.isOn) {
-            NSString *lbheeaa = NSLocalizedString(@"SETTINGS_VIEW_ALERT_BOARD_WIDTH_EDIT_END_AUTO-ADJUSTMENT", @"Changing the board width has made it necessary to adjust the number of turns to the new maximum value of %i.");
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SETTINGS_VIEW_ALERT_TITLE_AUTO-ADJUSTMENT", @"Auto-adjustment") message:[NSString stringWithFormat:lbheeaa,self.numberOfTurnsTextField.text.intValue] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-            [alert release];
-        }
-    }
-}
-
-- (IBAction)boardHeightEditChanged:(id)sender {
-    // also check for correct input here - catch & handle values that are too high
-    int value = self.boardHeightTextField.text.intValue;
-    if (value > 25) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SETTINGS_VIEW_ALERT_TITLE_VALUE_TOO_HIGH", @"Value Too High") message:NSLocalizedString(@"SETTINGS_VIEW_ALERT_BOARD_HEIGHT_EDIT_CHANGED", @"The value is too high. Make sure it does not exceed the maximum, which is 25.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-        [alert release];
-        self.boardHeightTextField.text = @"25";
+        // set cells' selection style to none
+        [self.boardWidthCell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        [self.boardHeightCell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
 }
 
@@ -735,6 +498,9 @@
         self.scoreModeSwitch.enabled = YES;
         [self performSelector:@selector(scoreModeChanged:)];
         
+        // enable blue cell selection style
+        [self.numberOfTurnsCell setSelectionStyle:UITableViewCellSelectionStyleBlue];
+        
         // if number of turns was zero or higher than maximum, set it to / cap it at maximum
         int numberOfTurns = self.numberOfTurnsTextField.text.intValue;
         int maximum = self.boardWidthTextField.text.intValue * self.boardHeightTextField.text.intValue;
@@ -749,6 +515,9 @@
         self.numberOfTurnsCell.textLabel.enabled = NO;
         self.numberOfTurnsTextField.enabled = NO;
         self.numberOfTurnsTextField.textColor = [UIColor grayColor];
+        
+        // also deactivate blue cell selection
+        [self.numberOfTurnsCell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         // if limit board size is also off, deactivate score mode
         if (!self.boardLimitSwitch.isOn) {
@@ -778,9 +547,6 @@
 
 - (void) startGame {
     // create rules, start a new game and tell the navigation controller to display it
-    
-    // dismiss the numpads first
-    [self dismissAllKeyboards];
     
     // if no turn limit, override value in the text field with maximum - if also no board limit, set turn limit to zero
     int turns = self.numberOfTurnsTextField.text.intValue;
