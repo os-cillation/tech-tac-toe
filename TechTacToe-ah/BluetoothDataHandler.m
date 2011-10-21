@@ -156,10 +156,18 @@
         Game *aGame = [Game new];
         aGame.gameData = receivedGameData;
         
-        // give the main view controller ownership, clean up and display
+        // give the main view controller ownership, clean up and display - take care of displaying unlimited boards the same way as the one on remote device
         self.mvc.currentGame = aGame;
+        if (aGame.gameData.boardWidth == 0) {
+            GameViewController *tempGameViewController = [[GameViewController alloc] initWithSize:CGSizeMake(FIELDSIZE * 7, FIELDSIZE * 7) gameData:aGame.gameData];
+            self.mvc.currentGame.gameViewController = tempGameViewController;
+            [tempGameViewController release];
+        } else {
         GameViewController *tempGameViewController = [[GameViewController alloc] initWithSize:CGSizeMake(MAX(FIELDSIZE * (self.mvc.currentGame.gameData.boardWidth + 2), FIELDSIZE * 9), MAX(FIELDSIZE * (self.mvc.currentGame.gameData.boardHeight + 2), FIELDSIZE * 9)) gameData:self.mvc.currentGame.gameData];
-        self.mvc.currentGame.gameViewController = tempGameViewController;
+            self.mvc.currentGame.gameViewController = tempGameViewController;
+            [tempGameViewController release];
+        }
+        
         
         self.mvc.currentGame.gameViewController.btDataHandler = self;
         
@@ -169,7 +177,6 @@
             [self.mvc.currentGame.gameViewController.navigationItem.rightBarButtonItem setEnabled:NO];
         }
         
-        [tempGameViewController release];
         [aGame release];
         
         [self.mvc.navigationController pushViewController:self.mvc.currentGame.gameViewController animated:YES];
