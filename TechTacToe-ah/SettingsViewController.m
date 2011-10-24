@@ -168,6 +168,11 @@
 {
     self.navigationController.navigationBar.tintColor = [UIColor grayColor];
     
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
     // check for invalid settings combinations we might have got from the picker view and correct them
     // minimum line size might change the board size:
     int value = self.minimumForLineTextField.text.intValue;
@@ -180,15 +185,10 @@
         self.boardHeightTextField.text = [NSString stringWithFormat:@"%i",value];
     }
     // (maybe already changed) board size might change the turn limit:
-    if (self.numberOfTurnsTextField.text.intValue > self.boardHeightTextField.text.intValue * self.boardWidthTextField.text.intValue) {
+    if (self.numberOfTurnsTextField.text.intValue > self.boardHeightTextField.text.intValue * self.boardWidthTextField.text.intValue && self.boardLimitSwitch.isOn) {
         self.numberOfTurnsTextField.text = [NSString stringWithFormat:@"%i", self.boardHeightTextField.text.intValue * self.boardWidthTextField.text.intValue];
     }
     
-    [super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
     [super viewDidAppear:animated];
 }
 
