@@ -223,8 +223,8 @@
 {
     self = [super init];
     
-    _bluePointsLastTurn = 0;
-    _redPointsLastTurn = 0;
+    _bluePointsLastTurn = -1;
+    _redPointsLastTurn = -1;
     
     self.fields = [NSMutableDictionary dictionaryWithDictionary:[aDecoder decodeObjectForKey:@"field data"]];
     _bluePlayerTurn = [aDecoder decodeBoolForKey:@"blue player turn"];
@@ -252,7 +252,7 @@
     [aCoder encodeObject:_fields forKey:@"field data"];
     [aCoder encodeBool:_bluePlayerTurn forKey:@"blue player turn"];
     [aCoder encodeBool:_gameOver forKey:@"game over"];
-    [aCoder encodeBool:_blueDidLeadOnPreviousTurn forKey:@"blue did lead on previous turn"];
+    [aCoder encodeBool:_bluePoints > _redPoints forKey:@"blue did lead on previous turn"];
     [aCoder encodeBool:_blueResigned forKey:@"blue resigned"];
     [aCoder encodeBool:_redResigned forKey:@"red resigned"];
     [aCoder encodeBool:_localPlayerBlue forKey:@"local player blue"];
@@ -602,14 +602,14 @@
     }
     
     // trigger game over if conditions are met:
-    // in survival mode: blue scored last turn and red did not score (enough) to counter, red did score and it was no counter, blue did score and rules.doesAllowAdditionalRedTurn is NO, # of maximum turns is met and no one has won
+    // not in score mode: blue scored last turn and red did not score (enough) to counter, red did score and it was no counter, blue did score and rules.doesAllowAdditionalRedTurn is NO, # of maximum turns is met and no one has won
     // in classic mode: see survival mode w/o additional red turn and a maximum of 9 turns
-    // in non-survival mode: # of maximum turns is met - determine winner by points
+    // in score mode: # of maximum turns is met - determine winner by points
     
     BOOL redLeads = self.redPoints > self.bluePoints;
     BOOL blueLeads = self.bluePoints > self.redPoints;
-    // only check if not zero so it works when game was loaded from archive
-    if (self.bluePointsLastTurn)
+    // only check if not negative one so it works when game was loaded from archive
+    if (self.bluePointsLastTurn != -1)
         self.blueDidLeadOnPreviousTurn = self.bluePointsLastTurn > self.redPointsLastTurn;
     BOOL lastTurn = self.numberOfTurn == self.rules.maxNumberOfTurns;
     
