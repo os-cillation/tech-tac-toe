@@ -6,6 +6,8 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+// TODO (low priority): remove the rest of the old approach with textfields: replace textfields and cells with Value1 style cells, rewrite the whole class to use cell identifiers instead of a .xib file, removing memory overhead and speeding up the settings menu a bit
+
 #import "SettingsViewController.h"
 #import "SettingsPickerViewController.h"
 

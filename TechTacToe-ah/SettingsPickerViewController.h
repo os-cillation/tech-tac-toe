@@ -18,12 +18,12 @@ typedef enum {
 } pickerID;
 
 @interface SettingsPickerViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource> {
-    UILabel *pickerName;
-    UIPickerView *picker;
-    int pickerID;
-    NSMutableArray *dataArray;
-    SettingsViewController *svc;
-    NSNumber *selectedValue;
+    UILabel *pickerName; // displays the selected cell name of the settings view (uses same localization string as cell)
+    UIPickerView *picker; // the main object of this view
+    int pickerID; // can be a value declared in the enum and identifies the cell of the settings view this picker corresponds to
+    NSMutableArray *dataArray; // contains all valid numbers of our current picker
+    SettingsViewController *svc; // the reference to the settings view - we change the value the picker represents with this
+    NSNumber *selectedValue; // the currently selected value of the picker
 }
 
 @property (nonatomic, retain) IBOutlet UILabel *pickerName;
@@ -33,6 +33,7 @@ typedef enum {
 @property (nonatomic) int pickerID;
 @property (nonatomic, retain) NSNumber *selectedValue;
 
+// custom init method
 - (SettingsPickerViewController*) initWithPickerID:(int)pickerIdentity fromSettingsView:(SettingsViewController*)settings;
 
 @end

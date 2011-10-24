@@ -17,6 +17,8 @@
 @synthesize pickerID=_pickerID;
 @synthesize selectedValue=_selectedValue;
 
+#pragma mark - Initializer and memory management
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -37,6 +39,14 @@
     return self;
 }
 
+- (void)dealloc {
+    [pickerName release];
+    [picker release];
+    [_dataArray release];
+    [_selectedValue release];
+    [super dealloc];
+}
+
 - (void)didReceiveMemoryWarning
 {
     // Releases the view if it doesn't have a superview.
@@ -44,6 +54,8 @@
     
     // Release any cached data, images, etc that aren't in use.
 }
+
+#pragma mark - Picker view data source
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
@@ -60,6 +72,8 @@
     NSNumber *number = [self.dataArray objectAtIndex:row];
     return number.description;
 }
+
+#pragma mark Picker view delegate
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
@@ -173,11 +187,4 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (void)dealloc {
-    [pickerName release];
-    [picker release];
-    [_dataArray release];
-    [_selectedValue release];
-    [super dealloc];
-}
 @end
