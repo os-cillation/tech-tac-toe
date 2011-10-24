@@ -424,7 +424,11 @@
         
         if ((!self.gameData.hasSelection && !fieldIsFree) || sameLocation) {
             if ([needsDrawing count] > 0) 
-                [self changeGameFields:needsDrawing orDrawAll:NO];            
+                [self changeGameFields:needsDrawing orDrawAll:NO];
+            // then again, if we tap twice at the same location and it was a marked field, then commit the turn
+            if (sameLocation && (field.status == BLUE_MARKED || field.status == RED_MARKED)) {
+                [self commitTurn];
+            }
             return;
         }
         

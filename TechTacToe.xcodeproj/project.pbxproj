@@ -130,11 +130,11 @@
 		E171B833142776ED0068868A /* ImagePaths.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ImagePaths.plist; sourceTree = "<group>"; };
 		E17BB52A1414E44700DFBCB5 /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameViewController.h; sourceTree = "<group>"; };
 		E17BB52B1414E44700DFBCB5 /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameViewController.m; sourceTree = "<group>"; };
-		E1806A741410D6720050493D /* TechTacToe-ah.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TechTacToe-ah.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1806A741410D6720050493D /* TechTacToe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TechTacToe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1806A781410D6720050493D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E1806A7A1410D6720050493D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E1806A7C1410D6720050493D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		E1806A801410D6720050493D /* TechTacToe-ah-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TechTacToe-ah-Info.plist"; sourceTree = "<group>"; };
+		E1806A801410D6720050493D /* TechTacToe-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TechTacToe-Info.plist"; sourceTree = "<group>"; };
 		E1806A821410D6720050493D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E1806A841410D6720050493D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E1806A861410D6720050493D /* TechTacToe-ah-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TechTacToe-ah-Prefix.pch"; sourceTree = "<group>"; };
@@ -269,7 +269,7 @@
 		E1806A751410D6720050493D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E1806A741410D6720050493D /* TechTacToe-ah.app */,
+				E1806A741410D6720050493D /* TechTacToe.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -298,7 +298,7 @@
 			isa = PBXGroup;
 			children = (
 				CE7EF956143602C700CA8DB2 /* Images */,
-				E1806A801410D6720050493D /* TechTacToe-ah-Info.plist */,
+				E1806A801410D6720050493D /* TechTacToe-Info.plist */,
 				E1806A811410D6720050493D /* InfoPlist.strings */,
 				E1806A841410D6720050493D /* main.m */,
 				E1806A861410D6720050493D /* TechTacToe-ah-Prefix.pch */,
@@ -311,9 +311,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E1806A731410D6720050493D /* TechTacToe-ah */ = {
+		E1806A731410D6720050493D /* TechTacToe */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E1806A8C1410D6720050493D /* Build configuration list for PBXNativeTarget "TechTacToe-ah" */;
+			buildConfigurationList = E1806A8C1410D6720050493D /* Build configuration list for PBXNativeTarget "TechTacToe" */;
 			buildPhases = (
 				E1806A701410D6720050493D /* Sources */,
 				E1806A711410D6720050493D /* Frameworks */,
@@ -324,9 +324,9 @@
 			);
 			dependencies = (
 			);
-			name = "TechTacToe-ah";
+			name = TechTacToe;
 			productName = "TechTacToe-ah";
-			productReference = E1806A741410D6720050493D /* TechTacToe-ah.app */;
+			productReference = E1806A741410D6720050493D /* TechTacToe.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -337,7 +337,7 @@
 			attributes = {
 				LastUpgradeCheck = 0420;
 			};
-			buildConfigurationList = E1806A6E1410D6720050493D /* Build configuration list for PBXProject "TechTacToe-ah" */;
+			buildConfigurationList = E1806A6E1410D6720050493D /* Build configuration list for PBXProject "TechTacToe" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -350,7 +350,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E1806A731410D6720050493D /* TechTacToe-ah */,
+				E1806A731410D6720050493D /* TechTacToe */,
 			);
 		};
 /* End PBXProject section */
@@ -415,7 +415,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "plist=\"TechTacToe-ah/TechTacToe-ah-Info.plist\"\nsvn update\nrev=$(svn info | grep '^Revision:' | sed -e 's/^Revision: //')\n/usr/libexec/PlistBuddy -c \"Set :BuildNumber $rev\" \"$plist\"";
+			shellScript = "plist=\"TechTacToe-ah/TechTacToe-Info.plist\"\nsvn update\nrev=$(svn info | grep '^Revision:' | sed -e 's/^Revision: //')\n/usr/libexec/PlistBuddy -c \"Set :BuildNumber $rev\" \"$plist\"";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -521,9 +521,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TechTacToe-ah/TechTacToe-ah-Prefix.pch";
-				INFOPLIST_FILE = "TechTacToe-ah/TechTacToe-ah-Info.plist";
+				INFOPLIST_FILE = "TechTacToe-ah/TechTacToe-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				PRODUCT_NAME = "TechTacToe-ah";
+				PRODUCT_NAME = TechTacToe;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -535,9 +535,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TechTacToe-ah/TechTacToe-ah-Prefix.pch";
-				INFOPLIST_FILE = "TechTacToe-ah/TechTacToe-ah-Info.plist";
+				INFOPLIST_FILE = "TechTacToe-ah/TechTacToe-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				PRODUCT_NAME = "TechTacToe-ah";
+				PRODUCT_NAME = TechTacToe;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -546,7 +546,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E1806A6E1410D6720050493D /* Build configuration list for PBXProject "TechTacToe-ah" */ = {
+		E1806A6E1410D6720050493D /* Build configuration list for PBXProject "TechTacToe" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E1806A8A1410D6720050493D /* Debug */,
@@ -555,7 +555,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E1806A8C1410D6720050493D /* Build configuration list for PBXNativeTarget "TechTacToe-ah" */ = {
+		E1806A8C1410D6720050493D /* Build configuration list for PBXNativeTarget "TechTacToe" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E1806A8D1410D6720050493D /* Debug */,

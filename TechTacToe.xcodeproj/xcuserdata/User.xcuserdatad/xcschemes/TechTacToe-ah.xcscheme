@@ -15,8 +15,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E1806A731410D6720050493D"
                BuildableName = "TechTacToe-ah.app"
-               BlueprintName = "TechTacToe-ah"
-               ReferencedContainer = "container:TechTacToe-ah.xcodeproj">
+               BlueprintName = "TechTacToe"
+               ReferencedContainer = "container:TechTacToe.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,8 +33,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E1806A731410D6720050493D"
             BuildableName = "TechTacToe-ah.app"
-            BlueprintName = "TechTacToe-ah"
-            ReferencedContainer = "container:TechTacToe-ah.xcodeproj">
+            BlueprintName = "TechTacToe"
+            ReferencedContainer = "container:TechTacToe.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -51,8 +51,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E1806A731410D6720050493D"
             BuildableName = "TechTacToe-ah.app"
-            BlueprintName = "TechTacToe-ah"
-            ReferencedContainer = "container:TechTacToe-ah.xcodeproj">
+            BlueprintName = "TechTacToe"
+            ReferencedContainer = "container:TechTacToe.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -69,8 +69,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E1806A731410D6720050493D"
             BuildableName = "TechTacToe-ah.app"
-            BlueprintName = "TechTacToe-ah"
-            ReferencedContainer = "container:TechTacToe-ah.xcodeproj">
+            BlueprintName = "TechTacToe"
+            ReferencedContainer = "container:TechTacToe.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
