@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "GameData.h"
 #import "RulesViewController.h"
+#import "GameAI.h"
 
 // change this to have smaller (faster, less memory consuming) or bigger (prettier) fields - between 40 and 100 should work - do only use integer values!
 #define FIELDSIZE 50
@@ -49,6 +50,7 @@
 @property (nonatomic, retain) UIActivityIndicatorView *activityIndicator;
 
 // creates a new gamefield - if no field data is present a new field will be generated; if no second player is set, the game will use hotseat mode - don't use the standard init
+//gameAI is nil if AI is not activated
 -(GameViewController*) initWithSize:(CGSize) size gameData:(GameData*) data;
 
 // will draw over existing field at point or draw the entire board by data

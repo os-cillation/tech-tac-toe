@@ -10,7 +10,7 @@
 
 @implementation Field
 
-@synthesize positionX, positionY, status;
+@synthesize positionX, positionY, status, priority;
 
 #pragma mark - Initializer and memory management
 
@@ -19,6 +19,8 @@
     positionX = x;
     positionY = y;
     status = stat;
+    //priority should be 0 unless changed by AI
+    priority = 0;
     return self;
 }
 

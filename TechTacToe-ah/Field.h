@@ -31,5 +31,7 @@ typedef enum {
 @property int positionX;
 @property int positionY;
 @property int status;
+//used by AI to determine which field to choose
+@property int priority;
 
 @end

@@ -87,6 +87,7 @@
         self.gameData = data;
         
         self.currentSize = size;
+        
     }
     return self;
 }
@@ -391,7 +392,7 @@
 {
     // get the location of the tap in the playing field
     CGPoint tapLocation = [tapRecognizer locationInView:self.containerView];
-    
+
     // recalculate the location to get the point of origin of the field for the gameData
     tapLocation = CGPointMake((int)tapLocation.x / FIELDSIZE, (int)tapLocation.y / FIELDSIZE);
     
@@ -503,7 +504,8 @@
         
         // compare the status of the field with the active player (redundant check for security)        
         // everything that should be executed if a turn is successfully committed should be in here
-        if ((fieldToCommit.status == BLUE_MARKED && self.gameData.isBluePlayerTurn) || (fieldToCommit.status == RED_MARKED && !self.gameData.isBluePlayerTurn)) {
+        if ((fieldToCommit.status == BLUE_MARKED && self.gameData.isBluePlayerTurn) || (fieldToCommit.status == RED_MARKED && !self.gameData.isBluePlayerTurn))
+        {
             
             // it is a valid turn, so we need to send data on a Bluetooth game
             validTurn = YES;
@@ -535,6 +537,50 @@
             
             // consult the rules (which will add points - if any and switch active player), add every field that needs drawing because it now belongs to a line to our array - will change self.isGameOver to YES on winning conditions
             [needsDrawing addObjectsFromArray:[self.gameData consultRulesForFieldAtPoint:position]];
+            
+            // let the gameData know a turn has been made
+            self.gameData.numberOfTurn ++;
+            
+            // reset position of last marked field to normally unattainable value to avoid having the wrong field after resizing at the coordinates
+            self.gameData.positionOfLastMarkedFieldX = -1; 
+            self.gameData.positionOfLastMarkedFieldY = -1;
+            
+            //call AI if player commited valid turn
+            //center view to field computer opponent choose if not resigned
+            if(self.gameData.gameAI)
+            {
+                if (!self.gameData.isBluePlayerTurn && self.gameData.gameAI.isRedPlayer)  //AI is red player
+                {
+                    CGPoint *playerPosition = &position;
+                    CGPoint computerPosition = [self.gameData.gameAI callAI:playerPosition];
+                    
+                    if (!self.gameData.redResigned && !(self.gameData.boardHeight<7 || self.gameData.boardWidth < 7))
+                    {
+                        CGFloat zoom = self.gameScrollView.zoomScale;
+                            
+                        CGRect rectForDrawing = CGRectMake(zoom * (computerPosition.x * FIELDSIZE) - 3 * zoom * FIELDSIZE,zoom *(computerPosition.y * FIELDSIZE) - 3 * zoom * FIELDSIZE, zoom * 7 * FIELDSIZE, zoom * 7 * FIELDSIZE); 
+                            
+                        [self.gameScrollView scrollRectToVisible:rectForDrawing animated:YES];
+                    }
+                    [self commitTurn];
+                }
+                else if(self.gameData.isBluePlayerTurn && !self.gameData.gameAI.isRedPlayer) //AI is blue player
+                {
+                    CGPoint *playerPosition = &position;
+                    CGPoint computerPosition = [self.gameData.gameAI callAI:playerPosition];
+                    
+                    if (!self.gameData.blueResigned && !(self.gameData.boardHeight<7 || self.gameData.boardWidth < 7))
+                    {
+                        CGFloat zoom = self.gameScrollView.zoomScale;
+                        
+                        CGRect rectForDrawing = CGRectMake(zoom * (computerPosition.x * FIELDSIZE) - 3 * zoom * FIELDSIZE,zoom * (computerPosition.y * FIELDSIZE) - 3 * zoom * FIELDSIZE, zoom * 7 * FIELDSIZE, zoom * 7 * FIELDSIZE);
+                        
+                        [self.gameScrollView scrollRectToVisible:rectForDrawing animated:YES];
+                        
+                    }
+                    [self commitTurn];
+                }
+            }
             
             // we need these to calculate the new offset
             CGPoint offset = self.gameScrollView.contentOffset;
@@ -624,21 +670,15 @@
                 [self.navigationItem.rightBarButtonItem setEnabled:NO];
             }
             
-            // reset position of last marked field to normally unattainable value to avoid having the wrong field after resizing at the coordinates
-            self.gameData.positionOfLastMarkedFieldX = -1; 
-            self.gameData.positionOfLastMarkedFieldY = -1;
-            
             // check for game over - on game over, call cleanUpAfterGameOver and return and don't bother with updating labels or incrementing turn numbers
             if (self.gameData.isGameOver) {
                 [self cleanUpAfterGameOver];
                 return;
             }
-            
-            // let the gameData know a turn has been made
-            self.gameData.numberOfTurn ++;
-            
+                        
             // update the game and turn information
             [self updateLabels];
+            
         }
     }
 }
@@ -963,6 +1003,16 @@
     // if the view did get unloaded (e.g. by a memory warning) and there was a finished game displayed before, immediately clean up on reloading
     if (self.gameData.isGameOver)
         [self cleanUpAfterGameOver];
+
+    //if AI has first commit AI needs to be called here
+    if(self.gameData.gameAI)
+    {
+        //callAI checks here if its the player's turn or not
+        [self.gameData.gameAI callAI:nil];
+        
+        //commit turn
+        [self commitTurn];
+    }
 }
 
 /*

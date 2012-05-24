@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A7F0336C15662CB400EAEB99 /* GameAI.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F0336B15662CB400EAEB99 /* GameAI.m */; };
 		CE14B906144705C8003F3516 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE14B905144705C8003F3516 /* GameKit.framework */; };
 		CE27B563144596AB005BAA35 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE27B562144596AB005BAA35 /* Default@2x.png */; };
 		CE320EDA143F226500A688AB /* LoadDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE320ED8143F226500A688AB /* LoadDetailViewController.m */; };
@@ -66,6 +67,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A7F0336A15662CB400EAEB99 /* GameAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameAI.h; sourceTree = "<group>"; };
+		A7F0336B15662CB400EAEB99 /* GameAI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameAI.m; sourceTree = "<group>"; };
 		CE14B905144705C8003F3516 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		CE27B562144596AB005BAA35 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "../Default@2x.png"; sourceTree = "<group>"; };
 		CE320ED7143F226500A688AB /* LoadDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadDetailViewController.h; sourceTree = "<group>"; };
@@ -240,6 +243,8 @@
 				E16FA3B0141DF44E001D2F09 /* Field.m */,
 				E170BA5B14232F5C00A2F6BF /* Rules.h */,
 				E170BA5C14232F5C00A2F6BF /* Rules.m */,
+				A7F0336A15662CB400EAEB99 /* GameAI.h */,
+				A7F0336B15662CB400EAEB99 /* GameAI.m */,
 			);
 			name = "Data Objects";
 			sourceTree = "<group>";
@@ -440,6 +445,7 @@
 				CE80560A1446E2AE00CE90C8 /* AboutViewController.m in Sources */,
 				CE8168F414485DD9009A637F /* BluetoothDataHandler.m in Sources */,
 				CEC6C64A145187D00089827D /* SettingsPickerViewController.m in Sources */,
+				A7F0336C15662CB400EAEB99 /* GameAI.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,7 +492,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -506,7 +512,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -518,11 +524,15 @@
 		E1806A8D1410D6720050493D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					armv6,
+					armv7,
+				);
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TechTacToe-ah/TechTacToe-ah-Prefix.pch";
 				INFOPLIST_FILE = "TechTacToe-ah/TechTacToe-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				PRODUCT_NAME = TechTacToe;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -533,12 +543,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TechTacToe-ah/TechTacToe-ah-Prefix.pch";
 				INFOPLIST_FILE = "TechTacToe-ah/TechTacToe-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				PRODUCT_NAME = TechTacToe;
 				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -553,7 +565,7 @@
 				E1806A8B1410D6720050493D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		E1806A8C1410D6720050493D /* Build configuration list for PBXNativeTarget "TechTacToe" */ = {
 			isa = XCConfigurationList;
@@ -562,7 +574,7 @@
 				E1806A8E1410D6720050493D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

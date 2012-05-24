@@ -10,6 +10,8 @@
 #import "Field.h"
 #import "Rules.h"
 
+@class GameAI;
+
 // game modes
 typedef enum {
     DEFAULT_GAME,
@@ -46,6 +48,7 @@ typedef enum {
 @property (nonatomic, retain) Rules *rules;
 @property (nonatomic) int boardWidth, boardHeight;
 @property (nonatomic, getter = didHitBoardLimit) BOOL hitBoardLimit;
+@property (nonatomic, retain) GameAI *gameAI;
 
 // creates a new set of fields for a new game
 -(GameData*)initEmptyInMode:(int)gameMode withBoardSize:(CGSize)sizeOrNil;

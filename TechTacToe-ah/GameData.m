@@ -7,6 +7,7 @@
 //
 
 #import "GameData.h"
+#import "GameAI.h"
 
 @implementation GameData
 
@@ -30,6 +31,7 @@
 @synthesize boardWidth=_boardWidth;
 @synthesize boardHeight=_boardHeight;
 @synthesize hitBoardLimit=_hitBoardLimit;
+@synthesize gameAI;
 
 #pragma mark - Initializer and memory management
 
@@ -214,6 +216,7 @@
 {
     [_fields release];
     [_rules release];
+    [self.gameAI release];
     [super dealloc];
 }
 
@@ -244,6 +247,9 @@
     _boardHeight = [aDecoder decodeIntForKey:@"board height"];
     _hitBoardLimit = [aDecoder decodeBoolForKey:@"hit board limit"];
     self.rules = [aDecoder decodeObjectForKey:@"rules"];
+    self.gameAI = [aDecoder decodeObjectForKey:@"gameAI"];
+    self.gameAI.gameData = self;
+    
     return self;
 }
 
@@ -267,6 +273,7 @@
     [aCoder encodeInt:_boardHeight forKey:@"board height"];
     [aCoder encodeBool:_hitBoardLimit forKey:@"hit board limit"];
     [aCoder encodeObject:_rules forKey:@"rules"];
+    [aCoder encodeObject:self.gameAI forKey:@"gameAI"];
 
 }
 
@@ -589,6 +596,7 @@
         }
         self.bluePoints += pointsToAdd;
         self.bluePlayerTurn = NO;
+        
     } else {
         if (pointsToAdd > 0 ) {
             [self changeDataAtPoint:point withStatus:RED_LINE];
@@ -671,5 +679,4 @@
     
     return success;
 }
-
 @end

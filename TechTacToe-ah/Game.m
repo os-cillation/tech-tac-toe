@@ -24,6 +24,23 @@
         [localGameData release];
     }
     Rules *rules;
+    
+    //init AI //TODO get values from settings and only initialize if needed
+    if(YES)
+    {
+        GameAI *tempGameAI = [[GameAI alloc] init];
+        tempGameAI.isRedPlayer = YES;
+        tempGameAI.isActivated = YES;
+        tempGameAI.gameData = self.gameData;
+        tempGameAI.strength = 4;
+        self.gameData.gameAI = tempGameAI;
+        [tempGameAI release];
+    }
+    else
+    {
+        self.gameData.gameAI = Nil;
+    }
+    
     if (mode == TICTACTOE) {
         // init new classic game
         
