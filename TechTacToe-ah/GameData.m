@@ -216,7 +216,7 @@
 {
     [_fields release];
     [_rules release];
-    [self.gameAI release];
+    [gameAI release];
     [super dealloc];
 }
 

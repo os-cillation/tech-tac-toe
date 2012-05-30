@@ -56,7 +56,7 @@
 @property (nonatomic, retain) IBOutlet UITableViewCell *reuseLineCell;
 @property (nonatomic, retain) IBOutlet UISwitch *reuseLineSwitch;
 @property (nonatomic, retain) IBOutlet UITableViewCell *playerSelectionCell;
-@property (nonatomic, retain) IBOutlet UISwitch *playerSelectionSwitch;
+@property (nonatomic, retain) IBOutlet UITextField *playerColorTextField;
 
 @property (nonatomic, assign) MainViewController *mvc;
 

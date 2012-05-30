@@ -35,6 +35,11 @@
 @synthesize backToMenuWaitView=_backToMenuWaitView;
 @synthesize backToMenuAckView=_backToMenuAckView;
 @synthesize activityIndicator=_activityIndicator;
+@synthesize needsExtraRedraw;
+@synthesize turnOfAI;
+@synthesize positionToMark;
+@synthesize redMarkedLastTurn;
+@synthesize blueMarkedLastTurn;
 
 #pragma mark - Initializer and memory management
 
@@ -80,6 +85,12 @@
         NSString *blueFieldLinePath = [plist objectForKey:@"blue line field"];
         self.blueFieldLine = [UIImage imageNamed:blueFieldLinePath];
         
+        NSString *blueMarkedLastTurnPath = [plist objectForKey:@"blue marked last turn"];
+        self.blueMarkedLastTurn = [UIImage imageNamed:blueMarkedLastTurnPath];
+        
+        NSString *redMarkedLastTurnPath = [plist objectForKey:@"red marked last turn"];
+        self.redMarkedLastTurn = [UIImage imageNamed:redMarkedLastTurnPath];
+        
         // cleanup plist
         [plist release];
         
@@ -115,6 +126,8 @@
     [_backToMenuWaitView release];
     [_backToMenuAckView release];
     [_activityIndicator release];
+    [redMarkedLastTurn release];
+    [blueMarkedLastTurn release];
     
     // release the image context - if we don't do this, a big chunk of memory will leak if we go back to menu and start a new game
     UIGraphicsEndImageContext();
@@ -165,7 +178,7 @@
                 self.gameData.positionOfLastMarkedFieldX = -1;
                 self.gameData.positionOfLastMarkedFieldY = -1;
                 // draw the field we deselected
-                [self changeGameFields:needsDrawing orDrawAll:NO];
+                [self changeGameFields:needsDrawing orDrawAll:NO orSetMarkForLastTurn:NO];
             }
             // at last, do the resigning and declare game over
             [self.gameData resignGame];
@@ -196,7 +209,7 @@
             self.gameData.positionOfLastMarkedFieldX = -1;
             self.gameData.positionOfLastMarkedFieldY = -1;
             // draw the field we deselected
-            [self changeGameFields:needsDrawing orDrawAll:NO];
+            [self changeGameFields:needsDrawing orDrawAll:NO orSetMarkForLastTurn:NO];
         }
         NSString *filename = [NSDateFormatter localizedStringFromDate:[NSDate date] dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterShortStyle];
         if([self.gameData saveGameToFile:filename]) {
@@ -261,7 +274,7 @@
                 self.gameData.positionOfLastMarkedFieldX = -1;
                 self.gameData.positionOfLastMarkedFieldY = -1;
                 // draw the field we deselected
-                [self changeGameFields:needsDrawing orDrawAll:NO];
+                [self changeGameFields:needsDrawing orDrawAll:NO orSetMarkForLastTurn:NO];
             }
             // at last, do the resigning and declare game over
             [self.gameData resignGame];
@@ -312,7 +325,7 @@
 
 #pragma mark - Drawing, selecting and resizing
 
--(void) changeGameFields:(NSArray *)fieldsOrNil orDrawAll:(BOOL)redrawEverything
+-(void) changeGameFields:(NSArray *)fieldsOrNil orDrawAll:(BOOL)redrawEverything orSetMarkForLastTurn:(BOOL)lastTurnMark
 {
     // will be called if turn was committed, a tile was selected or deselected or multiple times if the game field needs more empty fields. point has to be a valid entry in gameData (i.e. a point where a field was actually drawn), multiplied by the FIELDSIZE or needs to be at a correct location for new, empty fields to be created
     
@@ -340,6 +353,7 @@
         fieldsOrNil = [self.gameData.fields allValues];
     
     for (Field* currentField in fieldsOrNil) {
+        
         positionXForDrawing = currentField.positionX * FIELDSIZE;
         positionYForDrawing = currentField.positionY * FIELDSIZE;
         
@@ -351,7 +365,14 @@
                 [self.emptyField drawInRect:CGRectMake(positionXForDrawing, positionYForDrawing, FIELDSIZE, FIELDSIZE)];
                 break;
             case RED_FIELD:
-                [self.redField drawInRect:CGRectMake(positionXForDrawing, positionYForDrawing, FIELDSIZE, FIELDSIZE)];
+                if (lastTurnMark)
+                {
+                    [self.redMarkedLastTurn drawInRect:CGRectMake(positionXForDrawing, positionYForDrawing, FIELDSIZE, FIELDSIZE)];
+                }
+                else
+                {
+                    [self.redField drawInRect:CGRectMake(positionXForDrawing, positionYForDrawing, FIELDSIZE, FIELDSIZE)];
+                }
                 break;
             case RED_MARKED:
                 [self.redFieldMarked drawInRect:CGRectMake(positionXForDrawing, positionYForDrawing, FIELDSIZE, FIELDSIZE)];
@@ -360,7 +381,14 @@
                 [self.redFieldLine drawInRect:CGRectMake(positionXForDrawing, positionYForDrawing, FIELDSIZE, FIELDSIZE)];
                 break;
             case BLUE_FIELD:
-                [self.blueField drawInRect:CGRectMake(positionXForDrawing, positionYForDrawing, FIELDSIZE, FIELDSIZE)]; 
+                if (lastTurnMark)
+                {
+                    [self.blueMarkedLastTurn drawInRect:CGRectMake(positionXForDrawing, positionYForDrawing, FIELDSIZE, FIELDSIZE)];
+                }
+                else
+                {
+                    [self.blueField drawInRect:CGRectMake(positionXForDrawing, positionYForDrawing, FIELDSIZE, FIELDSIZE)]; 
+                }
                 break;
             case BLUE_MARKED:
                 [self.blueFieldMarked drawInRect:CGRectMake(positionXForDrawing, positionYForDrawing, FIELDSIZE, FIELDSIZE)];
@@ -372,6 +400,7 @@
                 break;
         }
     }
+    
     // assign the changed image
     self.lastDrawn = UIGraphicsGetImageFromCurrentImageContext();
     
@@ -425,7 +454,7 @@
         
         if ((!self.gameData.hasSelection && !fieldIsFree) || sameLocation) {
             if ([needsDrawing count] > 0) 
-                [self changeGameFields:needsDrawing orDrawAll:NO];
+                [self changeGameFields:needsDrawing orDrawAll:NO orSetMarkForLastTurn:NO];
             // then again, if we tap twice at the same location and it was a marked field, then commit the turn
             if (sameLocation && (field.status == BLUE_MARKED || field.status == RED_MARKED)) {
                 [self commitTurn];
@@ -448,7 +477,7 @@
         }
     }
     // give the array with the changes to the drawing routine
-    [self changeGameFields:needsDrawing orDrawAll:NO];
+    [self changeGameFields:needsDrawing orDrawAll:NO orSetMarkForLastTurn:NO];
 }
 
 -(void)resizeBoard
@@ -538,6 +567,24 @@
             // consult the rules (which will add points - if any and switch active player), add every field that needs drawing because it now belongs to a line to our array - will change self.isGameOver to YES on winning conditions
             [needsDrawing addObjectsFromArray:[self.gameData consultRulesForFieldAtPoint:position]];
             
+            //mark position to show where last turn was placed
+            //only mark AI position if AI is used
+            bool markLastTurn = NO;
+            if (!self.gameData.gameAI || (self.gameData.gameAI && !self.turnOfAI) )
+            {
+                if (positionToMark.x > -1)
+                {
+                    //demark old field
+                    NSString *key = [NSString stringWithFormat:@"%i, %i",(int)self.positionToMark.x,(int)self.positionToMark.y];
+                    Field *markMe = [self.gameData.fields objectForKey:key];
+                    NSMutableArray *needsMarking = [[NSMutableArray alloc] init ];
+                    [needsMarking addObject:markMe];
+                    [self changeGameFields:needsMarking orDrawAll:NO orSetMarkForLastTurn:NO];
+                    [needsMarking release];
+                }
+                self.positionToMark = position;
+                markLastTurn = YES;
+            }            
             // let the gameData know a turn has been made
             self.gameData.numberOfTurn ++;
             
@@ -547,12 +594,14 @@
             
             //call AI if player commited valid turn
             //center view to field computer opponent choose if not resigned
+            
             if(self.gameData.gameAI)
             {
-                if (!self.gameData.isBluePlayerTurn && self.gameData.gameAI.isRedPlayer)  //AI is red player
+                if (!self.gameData.isBluePlayerTurn && self.gameData.gameAI.isRedPlayer && !self.gameData.isGameOver)  //AI is red player
                 {
                     CGPoint *playerPosition = &position;
                     CGPoint computerPosition = [self.gameData.gameAI callAI:playerPosition];
+                    self.positionToMark = computerPosition;
                     
                     if (!self.gameData.redResigned && !(self.gameData.boardHeight<7 || self.gameData.boardWidth < 7))
                     {
@@ -562,12 +611,15 @@
                             
                         [self.gameScrollView scrollRectToVisible:rectForDrawing animated:YES];
                     }
+                    self.turnOfAI = YES;
                     [self commitTurn];
+                    self.turnOfAI = NO;
                 }
-                else if(self.gameData.isBluePlayerTurn && !self.gameData.gameAI.isRedPlayer) //AI is blue player
+                else if(self.gameData.isBluePlayerTurn && !self.gameData.gameAI.isRedPlayer && !self.gameData.isGameOver) //AI is blue player
                 {
                     CGPoint *playerPosition = &position;
                     CGPoint computerPosition = [self.gameData.gameAI callAI:playerPosition];
+                    self.positionToMark = computerPosition;
                     
                     if (!self.gameData.blueResigned && !(self.gameData.boardHeight<7 || self.gameData.boardWidth < 7))
                     {
@@ -578,7 +630,9 @@
                         [self.gameScrollView scrollRectToVisible:rectForDrawing animated:YES];
                         
                     }
+                    self.turnOfAI = YES;
                     [self commitTurn];
+                    self.turnOfAI = NO;
                 }
             }
             
@@ -601,6 +655,24 @@
                 if (needsResizeMoveX && needsResizeMoveY) {
                     self.currentSize = CGSizeMake((self.currentSize.width + (3 * FIELDSIZE) - positionForDrawing.x), (self.currentSize.height + (3 * FIELDSIZE) - positionForDrawing.y));
                     [self.gameData moveGameFieldsByHorizontal:3 - position.x byVertical:3 - position.y];
+                    
+                    //update positionToMark
+                    if (self.gameData.gameAI)
+                    {
+                        if (self.turnOfAI)
+                        {
+                            self.positionToMark = CGPointMake(3, 3);
+                        }
+                        else
+                        {
+                            self.positionToMark = CGPointMake(self.positionToMark.x - position.x + 3, self.positionToMark.y - position.y +3);
+                        }
+                    }
+                    else
+                    {
+                        self.positionToMark = CGPointMake(3, 3);
+                    }
+                    
                     offset.x += zoom * (3 * FIELDSIZE - positionForDrawing.x);
                     offset.y += zoom * (3 * FIELDSIZE - positionForDrawing.y);
                     needsCompleteRedraw = YES;
@@ -608,12 +680,48 @@
                 else if (needsResizeMoveX) {
                     self.currentSize = CGSizeMake((self.currentSize.width + (3 * FIELDSIZE) - positionForDrawing.x), self.currentSize.height);
                     [self.gameData moveGameFieldsByHorizontal:3 - position.x byVertical:0];
+                     
+                    //update positionToMark
+                    if (self.gameData.gameAI)
+                    {
+                        if (self.turnOfAI)
+                        {
+                            self.positionToMark = CGPointMake(3, self.positionToMark.y);
+                        }
+                        else
+                        {
+                            self.positionToMark = CGPointMake(self.self.positionToMark.x - position.x + 3, self.positionToMark.y);
+                        }
+                    }
+                    else
+                    {
+                        self.positionToMark = CGPointMake(3, self.positionToMark.y);
+                    }
+                    
                     offset.x += zoom * (3 * FIELDSIZE - positionForDrawing.x);
                     needsCompleteRedraw = YES;
                 } 
                 else if (needsResizeMoveY) {
                     self.currentSize = CGSizeMake(self.currentSize.width, (self.currentSize.height + (3 * FIELDSIZE) - positionForDrawing.y));
                     [self.gameData moveGameFieldsByHorizontal:0 byVertical:3 - position.y];
+                     
+                    //update positionToMark
+                    if (self.gameData.gameAI)
+                    {
+                        if (self.turnOfAI)
+                        {
+                            self.positionToMark = CGPointMake(self.positionToMark.x, 3);
+                        }
+                        else
+                        {
+                            self.positionToMark = CGPointMake(self.positionToMark.x, self.positionToMark.y - position.y +3);
+                        }
+                    }
+                    else
+                    {
+                        self.positionToMark = CGPointMake(self.positionToMark.x, 3);
+                    }
+                    
                     offset.y += zoom * (3 * FIELDSIZE - positionForDrawing.y);
                     needsCompleteRedraw = YES;
                 }
@@ -654,12 +762,31 @@
             if (needsCompleteRedraw) {
                 // resize, draw everything
                 [self resizeBoard];
-                [self changeGameFields:nil orDrawAll:YES];
+                [self changeGameFields:nil orDrawAll:YES orSetMarkForLastTurn:NO];
+                if (self.turnOfAI)
+                {
+                    self.needsExtraRedraw = YES;
+                }
                 // set the new offset AFTER the resizing and drawing for it to be correct
                 [self.gameScrollView setContentOffset:offset];
-            } else {
+            }
+            else if (self.needsExtraRedraw) {
+                self.needsExtraRedraw = NO;
+                [self changeGameFields:nil orDrawAll:YES orSetMarkForLastTurn:NO];
+            }
+            
+            else {
                 // just draw the changes
-                [self changeGameFields:needsDrawing orDrawAll:NO];
+                [self changeGameFields:needsDrawing orDrawAll:NO orSetMarkForLastTurn:NO];
+            }
+            if (markLastTurn && positionToMark.x > 1)
+            {
+                NSString *key = [NSString stringWithFormat:@"%i, %i",(int)self.positionToMark.x,(int)self.positionToMark.y];
+                Field *markMe = [self.gameData.fields objectForKey:key];
+                NSMutableArray *needsMarking = [[NSMutableArray alloc] init ];
+                [needsMarking addObject:markMe];
+                [self changeGameFields:needsMarking orDrawAll:NO orSetMarkForLastTurn:YES];
+                [needsMarking release];
             }
             // on a Bluetooth game, send the other player the turn if it is valid and it was made locally (of course) - but since the game data already changed active turns, check the opposite
             if (self.btDataHandler.currentSession && validTurn && self.gameData.isBluePlayerTurn != self.gameData.isLocalPlayerBlue) {
@@ -890,7 +1017,7 @@
     }
     
     //set up the game view
-    [self changeGameFields:nil orDrawAll:YES];
+    [self changeGameFields:nil orDrawAll:YES orSetMarkForLastTurn:NO];
     
     //create the view and add the scroller as subview
     UIView *tempView = [[UIView alloc]initWithFrame:[[UIScreen mainScreen]applicationFrame]];
@@ -1003,12 +1130,27 @@
     // if the view did get unloaded (e.g. by a memory warning) and there was a finished game displayed before, immediately clean up on reloading
     if (self.gameData.isGameOver)
         [self cleanUpAfterGameOver];
+    
+    self.turnOfAI = NO;
+    self.needsExtraRedraw = NO;
+    
+    if (self.gameData.rules.isExtendableBoard)
+    {
+        self.positionToMark = CGPointMake(3, 3);
+    }
+    else
+    {
+        self.positionToMark = CGPointMake(-1, -1);
+    }
 
     //if AI has first commit AI needs to be called here
     if(self.gameData.gameAI)
     {
         //callAI checks here if its the player's turn or not
         [self.gameData.gameAI callAI:nil];
+        
+        //initialize extra-redraw
+        self.needsExtraRedraw = NO;
         
         //commit turn
         [self commitTurn];

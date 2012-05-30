@@ -14,7 +14,8 @@ typedef enum {
     NUMBER_OF_TURNS,
     BOARD_WIDTH,
     BOARD_HEIGHT,
-    MINIMUM_LINE_SIZE
+    MINIMUM_LINE_SIZE,
+    PLAYER_COLOR
 } pickerID;
 
 @interface SettingsPickerViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource> {
@@ -31,7 +32,7 @@ typedef enum {
 @property (nonatomic, retain) NSMutableArray *dataArray;
 @property (nonatomic, assign) SettingsViewController *svc;
 @property (nonatomic) int pickerID;
-@property (nonatomic, retain) NSNumber *selectedValue;
+@property (nonatomic, retain) NSString *selectedValue;
 
 // custom init method
 - (SettingsPickerViewController*) initWithPickerID:(int)pickerIdentity fromSettingsView:(SettingsViewController*)settings;

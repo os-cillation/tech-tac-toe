@@ -21,4 +21,8 @@
 @property (nonatomic, retain) BluetoothDataHandler *dataHandler;
 @property (nonatomic, retain) UIImageView *bluetoothIndicator;
 
+@property (nonatomic) bool isAIActivated;
+@property (nonatomic) bool isAIRedPlayer;
+@property (nonatomic) int strengthOfAI;
+
 @end

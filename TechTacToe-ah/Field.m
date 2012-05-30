@@ -40,6 +40,7 @@
     positionX = [aDecoder decodeIntForKey:@"position X"];
     positionY = [aDecoder decodeIntForKey:@"position Y"];
     status = [aDecoder decodeIntForKey:@"status"];
+    priority = [aDecoder decodeIntForKey:@"priority"];
     
     return self;
 }
@@ -49,6 +50,7 @@
     [aCoder encodeInt:positionX forKey:@"position X"];
     [aCoder encodeInt:positionY forKey:@"position Y"];
     [aCoder encodeInt:status forKey:@"status"];
+    [aCoder encodeInt:priority forKey:@"priority"];
 }
 
 @end

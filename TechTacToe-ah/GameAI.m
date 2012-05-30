@@ -234,7 +234,7 @@
 
 -(void)dealloc
 {
-    //[self.gameData release];
+    [gameData release];
     [super dealloc];
 }
 
@@ -977,12 +977,12 @@
         {
             //next to nothing
             //AI might want to expand a line with a hole in it
-            //AI Strength 4 only
-            if (ownFieldsLeft > 0 && freeFieldsLeft == 2 && self.strength > 3)
+            //AI Strength 3 only
+            if (ownFieldsLeft > 0 && freeFieldsLeft == 2 && self.strength > 2)
             {
                 return 11 + (2 * ownFieldsLeft);
             }
-            else if (rowOfOwnFields > 0 && rowOfFreeFields == 2 && self.strength > 3)
+            else if (rowOfOwnFields > 0 && rowOfFreeFields == 2 && self.strength > 2)
             {
                 return 11 + (2 * rowOfOwnFields);
             }

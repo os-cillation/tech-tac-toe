@@ -32,7 +32,7 @@
 @synthesize reuseLineCell;
 @synthesize reuseLineSwitch;
 @synthesize playerSelectionCell;
-@synthesize playerSelectionSwitch;
+@synthesize playerColorTextField;
 @synthesize mvc;
 
 #pragma mark - Initializer and memory management
@@ -120,8 +120,10 @@
     self.additionalRedTurnCell.accessoryView = self.additionalRedTurnSwitch;
     self.reuseLineCell.textLabel.text = NSLocalizedString(@"SETTINGS_VIEW_CELL_REUSE_LINES", @"Reuse Lines");
     self.reuseLineCell.accessoryView = self.reuseLineSwitch;
-    self.playerSelectionCell.textLabel.text = NSLocalizedString(@"SETTINGS_VIEW_CELL_PLAYER_SELECTION", @"Local Player is Blue");
-    self.playerSelectionCell.accessoryView = self.playerSelectionSwitch;
+    self.playerSelectionCell.textLabel.text = NSLocalizedString(@"SETTINGS_VIEW_CELL_PLAYER_COLOR", @"Local Player is Blue");
+    self.playerSelectionCell.accessoryView = self.playerColorTextField;
+    self.playerColorTextField.textColor = [UIColor blueColor];
+    self.playerColorTextField.text = NSLocalizedString(@"AICOLOR_BLUE","blue");
     
     // code disabled so we can choose the local player even on a hotseat game, because if you can save it and load it as a Bluetooth game later, you should be able to choose player colors
 //    // disable the Bluetooth options if we don't have a Bluetooth game
@@ -158,7 +160,7 @@
     [self setBoardLimitCell:nil];
     [self setBoardLimitSwitch:nil];
     [self setPlayerSelectionCell:nil];
-    [self setPlayerSelectionSwitch:nil];
+    [self setPlayerColorTextField:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -430,6 +432,12 @@
         [self.navigationController pushViewController:pickerView animated:YES];
         [pickerView release];
     }
+    else if (indexPath.section == 6)
+    {
+        pickerView = [[SettingsPickerViewController alloc] initWithPickerID:PLAYER_COLOR fromSettingsView:self];
+        [self.navigationController pushViewController:pickerView animated:YES];
+        [pickerView release];
+    }
 }
 
 #pragma mark - Interface Builder actions
@@ -567,9 +575,17 @@
     }
     // create the rules, the game, retain it by setter and display new game
     Rules *customRules = [[Rules alloc] initWithMinFieldsForLine:self.minimumForLineTextField.text.intValue numberOfTurns:turns extendableBoard:extendable scoreMode:self.scoreModeSwitch.isOn additionalRedTurn:self.additionalRedTurnSwitch.isOn reuseOfLines:self.reuseLineSwitch.isOn];
-    Game *newGame = [[Game alloc]initInMode:CUSTOM_GAME withBoardSize:boardSize];
+    Game *newGame = [[Game alloc]initInMode:CUSTOM_GAME withBoardSize:boardSize:self.mvc];
     newGame.gameData.rules = customRules;
-    newGame.gameData.localPlayerBlue = self.playerSelectionSwitch.isOn;
+//    newGame.gameData.localPlayerBlue = self.playerSelectionSwitch.isOn;
+    if ([self.playerColorTextField.text isEqualToString:NSLocalizedString(@"AICOLOR_BLUE", "blue")])
+    {
+        newGame.gameData.localPlayerBlue = YES;
+    }
+    else
+    {
+        newGame.gameData.localPlayerBlue = NO;
+    }
     self.mvc.currentGame = newGame;
     [customRules release];
     [newGame release];

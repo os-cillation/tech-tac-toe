@@ -36,7 +36,7 @@
 @property (nonatomic, retain) UIScrollView *gameScrollView;
 @property (nonatomic, retain) UIView *containerView;
 @property (nonatomic, retain) UIImageView *displayedGameFields;
-@property (nonatomic, retain) UIImage *redField, *blueField, *emptyField, *unavailableField, *redFieldMarked, *blueFieldMarked, *redFieldLine, *blueFieldLine;
+@property (nonatomic, retain) UIImage *redField, *blueField, *emptyField, *unavailableField, *redFieldMarked, *blueFieldMarked, *redFieldLine, *blueFieldLine, *redMarkedLastTurn, *blueMarkedLastTurn;
 @property (nonatomic, retain) UIImage *lastDrawn;
 // the game object is the owner of the data, just assign here
 @property (nonatomic, assign) GameData *gameData;
@@ -48,13 +48,17 @@
 @property (nonatomic, assign) BluetoothDataHandler *btDataHandler;
 @property (nonatomic, retain) UIAlertView *backToMenuGameOver, *backToMenuReqView, *backToMenuWaitView, *backToMenuAckView;
 @property (nonatomic, retain) UIActivityIndicatorView *activityIndicator;
+//board needs a extra redraw if resized during AI turn
+@property (nonatomic) bool needsExtraRedraw;
+@property (nonatomic) bool turnOfAI;
+@property (nonatomic) CGPoint positionToMark;
 
 // creates a new gamefield - if no field data is present a new field will be generated; if no second player is set, the game will use hotseat mode - don't use the standard init
 //gameAI is nil if AI is not activated
 -(GameViewController*) initWithSize:(CGSize) size gameData:(GameData*) data;
 
 // will draw over existing field at point or draw the entire board by data
--(void) changeGameFields:(NSArray*)fieldsOrNil orDrawAll:(BOOL)redrawEverything;
+-(void) changeGameFields:(NSArray*)fieldsOrNil orDrawAll:(BOOL)redrawEverything orSetMarkForLastTurn:(BOOL)lastTurnMark;
 
 // method called by the tap gesture recognizer: handles taps on the contentView, selects a field if valid, sets it in data, calls changeGameFieldAtPoint
 -(void) selectFieldByTap:(UITapGestureRecognizer*)tapRecognizer;

@@ -7,6 +7,7 @@
 //
 
 #import "Game.h"
+#import "MainViewController.h"
 
 @implementation Game
 
@@ -15,7 +16,7 @@
 
 #pragma mark - Initializer and memory management
 
--(Game*)initInMode:(int)mode withBoardSize:(CGSize)sizeOrNil
+-(Game*)initInMode:(int)mode withBoardSize:(CGSize)sizeOrNil: (MainViewController *)mvc
 {
     self = [super init];
     if (!self.gameData) {
@@ -25,14 +26,14 @@
     }
     Rules *rules;
     
-    //init AI //TODO get values from settings and only initialize if needed
-    if(YES)
+    //init AI
+    if(mvc.isAIActivated)
     {
         GameAI *tempGameAI = [[GameAI alloc] init];
-        tempGameAI.isRedPlayer = YES;
+        tempGameAI.isRedPlayer = mvc.isAIRedPlayer;
         tempGameAI.isActivated = YES;
         tempGameAI.gameData = self.gameData;
-        tempGameAI.strength = 4;
+        tempGameAI.strength = mvc.strengthOfAI;
         self.gameData.gameAI = tempGameAI;
         [tempGameAI release];
     }

@@ -22,5 +22,9 @@
 	<string>Bluetooth.png</string>
 	<key>main view background</key>
 	<string>background.png</string>
+	<key>red marked last turn</key>
+	<string>red_marked_last_turn.png</string>
+	<key>blue marked last turn</key>
+	<string>blue_marked_last_turn.png</string>
 </dict>
 </plist>

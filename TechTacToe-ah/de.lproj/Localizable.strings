@@ -23,6 +23,11 @@
 "MAIN_VIEW_CELL_DISCONNECT" = "Verbindung Trennen";
 "MAIN_VIEW_CELL_ABOUT" = "Über";
 
+"MAIN_VIEW_AI_SETTINGS" = "Einstellungen";
+
+"MAIN_VIEW_AI_ENABLED" = "Computergegner: eingeschaltet";
+"MAIN_VIEW_AI_DISABLED" = "Computergegner: ausgeschaltet";
+
 // Abschnittsüberschriften
 "MAIN_VIEW_HEADER_START_NEW_GAME" = "Neues Spiel";
 "MAIN_VIEW_HEADER_ONGOING_GAMES" = "Laufende Spiele";
@@ -80,6 +85,7 @@
 "SETTINGS_VIEW_CELL_ADDITIONAL_RED_TURN" = "Zusätzlicher Zug";
 "SETTINGS_VIEW_CELL_REUSE_LINES" = "Reihen Kreuzbar";
 "SETTINGS_VIEW_CELL_PLAYER_SELECTION" = "Lokaler Spieler ist Blau";
+"SETTINGS_VIEW_CELL_PLAYER_COLOR" = "Lokaler Spieler Farbe";
 
 // Abschnittsüberschriften
 "SETTINGS_VIEW_HEADER_BOARD_OPTIONS" = "Spielbrett-Optionen";
@@ -200,6 +206,23 @@
 "BLUETOOTH_ALERT_ASSUMED_CONTROL_TITLE" = "Spielkontrolle Übernommen";
 "BLUETOOTH_ALERT_ASSUMED_CONTROL_MESSAGE" = "Das andere Gerät hat die Spielkontrolle abgegeben.";
 
+/* KI Einstellungen */
+
+"SELECT_AI_SETTINGS" = "Einstellungen";
+"SELECT_AI_COMPUTER_OPPONENT" = "Computergegner";
+"SELECT_AI_OPTIONS" = "Optionen";
+"SELECT_AI_AI_FOOTER" = "Schaltet den Computergegner ein oder aus";
+"SELECT_AI_OPTIONS_FOOTER" = "Ändert die Stärke und Farbe des Computergegners. Der erste Zug gehört immer dem blauen Spieler. Allerdings wird der erste Zug in Spielen mit unbegrenzten Spielbrett automatisch gesetzt wodurch der rote Spieler in diesem Falle den ersten wählbaren Zug hat.";
+"AICOLOR_RED" = "rot";
+"AICOLOR_BLUE" = "blau";
+"SELECT_AI_ENABLED" = "Eingeschaltet";
+"SELECT_AI_COMPUTER_COLOR" = "Computer Farbe";
+"SELECT_AI_COMPUTER_STRENGTH" = "Computer Stärke";
+"AI_PICKER_COLOR" = "Farbe";
+"AI_PICKER_STRENGTH" = "Stärke";
+"AISTRENGTH_1" = "Schwach";
+"AISTRENGTH_2" = "Normal";
+"AISTRENGTH_3" = "Stark";
 
 /* sonst. Text */
 

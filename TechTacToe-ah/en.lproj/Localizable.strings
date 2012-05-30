@@ -23,6 +23,10 @@
 "MAIN_VIEW_CELL_DISCONNECT" = "Disconnect";
 "MAIN_VIEW_CELL_ABOUT" = "About";
 
+"MAIN_VIEW_AI_SETTINGS" = "Settings";
+"MAIN_VIEW_AI_ENABLED" = "Computer Opponent Enabled";
+"MAIN_VIEW_AI_DISABLED" = "Computer Opponent Disabled";
+
 // section headers
 "MAIN_VIEW_HEADER_START_NEW_GAME" = "New Game";
 "MAIN_VIEW_HEADER_ONGOING_GAMES" = "Ongoing Games";
@@ -80,6 +84,7 @@
 "SETTINGS_VIEW_CELL_ADDITIONAL_RED_TURN" = "Additional Red Turn";
 "SETTINGS_VIEW_CELL_REUSE_LINES" = "Reuse Lines";
 "SETTINGS_VIEW_CELL_PLAYER_SELECTION" = "Local Player is Blue";
+"SETTINGS_VIEW_CELL_PLAYER_COLOR" = "Local Player Color";
 
 // section headers
 "SETTINGS_VIEW_HEADER_BOARD_OPTIONS" = "Board Options";
@@ -200,6 +205,23 @@
 "BLUETOOTH_ALERT_ASSUMED_CONTROL_TITLE" = "Assumed Game Control";
 "BLUETOOTH_ALERT_ASSUMED_CONTROL_MESSAGE" = "The other device has relinquished control of the game.";
 
+/* AI Settings */
+
+"SELECT_AI_SETTINGS" = "Settings";
+"SELECT_AI_COMPUTER_OPPONENT" = "Computer Opponent";
+"SELECT_AI_OPTIONS" = "Options";
+"SELECT_AI_AI_FOOTER" = "Enables or disables the computer opponent";
+"SELECT_AI_OPTIONS_FOOTER" = "Change the strength and the color of the computer opponent. The first turn always belongs to the blue player. However since the first move is set automatically in games on extendable boards the red player has the first move in this case";
+"AICOLOR_RED" = "red";
+"AICOLOR_BLUE" = "blue";
+"SELECT_AI_ENABLED" = "Enabled";
+"SELECT_AI_COMPUTER_COLOR" = "Computer Color";
+"SELECT_AI_COMPUTER_STRENGTH" = "Computer Strength";
+"AI_PICKER_COLOR" = "Color";
+"AI_PICKER_STRENGTH" = "Strength";
+"AISTRENGTH_1" = "Weak";
+"AISTRENGTH_2" = "Normal";
+"AISTRENGTH_3" = "Strong";
 
 /* misc. strings */
 

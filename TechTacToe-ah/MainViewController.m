@@ -10,12 +10,17 @@
 #import "SettingsViewController.h"
 #import "AboutViewController.h"
 #import "LoadViewController.h"
+#import "SelectAIViewController.h"
 
 @implementation MainViewController
 
 @synthesize currentGame=_currentGame;
 @synthesize dataHandler=_dataHandler;
 @synthesize bluetoothIndicator=_bluetoothIndicator;
+
+@synthesize isAIActivated;
+@synthesize isAIRedPlayer;
+@synthesize strengthOfAI;
 
 #pragma mark - Initializer and memory management
 
@@ -82,6 +87,10 @@
     
     [plist release];
     
+    self.strengthOfAI = 2;
+    self.isAIActivated = NO;
+    self.isAIRedPlayer = YES;
+    
     [super viewDidLoad];
 
     // Uncomment the following line to preserve selection between presentations.
@@ -116,13 +125,13 @@
 {
     // disables the contiune cell if no running game is present or we have a Bluetooth game or enables it otherwise
     if (self.currentGame && !self.dataHandler.currentSession) {
-        [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]].textLabel.enabled = YES;
-        [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]] setSelectionStyle:UITableViewCellSelectionStyleBlue];
+        [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]].textLabel.enabled = YES;
+        [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]] setSelectionStyle:UITableViewCellSelectionStyleBlue];
     } else {
-        [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]].textLabel.enabled = NO;
-        [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]] setSelectionStyle:UITableViewCellSelectionStyleNone];
-    }
-    
+        [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]].textLabel.enabled = NO;
+        [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]] setSelectionStyle:UITableViewCellSelectionStyleNone];
+    }    
+    [self.tableView reloadData];
     [super viewDidAppear:animated];
 }
 
@@ -148,7 +157,7 @@
 {
 
     // Return the number of sections.
-    return 4;
+    return 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -158,11 +167,12 @@
     
     // section 0: 4
     // section 1: 2
-    // section 2: 2
-    // section 3: 1
-    if (section == 3) {
+    // section 2: 1
+    // section 3: 2
+    // section 4: 1
+    if (section == 4 || section == 2) {
         return 1;
-    } else if (section == 1 || section == 2) {
+    } else if (section == 1 || section == 3) {
         return 2;
     } else {
         return 4;
@@ -268,6 +278,19 @@
             }
             break;
         case 2:
+            cell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_AI_SETTINGS", @"Settings");
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            if (self.dataHandler.currentSession) {
+                cell.textLabel.enabled = NO;
+                [cell setUserInteractionEnabled:NO];
+            }
+            else
+            {
+                cell.textLabel.enabled = YES;
+                [cell setUserInteractionEnabled:YES];
+            }
+            break;
+        case 3:
             switch (indexPath.row) {
                 case 0:
                     // continue cell
@@ -292,7 +315,7 @@
                     break;
             }
             break;
-        case 3:
+        case 4:
             // about screen cell
             cell.textLabel.text = NSLocalizedString(@"MAIN_VIEW_CELL_ABOUT", @"About");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -318,9 +341,21 @@
             return @"Bluetooth";
             break;
         case 2:
-            return NSLocalizedString(@"MAIN_VIEW_HEADER_ONGOING_GAMES", @"Ongoing Games");
+            if (self.isAIActivated)
+            {
+                //return @"Computer Opponent: Enabled";
+                return NSLocalizedString(@"MAIN_VIEW_AI_ENABLED", "Computer Opponent Enabled");
+            }
+            else
+            {
+                //return @"Computer Opponent: Disabled";
+                return NSLocalizedString(@"MAIN_VIEW_AI_DISABLED", "Computer Opponent Disabled");
+            }
             break;
         case 3:
+            return NSLocalizedString(@"MAIN_VIEW_HEADER_ONGOING_GAMES", @"Ongoing Games");
+            break;
+        case 4:
             return @" ";
         default:
             break;
@@ -330,7 +365,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    if (section == 2) {
+    if (section == 3) {
         return NSLocalizedString(@"MAIN_VIEW_FOOTER_ONGOING_GAMES", @"Continue is not available on a game over Bluetooth, so remember to save a game that should be continued at a later point.");
     }
     return @"";
@@ -398,7 +433,8 @@
             if (self.dataHandler.currentSession && !self.dataHandler.doesLocalUserActAsServer) {
                 return;
             }
-            Game *newGame = [[Game alloc]initInMode:DEFAULT_GAME withBoardSize:CGSizeMake(0, 0)];
+            Game *newGame = [[Game alloc]initInMode:DEFAULT_GAME withBoardSize:CGSizeMake(0, 0):self];
+            //other game types, too
             self.currentGame = newGame;
             [newGame release];
             
@@ -417,7 +453,7 @@
             if (self.dataHandler.currentSession && !self.dataHandler.doesLocalUserActAsServer) {
                 return;
             }
-            Game *newGame = [[Game alloc]initInMode:TICTACTOE withBoardSize:CGSizeMake(3, 3)];
+            Game *newGame = [[Game alloc]initInMode:TICTACTOE withBoardSize:CGSizeMake(3, 3):self];
             self.currentGame = newGame;
             [newGame release];
             
@@ -434,7 +470,7 @@
             if (self.dataHandler.currentSession && !self.dataHandler.doesLocalUserActAsServer) {
                 return;
             }
-            Game *newGame = [[Game alloc]initInMode:GOMOKU withBoardSize:CGSizeMake(19, 19)];
+            Game *newGame = [[Game alloc]initInMode:GOMOKU withBoardSize:CGSizeMake(19, 19):self];
             self.currentGame = newGame;
             [newGame release];
             
@@ -481,7 +517,19 @@
             // reloading data is done in doRevokeControl, so don't need to do it here
             // [self.tableView reloadData];
         }
-    } else if (indexPath.section == 2) {
+    }
+    else if (indexPath.section == 2)
+    {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        // if a session exists and we are not server, disable every cell except to disconnect
+        if (self.dataHandler.currentSession && !self.dataHandler.doesLocalUserActAsServer) {
+            return;
+        }
+        SelectAIViewController *settingsAI = [[SelectAIViewController alloc] initWithNibName:@"SelectAIViewController" bundle:nil];
+        settingsAI.mvc = self;
+        [self.navigationController pushViewController:settingsAI animated:YES];
+        [settingsAI release];
+    } else if (indexPath.section == 3) {
         if (indexPath.row == 0) {
             // continue running game
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -504,7 +552,7 @@
             [self.navigationController pushViewController:loadView animated:YES];
             [loadView release];
         }
-    } else if (indexPath.section == 3) {
+    } else if (indexPath.section == 4) {
         // about screen with information about the app
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         // if a session exists and we are not server, disable every cell except to disconnect
@@ -524,6 +572,9 @@
     self.dataHandler.currentSession = session;
     self.dataHandler.currentSession.delegate = self.dataHandler;
     [self.dataHandler.currentSession setDataReceiveHandler:self.dataHandler withContext:nil];
+    
+    //disable computer opponent
+    self.isAIActivated = NO;
  
     // refresh table view
     [self.tableView reloadData];  
