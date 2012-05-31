@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A7EC02CF156F6B43003BC8CA /* SelectAIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EC02CD156F6B43003BC8CA /* SelectAIViewController.m */; };
+		A7EC02D0156F6B43003BC8CA /* SelectAIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7EC02CE156F6B43003BC8CA /* SelectAIViewController.xib */; };
+		A7EC02D5156FA84B003BC8CA /* SelectAIPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EC02D3156FA849003BC8CA /* SelectAIPickerViewController.m */; };
+		A7EC02D6156FA84B003BC8CA /* SelectAIPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7EC02D4156FA84A003BC8CA /* SelectAIPickerViewController.xib */; };
+		A7EEC27D15764A0300B71BE3 /* blue_marked_last_turn.png in Resources */ = {isa = PBXBuildFile; fileRef = A7EEC27C15764A0200B71BE3 /* blue_marked_last_turn.png */; };
+		A7EEC28015764A1D00B71BE3 /* blue_marked_last_turn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7EEC27F15764A1D00B71BE3 /* blue_marked_last_turn@2x.png */; };
+		A7EEC28215764A2700B71BE3 /* red_marked_last_turn.png in Resources */ = {isa = PBXBuildFile; fileRef = A7EEC28115764A2700B71BE3 /* red_marked_last_turn.png */; };
+		A7EEC28415764A3000B71BE3 /* red_marked_last_turn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7EEC28315764A2F00B71BE3 /* red_marked_last_turn@2x.png */; };
 		A7F0336C15662CB400EAEB99 /* GameAI.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F0336B15662CB400EAEB99 /* GameAI.m */; };
 		CE14B906144705C8003F3516 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE14B905144705C8003F3516 /* GameKit.framework */; };
 		CE27B563144596AB005BAA35 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE27B562144596AB005BAA35 /* Default@2x.png */; };
@@ -67,6 +75,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A7EC02CC156F6B43003BC8CA /* SelectAIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectAIViewController.h; sourceTree = "<group>"; };
+		A7EC02CD156F6B43003BC8CA /* SelectAIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectAIViewController.m; sourceTree = "<group>"; };
+		A7EC02CE156F6B43003BC8CA /* SelectAIViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectAIViewController.xib; sourceTree = "<group>"; };
+		A7EC02D2156FA849003BC8CA /* SelectAIPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectAIPickerViewController.h; sourceTree = "<group>"; };
+		A7EC02D3156FA849003BC8CA /* SelectAIPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectAIPickerViewController.m; sourceTree = "<group>"; };
+		A7EC02D4156FA84A003BC8CA /* SelectAIPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectAIPickerViewController.xib; sourceTree = "<group>"; };
+		A7EEC27C15764A0200B71BE3 /* blue_marked_last_turn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_marked_last_turn.png; sourceTree = "<group>"; };
+		A7EEC27F15764A1D00B71BE3 /* blue_marked_last_turn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue_marked_last_turn@2x.png"; sourceTree = "<group>"; };
+		A7EEC28115764A2700B71BE3 /* red_marked_last_turn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_marked_last_turn.png; sourceTree = "<group>"; };
+		A7EEC28315764A2F00B71BE3 /* red_marked_last_turn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red_marked_last_turn@2x.png"; sourceTree = "<group>"; };
 		A7F0336A15662CB400EAEB99 /* GameAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameAI.h; sourceTree = "<group>"; };
 		A7F0336B15662CB400EAEB99 /* GameAI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameAI.m; sourceTree = "<group>"; };
 		CE14B905144705C8003F3516 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
@@ -168,6 +186,8 @@
 				CE80560E1446E3FE00CE90C8 /* os.png */,
 				CE754F671442DBAA000944C7 /* Default.png */,
 				CE27B562144596AB005BAA35 /* Default@2x.png */,
+				A7EEC28115764A2700B71BE3 /* red_marked_last_turn.png */,
+				A7EEC28315764A2F00B71BE3 /* red_marked_last_turn@2x.png */,
 				CE759D1C144336C600DAB57E /* icon.png */,
 				CE759D1F144336D100DAB57E /* icon@2x.png */,
 				CEB15E3714517635004A0A9B /* background.png */,
@@ -184,6 +204,8 @@
 				CEAF498B1443255200931E99 /* red_marked@2x.png */,
 				E16F86C414287E7100DF7722 /* red_line.png */,
 				CEAF498A1443255200931E99 /* red_line@2x.png */,
+				A7EEC27C15764A0200B71BE3 /* blue_marked_last_turn.png */,
+				A7EEC27F15764A1D00B71BE3 /* blue_marked_last_turn@2x.png */,
 				E16F86BE14287E5D00DF7722 /* blue.png */,
 				CEAF49881443255200931E99 /* blue@2x.png */,
 				E16F86BD14287E5D00DF7722 /* blue_marked.png */,
@@ -210,6 +232,10 @@
 				CE8146081433145D006E7099 /* SettingsViewController.m */,
 				CEC6C647145187D00089827D /* SettingsPickerViewController.h */,
 				CEC6C648145187D00089827D /* SettingsPickerViewController.m */,
+				A7EC02D2156FA849003BC8CA /* SelectAIPickerViewController.h */,
+				A7EC02D3156FA849003BC8CA /* SelectAIPickerViewController.m */,
+				A7EC02CC156F6B43003BC8CA /* SelectAIViewController.h */,
+				A7EC02CD156F6B43003BC8CA /* SelectAIViewController.m */,
 				CE8056071446E2AE00CE90C8 /* AboutViewController.h */,
 				CE8056081446E2AE00CE90C8 /* AboutViewController.m */,
 				CEE6E613143B2EA400402251 /* RulesViewController.h */,
@@ -221,6 +247,8 @@
 		CE7EF9591436033D00CA8DB2 /* Interface Builder xib Files */ = {
 			isa = PBXGroup;
 			children = (
+				A7EC02D4156FA84A003BC8CA /* SelectAIPickerViewController.xib */,
+				A7EC02CE156F6B43003BC8CA /* SelectAIViewController.xib */,
 				CEC1E9281434557F0053266F /* MainWindow.xib */,
 				CE7C3350143F0BB7005EE0D9 /* LoadViewController.xib */,
 				CE320ED9143F226500A688AB /* LoadDetailViewController.xib */,
@@ -402,6 +430,12 @@
 				CEB15E3814517635004A0A9B /* background.png in Resources */,
 				CEB15E3B14517786004A0A9B /* background@2x.png in Resources */,
 				CEC6C64B145187D00089827D /* SettingsPickerViewController.xib in Resources */,
+				A7EC02D0156F6B43003BC8CA /* SelectAIViewController.xib in Resources */,
+				A7EC02D6156FA84B003BC8CA /* SelectAIPickerViewController.xib in Resources */,
+				A7EEC27D15764A0300B71BE3 /* blue_marked_last_turn.png in Resources */,
+				A7EEC28015764A1D00B71BE3 /* blue_marked_last_turn@2x.png in Resources */,
+				A7EEC28215764A2700B71BE3 /* red_marked_last_turn.png in Resources */,
+				A7EEC28415764A3000B71BE3 /* red_marked_last_turn@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,6 +480,8 @@
 				CE8168F414485DD9009A637F /* BluetoothDataHandler.m in Sources */,
 				CEC6C64A145187D00089827D /* SettingsPickerViewController.m in Sources */,
 				A7F0336C15662CB400EAEB99 /* GameAI.m in Sources */,
+				A7EC02CF156F6B43003BC8CA /* SelectAIViewController.m in Sources */,
+				A7EC02D5156FA84B003BC8CA /* SelectAIPickerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
