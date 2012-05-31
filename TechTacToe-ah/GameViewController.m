@@ -587,11 +587,7 @@
             }            
             // let the gameData know a turn has been made
             self.gameData.numberOfTurn ++;
-            
-            // reset position of last marked field to normally unattainable value to avoid having the wrong field after resizing at the coordinates
-            self.gameData.positionOfLastMarkedFieldX = -1; 
-            self.gameData.positionOfLastMarkedFieldY = -1;
-            
+                        
             //call AI if player commited valid turn
             //center view to field computer opponent choose if not resigned
             
@@ -763,6 +759,7 @@
                 // resize, draw everything
                 [self resizeBoard];
                 [self changeGameFields:nil orDrawAll:YES orSetMarkForLastTurn:NO];
+                //if AI turn needs a complete Redraw the redraw has to be redone when player's commitTurn continues after AI's commitTurn
                 if (self.turnOfAI)
                 {
                     self.needsExtraRedraw = YES;
@@ -779,7 +776,7 @@
                 // just draw the changes
                 [self changeGameFields:needsDrawing orDrawAll:NO orSetMarkForLastTurn:NO];
             }
-            if (markLastTurn && positionToMark.x > 1)
+            if (markLastTurn && positionToMark.x > -1)
             {
                 NSString *key = [NSString stringWithFormat:@"%i, %i",(int)self.positionToMark.x,(int)self.positionToMark.y];
                 Field *markMe = [self.gameData.fields objectForKey:key];
@@ -802,6 +799,10 @@
                 [self cleanUpAfterGameOver];
                 return;
             }
+            
+            // reset position of last marked field to normally unattainable value to avoid having the wrong field after resizing at the coordinates
+            self.gameData.positionOfLastMarkedFieldX = -1; 
+            self.gameData.positionOfLastMarkedFieldY = -1;
                         
             // update the game and turn information
             [self updateLabels];
