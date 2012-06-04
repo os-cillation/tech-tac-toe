@@ -117,6 +117,7 @@
     }
     
      //debugging purposes
+    /*
     bool debug = NO;
     if (debug)
     {
@@ -126,17 +127,20 @@
         }
         NSLog(@"----------"); 
     }
+     */
     //choose one of the fields
     if (candidates.count > 0 && highestPriority > 0)
     {
         int resultIndex = arc4random() % candidates.count;
-        Field *resultField = (Field *)[candidates objectAtIndex:resultIndex];    
+        Field *resultField = (Field *)[candidates objectAtIndex:resultIndex];
         computerPosition = CGPointMake(resultField.positionX, resultField.positionY);
+        /*
         if (debug)
         {
             NSLog(@"%i, %i, %i",resultField.positionX,resultField.positionY, resultField.priority);
             NSLog(@"++++++++++");
         }
+         */
     }
     else
     {
@@ -1109,34 +1113,43 @@
     {
         if (colorIsRed && currentField.status == 4)
         {
-            
-            NSString *key = [NSString stringWithFormat:@"%i, %i", currentField.positionX+xModifier, currentField.positionY+yModifier];
-            Field *tempField = (Field *)[self.gameData.fields objectForKey:key];
-            
-            if (tempField.status == 4)
+            for (int i = 1; i <= self.gameData.rules.minFieldsForLine; i++)
             {
-                //extension of line - treat as border
-                return NO;
+                NSString *key = [NSString stringWithFormat:@"%i, %i", currentField.positionX+(i * xModifier), currentField.positionY+(i * yModifier)];
+                Field *tempField = (Field *)[self.gameData.fields objectForKey:key];
+                
+                if (tempField.status == 4)
+                {
+                    //possible extension of line
+                    continue;
+                }
+                else
+                {
+                    return  YES;
+                }
             }
-            else
-            {
-                return  YES;
-            }
+            //extension of line
+            return NO;
         }
         else if (!colorIsRed && currentField.status == 7)
         {
-            NSString *key = [NSString stringWithFormat:@"%i, %i", currentField.positionX+xModifier, currentField.positionY+yModifier];
-            Field *tempField = (Field *)[self.gameData.fields objectForKey:key];
-
-            if (tempField.status == 7)
+            for (int i = 1; i <= self.gameData.rules.minFieldsForLine; i++)
             {
-                //extension of line - treat as border
-                return NO;
+                NSString *key = [NSString stringWithFormat:@"%i, %i", currentField.positionX+(i * xModifier), currentField.positionY+(i * yModifier)];
+                Field *tempField = (Field *)[self.gameData.fields objectForKey:key];
+                
+                if (tempField.status == 7)
+                {
+                    //possible extension of line
+                    continue;
+                }
+                else
+                {
+                    return  YES;
+                }
             }
-            else
-            {
-                return  YES;
-            }
+            //extension of line
+            return NO;
         }
         else
         {
