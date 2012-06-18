@@ -13,12 +13,16 @@
 
 @synthesize gameViewController=_gameViewController;
 @synthesize gameData=_gameData;
+@synthesize appDelegate=_appDelegate;
 
 #pragma mark - Initializer and memory management
 
--(Game*)initInMode:(int)mode withBoardSize:(CGSize)sizeOrNil: (MainViewController *)mvc
+-(Game*)initInMode:(int)mode withBoardSize:(CGSize)sizeOrNil
 {
     self = [super init];
+    
+    self.appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
     if (!self.gameData) {
         GameData *localGameData = [[GameData alloc]initEmptyInMode:mode withBoardSize:sizeOrNil];
         self.gameData = localGameData;
@@ -27,13 +31,13 @@
     Rules *rules;
     
     //init AI
-    if(mvc.isAIActivated)
+    if(self.appDelegate.isAIActivated)
     {
         GameAI *tempGameAI = [[GameAI alloc] init];
-        tempGameAI.isRedPlayer = mvc.isAIRedPlayer;
+        tempGameAI.isRedPlayer = self.appDelegate.isAIRedPlayer;
         tempGameAI.isActivated = YES;
         tempGameAI.gameData = self.gameData;
-        tempGameAI.strength = mvc.strengthOfAI;
+        tempGameAI.strength = self.appDelegate.strengthOfAI;
         self.gameData.gameAI = tempGameAI;
         [tempGameAI release];
     }
@@ -99,6 +103,7 @@
 -(void)dealloc{
     [_gameViewController release];
     [_gameData release];
+    [_appDelegate release];
     [super dealloc];
 }
 

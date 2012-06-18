@@ -205,7 +205,7 @@
                     }
                 }
             }
-            // red has the first turn
+            // blue has the first turn
             self.bluePlayerTurn = YES;
         }
     }

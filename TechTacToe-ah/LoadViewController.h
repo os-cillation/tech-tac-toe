@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LoadDetailViewController.h"
-#import "MainViewController.h"
+#import "AppDelegate.h"
 
 @interface LoadViewController : UITableViewController {
     NSString *path; // the path to the documents folder of the app
@@ -17,6 +17,6 @@
 
 @property (nonatomic, retain) NSString *path;
 @property (nonatomic, retain) NSMutableArray *files;
-@property (nonatomic, assign) MainViewController *mvc;
+@property (nonatomic, retain) AppDelegate *appDelegate;
 
 @end

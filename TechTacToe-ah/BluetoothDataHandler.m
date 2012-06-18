@@ -13,9 +13,10 @@
 @implementation BluetoothDataHandler
 
 @synthesize currentSession=_currentSession;
-@synthesize mvc;
+@synthesize appDelegate=_appDelegate;
 @synthesize localUserActAsServer=_localUserActAsServer;
 @synthesize cointossResult=_cointossResult;
+@synthesize mvc=_mvc;
 
 #pragma mark - Initializer and memory management
 
@@ -33,8 +34,8 @@
         self.cointossResult = coinValue;
         
         // tell the application delegate about this object
-        AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
-        appDelegate.btdh = self;
+        self.appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
+        self.appDelegate.btdh = self;
     }
     
     return self;
@@ -47,6 +48,8 @@
         [self doDisconnect];
     
     [_currentSession release];
+    [_appDelegate release];
+    [_mvc release];
     [super dealloc];
 }
 
@@ -57,8 +60,8 @@
     {
         case GKPeerStateConnected:
             //NSLog(@"connected");
-            if (self.mvc.bluetoothIndicator) {
-                self.mvc.bluetoothIndicator.hidden = NO;
+            if (self.appDelegate.bluetoothIndicator) {
+                self.appDelegate.bluetoothIndicator.hidden = NO;
             }
             // do first (and hopefully only) cointoss
             [self doCointoss];
@@ -95,21 +98,22 @@
     }
     // update the main menu to reflect new status
     [self.mvc.tableView reloadData];
-    self.mvc.bluetoothIndicator.hidden = YES;
+    self.appDelegate.bluetoothIndicator.hidden = YES;
     
     // then, if we had a running game open, set it to hotseat mode again by reactivating controls and updating labels
     // also, dismiss any open dialogues (alert views) regarding going back to menu or waiting for the other device and stop the activity indicator
-    if (self.mvc.currentGame) {
-        [self.mvc.currentGame.gameViewController.backToMenuGameOver dismissWithClickedButtonIndex:-1 animated:YES];
-        [self.mvc.currentGame.gameViewController.backToMenuWaitView dismissWithClickedButtonIndex:-1 animated:YES];
-        [self.mvc.currentGame.gameViewController.backToMenuReqView dismissWithClickedButtonIndex:-1 animated:YES];
-        [self.mvc.currentGame.gameViewController.backToMenuAckView dismissWithClickedButtonIndex:-1 animated:YES];
-        [self.mvc.currentGame.gameViewController.activityIndicator stopAnimating];
+    if (self.appDelegate.currentGame) {
+        [self.appDelegate.currentGame.gameViewController.backToMenuGameOver dismissWithClickedButtonIndex:-1 animated:YES];
+        [self.appDelegate.currentGame.gameViewController.backToMenuWaitView dismissWithClickedButtonIndex:-1 animated:YES];
+        [self.appDelegate.currentGame.gameViewController.backToMenuReqView dismissWithClickedButtonIndex:-1 animated:YES];
+        [self.appDelegate.currentGame.gameViewController.backToMenuAckView dismissWithClickedButtonIndex:-1 animated:YES];
+        [self.appDelegate.currentGame.gameViewController.activityIndicator stopAnimating];
         
-        if (!self.mvc.currentGame.gameData.isGameOver) {
-            [self.mvc.currentGame.gameViewController.tapGestureRecognizer setEnabled:YES];
-            [self.mvc.currentGame.gameViewController.navigationItem.rightBarButtonItem setEnabled:YES];
-            [self.mvc.currentGame.gameViewController updateLabels];
+        if (!self.appDelegate.currentGame.gameData.isGameOver) {
+            [self.appDelegate.currentGame.gameViewController.tapGestureRecognizer setEnabled:YES];
+            [self.appDelegate.currentGame.gameViewController.navigationItem.rightBarButtonItem setEnabled:YES];
+            [self.appDelegate.currentGame.gameViewController.navigationItem.leftBarButtonItem setEnabled:YES];
+            [self.appDelegate.currentGame.gameViewController updateLabels];
         }
     }
 }
@@ -157,78 +161,82 @@
         aGame.gameData = receivedGameData;
         
         // give the main view controller ownership, clean up and display - take care of displaying unlimited boards the same way as the one on remote device
-        self.mvc.currentGame = aGame;
+        self.appDelegate.currentGame = aGame;
         if (aGame.gameData.boardWidth == 0) {
             GameViewController *tempGameViewController = [[GameViewController alloc] initWithSize:CGSizeMake(FIELDSIZE * 7, FIELDSIZE * 7) gameData:aGame.gameData];
-            self.mvc.currentGame.gameViewController = tempGameViewController;
+            self.appDelegate.currentGame.gameViewController = tempGameViewController;
             [tempGameViewController release];
         } else {
-            GameViewController *tempGameViewController = [[GameViewController alloc] initWithSize:CGSizeMake(MAX(FIELDSIZE * (self.mvc.currentGame.gameData.boardWidth + 2), FIELDSIZE * 9), MAX(FIELDSIZE * (self.mvc.currentGame.gameData.boardHeight + 2), FIELDSIZE * 9)) gameData:self.mvc.currentGame.gameData];
-            self.mvc.currentGame.gameViewController = tempGameViewController;
+            GameViewController *tempGameViewController = [[GameViewController alloc] initWithSize:CGSizeMake(MAX(FIELDSIZE * (self.appDelegate.currentGame.gameData.boardWidth + 2), FIELDSIZE * 9), MAX(FIELDSIZE * (self.appDelegate.currentGame.gameData.boardHeight + 2), FIELDSIZE * 9)) gameData:self.appDelegate.currentGame.gameData];
+            self.appDelegate.currentGame.gameViewController = tempGameViewController;
             [tempGameViewController release];
         }
         
         
-        self.mvc.currentGame.gameViewController.btDataHandler = self;
+        self.appDelegate.currentGame.gameViewController.btDataHandler = self;
         
         // we need to manually deactivate controls on the first turn for the player if it is not his turn
-        if (self.mvc.currentGame.gameData.isLocalPlayerBlue != self.mvc.currentGame.gameData.isBluePlayerTurn) {
-            [self.mvc.currentGame.gameViewController.tapGestureRecognizer setEnabled:NO];
-            [self.mvc.currentGame.gameViewController.navigationItem.rightBarButtonItem setEnabled:NO];
+        if (self.appDelegate.currentGame.gameData.isLocalPlayerBlue != self.appDelegate.currentGame.gameData.isBluePlayerTurn) {
+            [self.appDelegate.currentGame.gameViewController.tapGestureRecognizer setEnabled:NO];
+            [self.appDelegate.currentGame.gameViewController.navigationItem.rightBarButtonItem setEnabled:NO];
+            [self.appDelegate.currentGame.gameViewController.navigationItem.leftBarButtonItem setEnabled:NO];
         }
         
         [aGame release];
         
-        [self.mvc.navigationController pushViewController:self.mvc.currentGame.gameViewController animated:YES];
+        //[self.mvc.navigationController pushViewController:self.appDelegate.currentGame.gameViewController animated:YES];
+        [self.appDelegate startGame];
+        
 
     } else if (type == MESSAGE_COMMIT) {
         // handle committing a turn
         // recreate the valid point where the field was committed and tell the game where it is
         int validFieldLocationX = [unarchiver decodeIntForKey:@"commit at x"];
         int validFieldLocationY = [unarchiver decodeIntForKey:@"commit at y"];
-        self.mvc.currentGame.gameData.positionOfLastMarkedFieldX = validFieldLocationX;
-        self.mvc.currentGame.gameData.positionOfLastMarkedFieldY = validFieldLocationY;
-        self.mvc.currentGame.gameData.selection = YES;
+        self.appDelegate.currentGame.gameData.positionOfLastMarkedFieldX = validFieldLocationX;
+        self.appDelegate.currentGame.gameData.positionOfLastMarkedFieldY = validFieldLocationY;
+        self.appDelegate.currentGame.gameData.selection = YES;
         
         // change the status of the field in question to 'marked', so commit will accept it as valid
         NSString* key = [NSString stringWithFormat:@"%i, %i", validFieldLocationX, validFieldLocationY];
         Field *newField;
-        if (self.mvc.currentGame.gameData.isBluePlayerTurn) {
+        if (self.appDelegate.currentGame.gameData.isBluePlayerTurn) {
            newField = [[Field alloc]initWithStatus:BLUE_MARKED atPositionX:validFieldLocationX atPositionY:validFieldLocationY]; 
         } else {
             newField = [[Field alloc]initWithStatus:RED_MARKED atPositionX:validFieldLocationX atPositionY:validFieldLocationY];
         }
-        [self.mvc.currentGame.gameData.fields setObject:newField forKey:key];
+        [self.appDelegate.currentGame.gameData.fields setObject:newField forKey:key];
         [newField release];
         
         // do the commit
-        [self.mvc.currentGame.gameViewController commitTurn];
+        [self.appDelegate.currentGame.gameViewController commitTurn];
         
         // re-activate the controls since it's the local device's turn now if it's not already game over
-        if (!self.mvc.currentGame.gameData.isGameOver) {
-            [self.mvc.currentGame.gameViewController.tapGestureRecognizer setEnabled:YES];
-            [self.mvc.currentGame.gameViewController.navigationItem.rightBarButtonItem setEnabled:YES];
+        if (!self.appDelegate.currentGame.gameData.isGameOver) {
+            [self.appDelegate.currentGame.gameViewController.tapGestureRecognizer setEnabled:YES];
+            [self.appDelegate.currentGame.gameViewController.navigationItem.rightBarButtonItem setEnabled:YES];
+            [self.appDelegate.currentGame.gameViewController.navigationItem.leftBarButtonItem setEnabled:YES];
         }
         
     } else if (type == MESSAGE_RESIGN) {
         // handle resign of the other player
-        [self.mvc.currentGame.gameData resignGame];
-        [self.mvc.currentGame.gameViewController cleanUpAfterGameOver];
+        [self.appDelegate.currentGame.gameData resignGame];
+        [self.appDelegate.currentGame.gameViewController cleanUpAfterGameOver];
     
     } else if (type == MESSAGE_MENU_REQ) { 
         // menu-related message handling: req and ack
         // show the confirmation alert view to the other player - in case of both players sending requests at the same time, dismiss both of the waiting dialogues (not pretty, but it should work - might be a future thing to improve), also dismiss the back to menu request and back to menu on game over view
-        [self.mvc.currentGame.gameViewController.backToMenuGameOver dismissWithClickedButtonIndex:-1 animated:YES];
-        [self.mvc.currentGame.gameViewController.backToMenuWaitView dismissWithClickedButtonIndex:-1 animated:YES];
-        [self.mvc.currentGame.gameViewController.backToMenuReqView dismissWithClickedButtonIndex:-1 animated:YES];
-        [self.mvc.currentGame.gameViewController.backToMenuAckView show];
+        [self.appDelegate.currentGame.gameViewController.backToMenuGameOver dismissWithClickedButtonIndex:-1 animated:YES];
+        [self.appDelegate.currentGame.gameViewController.backToMenuWaitView dismissWithClickedButtonIndex:-1 animated:YES];
+        [self.appDelegate.currentGame.gameViewController.backToMenuReqView dismissWithClickedButtonIndex:-1 animated:YES];
+        [self.appDelegate.currentGame.gameViewController.backToMenuAckView show];
     
     } else if (type == MESSAGE_MENU_ACK) {
         // dismiss the waiting dialogue / back to menu on game over view, stop the indicator and go to menu
-        [self.mvc.currentGame.gameViewController.backToMenuGameOver dismissWithClickedButtonIndex:-1 animated:YES];
-        [self.mvc.currentGame.gameViewController.backToMenuWaitView dismissWithClickedButtonIndex:-1 animated:YES];
-        [self.mvc.currentGame.gameViewController.activityIndicator stopAnimating];
-        [self.mvc.currentGame.gameViewController.navigationController popToRootViewControllerAnimated:YES];
+        [self.appDelegate.currentGame.gameViewController.backToMenuGameOver dismissWithClickedButtonIndex:-1 animated:YES];
+        [self.appDelegate.currentGame.gameViewController.backToMenuWaitView dismissWithClickedButtonIndex:-1 animated:YES];
+        [self.appDelegate.currentGame.gameViewController.activityIndicator stopAnimating];
+        [self.appDelegate.currentGame.gameViewController.navigationController popToRootViewControllerAnimated:YES];
     }
     // clean up
     [unarchiver finishDecoding];
@@ -292,7 +300,7 @@
 	
     // prepare object for transmission
     [archiver encodeInt:MESSAGE_GAME_DATA forKey:@"messageType"];
-    [archiver encodeObject:self.mvc.currentGame.gameData forKey:@"game data"];
+    [archiver encodeObject:self.appDelegate.currentGame.gameData forKey:@"game data"];
     [archiver finishEncoding];
     
     [self mySendDataToPeers:data];
@@ -308,8 +316,8 @@
 	
     // prepare object for transmission
     [archiver encodeInt:MESSAGE_COMMIT forKey:@"messageType"];
-    [archiver encodeInt:self.mvc.currentGame.gameData.positionOfLastMarkedFieldX forKey:@"commit at x"];
-    [archiver encodeInt:self.mvc.currentGame.gameData.positionOfLastMarkedFieldY forKey:@"commit at y"];
+    [archiver encodeInt:self.appDelegate.currentGame.gameData.positionOfLastMarkedFieldX forKey:@"commit at x"];
+    [archiver encodeInt:self.appDelegate.currentGame.gameData.positionOfLastMarkedFieldY forKey:@"commit at y"];
     [archiver finishEncoding];
     
     [self mySendDataToPeers:data];

@@ -7,17 +7,43 @@
 //
 
 #import <UIKit/UIKit.h>
+@class Game;
 
 @class BluetoothDataHandler;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate,UITabBarControllerDelegate> {
     UIWindow *_mainWindow; // the only window
-    UINavigationController *_navigationController; // the navigation controller which is used throughout the whole app
     BluetoothDataHandler *btdh; // the object managing bluetooth data transfers and disconnects - we need a reference to this, so we can disconnect on application termination
 }
+-(void) startGame;
 
 @property (nonatomic, retain) IBOutlet UIWindow *mainWindow;
-@property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
-@property (nonatomic, assign) BluetoothDataHandler *btdh;
+@property (nonatomic, retain) BluetoothDataHandler *btdh;
+@property (nonatomic, retain) Game *currentGame;
+@property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
+
+@property (nonatomic) BOOL isAIActivated;
+@property (nonatomic) BOOL isAIRedPlayer;
+@property (nonatomic) int strengthOfAI;
+
+@property (nonatomic) BOOL turnLimit;
+@property (nonatomic) int turnLimitNumber;
+@property (nonatomic) BOOL boardSizeLimit;
+@property (nonatomic) int boardSizeWidth;
+@property (nonatomic) int boardSizeHeight;
+@property (nonatomic) int minimumLineSize;
+@property (nonatomic) BOOL scoreMode;
+@property (nonatomic) BOOL additionalRedTurn;
+@property (nonatomic) BOOL reuseLines;
+@property (nonatomic) BOOL localPlayerColorBlue;
+
+
+@property (nonatomic, retain) UINavigationController *tab0NavigationController;
+@property (nonatomic, retain) UINavigationController *tab1NavigationController;
+@property (nonatomic, retain) UINavigationController *tab2NavigationController;
+@property (nonatomic, retain) UINavigationController *tab3NavigationController;
+@property (nonatomic, retain) UIViewController *tab4ViewController;
+
+@property (nonatomic, retain) UIImageView *bluetoothIndicator;
 
 @end

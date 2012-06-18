@@ -16,13 +16,19 @@
 
 @implementation SelectAIViewController
 
-@synthesize mvc;
+@synthesize appDelegate=_appDelegate;
+@synthesize isAIActivated = _isAIActivated;
+@synthesize isAIRedPlayer = _isAIRedPlayer;
+@synthesize strengthOfAI = _strengthOfAI;
 @synthesize colorCell;
 @synthesize colorTextField;
-@synthesize enableCell;
-@synthesize enableSwitch;
 @synthesize strengthCell;
 @synthesize strengthTextField;
+@synthesize modeSelectCell;
+@synthesize modeSelectControl;
+@synthesize passControllCell;
+@synthesize connectCell;
+@synthesize disconnectCell;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -35,6 +41,9 @@
 
 - (void)viewDidLoad
 {
+    self.appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    
+    self.navigationController.navigationBar.tintColor = [UIColor grayColor];
     // set the title and back button of the nav bar
     self.navigationItem.title = NSLocalizedString(@"SELECT_AI_SETTINGS", "Settings");
     UIBarButtonItem *tempButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"BACK_BUTTON", @"Back") style:UIBarButtonItemStyleBordered target:nil action:nil];
@@ -48,35 +57,41 @@
     self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[plist objectForKey:@"main view background"]]];
     [plist release];
     
-    self.enableCell.textLabel.text = NSLocalizedString(@"SELECT_AI_ENABLED","Enabled");
-    self.enableCell.accessoryView = self.enableSwitch;
     self.colorCell.textLabel.text = NSLocalizedString(@"SELECT_AI_COMPUTER_COLOR","Computer Color");
     self.colorCell.accessoryView = self.colorTextField;
     self.strengthCell.textLabel.text = NSLocalizedString(@"SELECT_AI_COMPUTER_STRENGTH","Computer Strength");
     self.strengthCell.accessoryView = self.strengthTextField;
     
-    if (self.mvc.isAIActivated)
+    self.modeSelectCell.accessoryView = self.modeSelectControl;
+    [self.modeSelectControl setTitle:NSLocalizedString(@"SINGLEPLAYER", "Singleplayer") forSegmentAtIndex:0];
+    [self.modeSelectControl setTitle:NSLocalizedString(@"MULTIPLAYER", "Multiplayer") forSegmentAtIndex:1];
+    
+    self.connectCell.textLabel.text = NSLocalizedString(@"SETTINGS_CELL_CONNECT", "Connect");
+    self.disconnectCell.textLabel.text = NSLocalizedString(@"SETTINGS_CELL_DISCONNECT", "Disconnect");
+    self.passControllCell.textLabel.text = NSLocalizedString(@"SETTINGS_CELL_REVOKE_CONTROL", "pass Controll");
+    
+    /*
+    if (self.appDelegate.btdh.currentSession) {
+        NSString *peerID = [[self.appDelegate.btdh.currentSession peersWithConnectionState:GKPeerStateConnected] objectAtIndex:0];
+        NSString *peerName = [self.appDelegate.btdh.currentSession displayNameForPeer:peerID];
+        detailCell.detailTextLabel.text = peerName;
+    }
+     */
+    
+    //initialize AIvariables
+    self.isAIRedPlayer = self.appDelegate.isAIRedPlayer;
+    self.isAIActivated = self.appDelegate.isAIActivated;
+    self.strengthOfAI = self.appDelegate.strengthOfAI;
+    
+    if (self.isAIActivated)
     {
-        self.enableSwitch.on = YES;
-        //enable Options
-        
-        self.colorCell.userInteractionEnabled = YES;
-        self.colorCell.textLabel.enabled = YES;
-        self.strengthCell.textLabel.enabled = YES;
-        self.strengthCell.userInteractionEnabled = YES;
-        
+        self.modeSelectControl.selectedSegmentIndex = 0;
     }
     else
     {
-        self.enableSwitch.on = NO;
-        //disable Options
-        self.colorCell.userInteractionEnabled = NO;
-        self.colorCell.textLabel.enabled = NO;
-        self.strengthCell.textLabel.enabled = NO;
-        self.strengthCell.userInteractionEnabled = NO;
-
+        self.modeSelectControl.selectedSegmentIndex = 1;
     }
-
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -86,7 +101,7 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    if (self.mvc.isAIRedPlayer)
+    if (self.isAIRedPlayer)
     {
         self.colorTextField.text = NSLocalizedString(@"AICOLOR_RED", "red");
         self.colorTextField.textColor = [UIColor redColor];
@@ -98,18 +113,11 @@
         self.colorTextField.textColor = [UIColor blueColor];
         self.strengthTextField.textColor = [UIColor blueColor];
     }
-    if (!self.enableSwitch.isOn)
-    {
-        self.colorTextField.textColor = [UIColor grayColor];
-        self.strengthTextField.textColor = [UIColor grayColor];
-    }
-    //NSString *strengthOfAI = [NSString stringWithFormat:@"%i",self.mvc.strengthOfAI];
-    //self.strengthTextField.text =  strengthOfAI;
-    if (self.mvc.strengthOfAI == 1)
+    if (self.strengthOfAI == 1)
     {
         self.strengthTextField.text = NSLocalizedString(@"AISTRENGTH_1", "weak");
     }
-    else if (self.mvc.strengthOfAI == 2)
+    else if (self.strengthOfAI == 2)
     {
         self.strengthTextField.text = NSLocalizedString(@"AISTRENGTH_2", "normal");
     }
@@ -117,6 +125,15 @@
     {
         self.strengthTextField.text = NSLocalizedString(@"AISTRENGTH_3", "strong");
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    self.appDelegate.isAIActivated = self.isAIActivated;
+    self.appDelegate.isAIRedPlayer = self.isAIRedPlayer;
+    self.appDelegate.strengthOfAI = self.strengthOfAI;
+    
+    [super viewDidDisappear:YES];
 }
 
 - (void)viewDidUnload
@@ -140,8 +157,12 @@
     [strengthCell release];
     [colorTextField release];
     [colorCell release];
-    [enableSwitch release];
-    [enableCell release];
+    [_appDelegate release];
+    [modeSelectCell release];
+    [modeSelectControl release];
+    [connectCell release];
+    [disconnectCell release];
+    [passControllCell release];
     [super dealloc];
 }
 
@@ -164,13 +185,21 @@
 //#warning Incomplete method implementation.
     // Return the number of rows in the section.
     //return 0;
-    if (section == 1)
+    if (section == 0)
     {
-        return 2;
+        return 1;
     }
     else
     {
-        return 1;
+        if (self.isAIActivated || self.appDelegate.btdh.currentSession)
+        {
+            return 2;
+        }
+        else
+        {
+            return 1;
+        }
+        
     }
 }
 
@@ -178,10 +207,24 @@
 {
     switch (section) {
         case 0:
-            return NSLocalizedString(@"SELECT_AI_COMPUTER_OPPONENT", "Computer Opponent");
+            return NSLocalizedString(@"SELECT_MODE_HEADER", "Game Mode");
             break;
         default:
-            return NSLocalizedString(@"SELECT_AI_OPTIONS", "Options");
+            if (self.isAIActivated)
+            {
+                return NSLocalizedString(@"SELECT_AI_OPTIONS", "Options");
+            }
+            else
+            {
+                if (self.appDelegate.btdh.currentSession)
+                {
+                    return NSLocalizedString(@"SETTINGS_MP_HEADER2", "BT Header");
+                }
+                else
+                {
+                    return NSLocalizedString(@"SETTINGS_MP_HEADER1", "Hotseat Header");
+                }
+            }
             break;
     }
 }
@@ -190,10 +233,31 @@
 {
     switch (section) {
         case 0:
-            return NSLocalizedString(@"SELECT_AI_AI_FOOTER", "Enables or disables the computer opponent");
+            return NSLocalizedString(@"SELECT_MODE_FOOTER", "Game Mode description");
             break;
         default:
-            return NSLocalizedString(@"SELECT_AI_OPTIONS_FOOTER", "TODO");
+            if (self.isAIActivated)
+            {
+                return NSLocalizedString(@"SELECT_AI_OPTIONS_FOOTER", "Description");
+            }
+            else
+            {
+                if (self.appDelegate.btdh.currentSession)
+                {
+                    if (self.appDelegate.btdh.localUserActAsServer)
+                    {
+                        return NSLocalizedString(@"SETTINGS_MP_FOOTER2a", "BT Footer");
+                    }
+                    else
+                    {
+                        return NSLocalizedString(@"SETTINGS_MP_FOOTER2b", "BT Footer");
+                    }
+                }
+                else
+                {
+                    return NSLocalizedString(@"SETTINGS_MP_FOOTER1", "Hotseat Footer");  
+                }
+            }
             break;
     }
 }
@@ -208,18 +272,41 @@
     //return cell;
     if (indexPath.section == 0)
     {
-        return self.enableCell;
+        return self.modeSelectCell;
     }
     else
     {
-        if (indexPath.row == 0)
+        if (self.isAIActivated)
         {
-            return self.colorCell;
+            if (indexPath.row == 0)
+            {
+                return self.colorCell;
+            }
+            else
+            {
+                return self.strengthCell;
+            }
         }
         else
         {
-            return self.strengthCell;
+            if (self.appDelegate.btdh.currentSession)
+            {
+                if (indexPath.row == 0)
+                {
+                    return self.disconnectCell;
+                }
+                else
+                {
+                    return self.passControllCell;
+                }
+            }
+            else
+            {
+                return self.connectCell;
+            }
+
         }
+
     }
 }
 
@@ -277,65 +364,50 @@
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (indexPath.section == 1)
+    if (indexPath.section == 1 && self.isAIActivated)
     {
         SelectAIPickerViewController *pickerView = [[SelectAIPickerViewController alloc] initWithNibName:@"SelectAIPickerViewController" bundle:Nil];
-        pickerView.mvc = self.mvc;
+        pickerView.svc = self;
         if (indexPath.row == 0)
         {
             //color
-            pickerView.pickerID = YES;
+            pickerView.pickerID = 0;
         }
         else
         {
             //strength
-            pickerView.pickerID = NO;
+            pickerView.pickerID = 1;
 
         }
         [self.navigationController pushViewController:pickerView animated:YES];
         [pickerView release];
     }
-}
-
--(void)enableSwitchChanged:(id)sender
-{
-    if (self.enableSwitch.isOn)
+    else if (indexPath.section == 1)
     {
-        //set value and enable settings
-        self.mvc.isAIActivated = YES;
-        
-        self.colorCell.userInteractionEnabled = YES;
-        self.colorCell.textLabel.enabled = YES;
-        self.strengthCell.textLabel.enabled = YES;
-        self.strengthCell.userInteractionEnabled = YES;
-        
-        //self.strengthTextField.textColor = [UIColor blueColor];
-        
-        if (self.mvc.isAIRedPlayer)
+        if (indexPath.row == 0)
         {
-            self.colorTextField.text = NSLocalizedString(@"AICOLOR_RED", "red");
-            self.colorTextField.textColor = [UIColor redColor];
-            self.strengthTextField.textColor = [UIColor redColor];
+            //Connect or disconnect
         }
         else
         {
-            self.colorTextField.text = NSLocalizedString(@"AICOLOR_BLUE", "blue");
-            self.colorTextField.textColor = [UIColor blueColor];
-            self.strengthTextField.textColor = [UIColor blueColor];
+            //pass game control
         }
+    }
+}
+
+-(void)modeSelectChanged:(id)sender
+{
+    if (self.modeSelectControl.selectedSegmentIndex == 1)
+    {
+        //Multiplayer
+        self.isAIActivated = NO;
+        [self.tableView reloadData];
     }
     else
     {
-        //set value and disable settings
-        self.mvc.isAIActivated = NO;
-        
-        self.colorCell.userInteractionEnabled = NO;
-        self.colorCell.textLabel.enabled = NO;
-        self.strengthCell.textLabel.enabled = NO;
-        self.strengthCell.userInteractionEnabled = NO;
-        
-        self.colorTextField.textColor = [UIColor grayColor];
-        self.strengthTextField.textColor = [UIColor grayColor];
+        //Singleplayer
+        self.isAIActivated = YES;
+        [self.tableView reloadData];
     }
 }
 

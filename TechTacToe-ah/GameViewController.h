@@ -16,7 +16,7 @@
 
 @class BluetoothDataHandler;
 
-@interface GameViewController : UIViewController <UIScrollViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
+@interface GameViewController : UIViewController <UIScrollViewDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate>
 {
     UIScrollView *gameScrollView; // the scroller for the big board
     UIView *containerView; // the containing view for the big board
@@ -38,14 +38,12 @@
 @property (nonatomic, retain) UIImageView *displayedGameFields;
 @property (nonatomic, retain) UIImage *redField, *blueField, *emptyField, *unavailableField, *redFieldMarked, *blueFieldMarked, *redFieldLine, *blueFieldLine, *redMarkedLastTurn, *blueMarkedLastTurn;
 @property (nonatomic, retain) UIImage *lastDrawn;
-// the game object is the owner of the data, just assign here
-@property (nonatomic, assign) GameData *gameData;
+@property (nonatomic, retain) GameData *gameData;
 @property (nonatomic) CGSize currentSize;
 @property (nonatomic, retain) UIButton *rulesButton;
 @property (nonatomic, retain) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, retain) UILabel *turnInfo, *gameInfo;
-// the Bluetooth data handler belongs to the main view controller, but we need it - so just assign
-@property (nonatomic, assign) BluetoothDataHandler *btDataHandler;
+@property (nonatomic, retain) BluetoothDataHandler *btDataHandler;
 @property (nonatomic, retain) UIAlertView *backToMenuGameOver, *backToMenuReqView, *backToMenuWaitView, *backToMenuAckView;
 @property (nonatomic, retain) UIActivityIndicatorView *activityIndicator;
 //board needs a extra redraw if resized during AI turn
@@ -54,7 +52,6 @@
 @property (nonatomic) CGPoint positionToMark;
 
 // creates a new gamefield - if no field data is present a new field will be generated; if no second player is set, the game will use hotseat mode - don't use the standard init
-//gameAI is nil if AI is not activated
 -(GameViewController*) initWithSize:(CGSize) size gameData:(GameData*) data;
 
 // will draw over existing field at point or draw the entire board by data
@@ -72,8 +69,8 @@
 // will be called when the commit turn button is activated: commits a turn - this means changing data, consulting rules and drawing changes. also, views might be resized and more memory needs to be allocated.
 -(void) commitTurn;
 
-// will be called if the left nav item is pressed and displays an action sheet with options (resign, save, main menu...)
--(void) showMenu;
+//will be called if resign button was tapped
+-(void) resignButtonAction;
 
 // handles changing the labels to reflect current game status
 -(void) updateLabels;

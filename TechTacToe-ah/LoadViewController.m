@@ -12,7 +12,7 @@
 
 @synthesize path=_path;
 @synthesize files=_files;
-@synthesize mvc;
+@synthesize appDelegate=_appDelegate;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -27,6 +27,7 @@
 {
     [_path release];
     [_files release];
+    [_appDelegate release];
     [super dealloc];
 }
 
@@ -41,27 +42,22 @@
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
-{
-    // set nav bar content
-    self.navigationItem.title = NSLocalizedString(@"LOAD_VIEW_TITLE", @"Load Game");
-    UIBarButtonItem *tempButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"BACK_BUTTON", @"Back") style:UIBarButtonItemStyleBordered target:nil action:nil];
-    self.navigationItem.backBarButtonItem = tempButton;
-    [tempButton release];
-    
+{    
+    self.appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     // get path to documents directory
     NSString *docPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDirectory, YES) objectAtIndex:0];
     self.path = docPath;
     
-    // get contents of documents directory
-    self.files = [NSMutableArray arrayWithArray:[[NSFileManager defaultManager] contentsOfDirectoryAtPath:docPath error:NULL]];
-    
-    [super viewDidLoad];
-
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    // set up the background view
+    NSString *resourcePath = [[NSBundle mainBundle]pathForResource:@"ImagePaths" ofType:@"plist"];
+    NSDictionary *plist = [[NSDictionary alloc] initWithContentsOfFile:resourcePath];
+    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[plist objectForKey:@"main view background"]]];
+    [plist release];
+        
+    [super viewDidLoad];
 }
 
 - (void)viewDidUnload
@@ -72,14 +68,35 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated
-{
-    self.navigationController.navigationBar.tintColor = [UIColor grayColor]; 
+{    
     [super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    // set nav bar content
+    self.navigationController.navigationBar.tintColor = [UIColor grayColor];
+    
+    /*
+    UIBarButtonItem *tempButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"BACK_BUTTON", @"Back") style:UIBarButtonItemStyleBordered target:nil action:nil];
+    self.navigationItem.backBarButtonItem = tempButton;
+    [tempButton release];
+     */
+    
+    //Disable Editing if active
+    //[self.tableView setEditing:NO];
+    self.editing = NO;
+    
+    self.navigationItem.title = NSLocalizedString(@"LOAD_VIEW_TITLE", @"Load Game");
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    // get contents of documents directory
+    self.files = [NSMutableArray arrayWithArray:[[NSFileManager defaultManager] contentsOfDirectoryAtPath:self.path error:NULL]];
+    
+    [self.tableView reloadData];
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -109,7 +126,12 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return self.files.count;
+    NSInteger result = self.files.count;
+    if (self.appDelegate.currentGame)
+    {
+        result++;
+    }
+    return result;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -122,16 +144,37 @@
     }
     
      // Configure the cell...
-    NSString *filename = [self.files objectAtIndex:indexPath.row];
+    NSString *filename;
+    if (self.appDelegate.currentGame)
+    {
+        if (indexPath.row == 0)
+        {
+            filename = NSLocalizedString(@"SAVE_ACTIVE_GAME_CELL", @"Save");
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            [cell setAccessoryType:UITableViewCellAccessoryNone];
+        }
+        else
+        {
+            filename = [self.files objectAtIndex:indexPath.row - 1];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+    }
+    else
+    {
+        filename = [self.files objectAtIndex:indexPath.row];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
     cell.textLabel.text = filename;
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    
     return cell;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // only ever delete
+    if (indexPath.row == 0 && self.appDelegate.currentGame)
+    {
+        return UITableViewCellEditingStyleInsert;
+    }
+    
     return UITableViewCellEditingStyleDelete;
 }
 
@@ -148,25 +191,72 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        
         // we need to get the filename before removing it from the data source
-        NSString *filename = [self.files objectAtIndex:indexPath.row];
-        
+        NSString *filename;// = [[NSString alloc] init];
+        if (self.appDelegate.currentGame)
+        {
+            filename = [[self.files objectAtIndex:indexPath.row - 1 ] copy];
+            [self.files removeObjectAtIndex:indexPath.row - 1];
+        }
+        else
+        {
+            filename = [[self.files objectAtIndex:indexPath.row] copy];
+            [self.files removeObjectAtIndex:indexPath.row];
+            
+        }
         // Delete the row from the data source
-        [self.files removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
         
         // also delete file, display alert if for any reason there is an error
-        if (![[NSFileManager defaultManager] removeItemAtPath:[self.path stringByAppendingPathComponent:filename] error:NULL]) {
+        if (![[NSFileManager defaultManager] removeItemAtPath:[self.path stringByAppendingPathComponent:filename] error:NULL])
+        {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LOAD_VIEW_ALERT_DELETE_GAME_UNSUCCESSFUL_TITLE", @"Error") message:NSLocalizedString(@"LOAD_VIEW_ALERT_DELETE_GAME_UNSUCCESSFUL_MESSAGE", @"Could not delete the file.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [alert show];
             [alert release];
         }
+        [filename release];
     }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
+    else if (editingStyle == UITableViewCellEditingStyleInsert)
+    {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        NSString *filename = [NSDateFormatter localizedStringFromDate:[NSDate date] dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterShortStyle];
+        if (self.appDelegate.currentGame.gameData.hasSelection)
+        {
+            self.appDelegate.currentGame.gameData.selection = NO;
+            [self.appDelegate.currentGame.gameData changeDataAtPoint:CGPointMake(self.appDelegate.currentGame.gameData.positionOfLastMarkedFieldX, self.appDelegate.currentGame.gameData.positionOfLastMarkedFieldY)  withStatus:FREE_FIELD];
+            NSMutableArray *needsDrawing = [NSMutableArray arrayWithCapacity:1];
+            Field *drawMe = [[Field alloc] initWithStatus:FREE_FIELD atPositionX:self.appDelegate.currentGame.gameData.positionOfLastMarkedFieldX atPositionY:self.appDelegate.currentGame.gameData.positionOfLastMarkedFieldY];
+            [needsDrawing addObject:drawMe];
+            [drawMe release];
+            // draw the field we deselected
+            [self.appDelegate.currentGame.gameViewController changeGameFields:needsDrawing orDrawAll:NO orSetMarkForLastTurn:NO];
+        }
+        self.appDelegate.currentGame.gameData.positionOfLastMarkedFieldX = self.appDelegate.currentGame.gameViewController.positionToMark.x;
+        self.appDelegate.currentGame.gameData.positionOfLastMarkedFieldY = self.appDelegate.currentGame.gameViewController.positionToMark.y;
+        if ([self.appDelegate.currentGame.gameData saveGameToFile:filename])
+        {
+            //success
+            //update TableView only if file was not overwritten
+            if (![self.files containsObject:filename])
+            {
+                [self.files addObject:filename];
+                [self.tableView reloadData];
+            }
+        }
+        /*
+
+                              if([self.gameData saveGameToFile:filename]) {
+                                  NSString *message = NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_SAVE_GAME_ALERT_SUCCESSFUL_MESSAGE", @"The game was successfully saved as \"%@\".");
+                                  UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_SAVE_GAME_ALERT_SUCCESSFUL_TITLE", @"Game Saved") message:[NSString stringWithFormat:message, filename] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                  [alert show];
+                                  [alert release];
+                              } else {
+                                  // message for unsuccessful save
+                                  UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_SAVE_GAME_ALERT_UNSUCCESSFUL_TITLE", @"Error") message:NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_SAVE_GAME_ALERT_UNSUCCESSFUL_MESSAGE", @"The game could not be saved.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                  [alert show];
+                                  [alert release];
+         */
         
-        // since we only allow to delete, don't do anything here
     }   
 }
 
@@ -191,11 +281,29 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // create and navigate to detail view
-    NSString *filename = [self.files objectAtIndex:indexPath.row];
-    LoadDetailViewController *detailViewController = [[LoadDetailViewController alloc] initWithGameDataFromFile:filename];
-    detailViewController.mvc = self.mvc;
-    [self.navigationController pushViewController:detailViewController animated:YES];
-    [detailViewController release];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NSString *filename = @"";
+    if (self.appDelegate.currentGame)
+    {
+        if (indexPath.row > 0)
+        {
+            filename = [self.files objectAtIndex:indexPath.row - 1];
+        }
+    }
+    else
+    {
+        filename = [self.files objectAtIndex:indexPath.row];
+    }
+    if (self.appDelegate.currentGame && indexPath.row == 0)
+    {
+    }
+    else
+    {
+        LoadDetailViewController *detailViewController = [[LoadDetailViewController alloc] initWithGameDataFromFile:filename];
+        [self.navigationController pushViewController:detailViewController animated:YES];
+        [detailViewController release];
+    }
+
 }
 
 @end

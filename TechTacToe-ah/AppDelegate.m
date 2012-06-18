@@ -6,21 +6,64 @@
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
+
+//TODO dynamic Settings
+//TODO get rid of alerts in GVC
+//TODO new start Image
+//TODO Retina Display Images
+//TODO clean Localized Strings
+//TODO clean unneeded files
+
+//TODO get rid of message "needs permission to get back to main menu
+//TODO Disable Settings / include Warnings fpr BT
+//TOOD Disable LoadVC on Client for BT
+
 #import "AppDelegate.h"
 #import "BluetoothDataHandler.h"
+#import "Game.h"
 
 @implementation AppDelegate
 
 @synthesize mainWindow = _mainWindow;
-@synthesize navigationController = _navigationController;
 @synthesize btdh=_btdh;
+@synthesize currentGame=_currentGame;
+@synthesize tabBarController = _tabBarController;
+@synthesize isAIActivated = _isAIActivated;
+@synthesize isAIRedPlayer = _isAIRedPlayer;
+@synthesize strengthOfAI = _strengthOfAI;
+@synthesize turnLimit = _turnLimit;
+@synthesize turnLimitNumber = _turnLimitNumber;
+@synthesize boardSizeLimit = _boardSizeLimit;
+@synthesize boardSizeWidth = _boardSizeWidth;
+@synthesize boardSizeHeight = _boardSizeHeight;
+@synthesize minimumLineSize = _minimumLineSize;
+@synthesize scoreMode = _scoreMode;
+@synthesize additionalRedTurn = _additionalRedTurn;
+@synthesize reuseLines = _reuseLines;
+@synthesize localPlayerColorBlue = _localPlayerColorBlue;
+
+@synthesize bluetoothIndicator=_bluetoothIndicator;
+
+@synthesize tab0NavigationController=_tab0NavigationController;
+@synthesize tab1NavigationController=_tab1NavigationController;
+@synthesize tab2NavigationController=_tab2NavigationController;
+@synthesize tab3NavigationController=_tab3NavigationController;
+@synthesize tab4ViewController=_tab4ViewController;
 
 #pragma mark
 
 - (void)dealloc
 {
     [_mainWindow release];
-    [_navigationController release];
+    [_tabBarController release];
+    [_btdh release];
+    [_currentGame release];
+    [_bluetoothIndicator release];
+    [_tab0NavigationController release];
+    [_tab1NavigationController release];
+    [_tab2NavigationController release];
+    [_tab3NavigationController release];
+    [_tab4ViewController release];
     [super dealloc];
 }
 
@@ -28,9 +71,40 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-
-    [self.mainWindow addSubview:self.navigationController.view];
+    self.tabBarController.delegate = self;
+    [self.mainWindow addSubview:self.tabBarController.view];
     [self.mainWindow makeKeyAndVisible];
+    self.tabBarController.selectedIndex = 1;
+    self.tab0NavigationController = [self.tabBarController.viewControllers objectAtIndex:0];
+    self.tab1NavigationController = [self.tabBarController.viewControllers objectAtIndex:1];
+    self.tab2NavigationController = [self.tabBarController.viewControllers objectAtIndex:2];
+    self.tab3NavigationController = [self.tabBarController.viewControllers objectAtIndex:3];
+    self.tab4ViewController = [self.tabBarController.viewControllers objectAtIndex:4];
+    
+    self.tab0NavigationController.tabBarItem.title = NSLocalizedString(@"ACTIVE_GAME_TAB_TITLE", "Active Game");
+    self.tab1NavigationController.tabBarItem.title = NSLocalizedString(@"NEW_GAME_TAB_TITLE", "New Game");
+    self.tab2NavigationController.tabBarItem.title = NSLocalizedString(@"LOAD_TAB_TITLE", "Load");
+    self.tab3NavigationController.tabBarItem.title = NSLocalizedString(@"SETTINGS_TAB_TITLE", "Settings");
+    self.tab4ViewController.tabBarItem.title = NSLocalizedString(@"INFO_TAB_TITLE", "Info");
+    [self.tabBarController reloadInputViews];
+    
+    //init AI variables
+    self.strengthOfAI = 2;
+    self.isAIRedPlayer = YES;
+    self.isAIActivated = YES;
+    
+    //init Custom Game
+    self.turnLimit = YES;
+    self.turnLimitNumber = 100;
+    self.boardSizeLimit = YES;
+    self.boardSizeWidth = 11;
+    self.boardSizeHeight = 11;
+    self.minimumLineSize = 4;
+    self.scoreMode = NO;
+    self.additionalRedTurn = YES;
+    self.reuseLines = NO;
+    self.localPlayerColorBlue = YES;
+    
     return YES;
 }
 
@@ -76,6 +150,34 @@
     if (self.btdh.currentSession) {
         [self.btdh doDisconnect];
     }
+    //End Image Context from last active game
+    UIGraphicsEndImageContext();
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+    if (self.tabBarController.selectedIndex == 2)
+    {
+        [self.tab2NavigationController popToRootViewControllerAnimated:NO];
+    }
+    if (self.tabBarController.selectedIndex == 1)
+    {
+        [self.tab1NavigationController popToRootViewControllerAnimated:NO];
+    }
+    if (self.tabBarController.selectedIndex == 3)
+    {
+        [self.tab3NavigationController popToRootViewControllerAnimated:NO];
+    }
+}
+
+- (void)startGame
+{
+    self.tabBarController.selectedIndex = 0;
+    NSArray *resetNavCon = [[NSArray alloc] init];
+    self.tab0NavigationController.viewControllers = resetNavCon;
+    UIGraphicsEndImageContext();
+    [self.tab0NavigationController pushViewController:self.currentGame.gameViewController animated:YES];
+    [resetNavCon release];
 }
 
 @end

@@ -26,5 +26,15 @@
 	<string>red_marked_last_turn.png</string>
 	<key>blue marked last turn</key>
 	<string>blue_marked_last_turn.png</string>
+	<key>TicTacToeButton</key>
+	<string>TicTacToe.png</string>
+	<key>TechTacToeButton</key>
+	<string>TechTacToe.png</string>
+	<key>GomokuButton</key>
+	<string>Gomoku.png</string>
+	<key>CustomButtonBack</key>
+	<string>CustomBack.png</string>
+	<key>CustomButtonFront</key>
+	<string>CustomFront.png</string>
 </dict>
 </plist>

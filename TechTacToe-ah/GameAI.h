@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-//#import "GameData.h"
 #import "Field.h"
 @class GameData;
 

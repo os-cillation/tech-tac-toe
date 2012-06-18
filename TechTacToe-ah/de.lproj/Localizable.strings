@@ -16,7 +16,7 @@
 "MAIN_VIEW_CELL_TICTACTOE" = "TicTacToe";
 "MAIN_VIEW_CELL_GOMOKU" = "Gomoku";
 "MAIN_VIEW_CELL_CUSTOMIZED_GAME" = "Angepasstes Spiel";
-"MAIN_VIEW_CELL_CONTINUE" = "Fortsetzen";
+"MAIN_VIEW_CELL_CONTINUE" = "Laufendes Spiel Fortsetzen";
 "MAIN_VIEW_CELL_LOAD" = "Spiel Laden";
 "MAIN_VIEW_CELL_CONNECT" = "Bluetooth Verbindung Aufbauen";
 "MAIN_VIEW_CELL_REVOKE_CONTROL" = "Spielkontrolle Abgeben an:";
@@ -144,7 +144,7 @@
 
 // Schaltflächen (Navigationsleiste)
 "GAME_VIEW_COMMIT_BUTTON" = "Ziehen";
-"GAME_VIEW_MENU_BUTTON" = "Menü";
+"GAME_VIEW_RESIGN_BUTTON" = "Aufgeben";
 
 // Kontextmenü
 "GAME_VIEW_ACTION_SHEET_TITLE" = "Spielmenü";
@@ -210,19 +210,71 @@
 
 "SELECT_AI_SETTINGS" = "Einstellungen";
 "SELECT_AI_COMPUTER_OPPONENT" = "Computergegner";
-"SELECT_AI_OPTIONS" = "Optionen";
+
 "SELECT_AI_AI_FOOTER" = "Schaltet den Computergegner ein oder aus";
+
+
+
+/* Active Game Tab */
+
+"ACTIVE_GAME_TAB_TITLE" = "Aktives Spiel";
+"ACTIVE_GAME_TITLE" = "Kein Aktives Spiel";
+"ACTIVE_GAME_LABEL" = "Auf aktive Spiele kann in diesem Tab zugegriffen werden. Ein neues Spiel muss gestartet oder ein zuvor gespeichertes Spiel geladen werden.";
+
+/* New Game Tab */
+
+"NEW_GAME_TAB_TITLE" = "Neues Spiel";
+"NEW_GAME_TITLE" = "Neues Spiel Starten";
+"NEW_GAME_TECHTACTOE" = "TechTacToe";
+"NEW_GAME_TICTACTOE" = "TicTacToe";
+"NEW_GAME_GOMOKU" = "Gomoku";
+"NEW_GAME_CUSTOMIZED_GAME" = "Angepasstes Spiel";
+
+"NEW_GAME_ALERT_ACTIVE_GAME_TITLE" = "Aktives Spiel Gefunden";
+"NEW_GAME_ALERT_ACTIVE_GAME_MESSAGE" = "Es läuft bereits ein aktives Spiel. Aktives Spiel abbrechen und ein neues Spiel starten?";
+/*Load Tab*/
+
+"LOAD_TAB_TITLE" = "Laden";
+"SAVE_ACTIVE_GAME_CELL" = "aktives Spiel speichern";
+
+"LOAD_GAME_ALERT_ACTIVE_GAME_TITLE" = "Aktives Spiel Gefunden";
+"LOAD_GAME_ALERT_ACTIVE_GAME_MESSAGE" = "Es läuft bereits ein aktives Spiel. Aktives Spiel abbrechen und ausgewähltes Spiel laden?";
+
+/* Settings Tab */
+
+"SETTINGS_TAB_TITLE" = "Einstellungen";
+
+"SELECT_MODE_HEADER" = "Spielmodus";
+"SINGLEPLAYER" = "Einzelspieler";
+"MULTIPLAYER" = "Mehrspieler";
+"SELECT_MODE_FOOTER" = "";
+
+"SELECT_AI_OPTIONS" = "Computergegner Optionen";
 "SELECT_AI_OPTIONS_FOOTER" = "Ändert die Stärke und Farbe des Computergegners. Der erste Zug gehört immer dem blauen Spieler. Allerdings wird der erste Zug in Spielen mit unbegrenzten Spielbrett automatisch gesetzt wodurch der rote Spieler in diesem Falle den ersten wählbaren Zug hat.";
-"AICOLOR_RED" = "rot";
-"AICOLOR_BLUE" = "blau";
-"SELECT_AI_ENABLED" = "Eingeschaltet";
+
+"SETTINGS_MP_HEADER1" = "Mehrspieler - Hotseat";
+"SETTINGS_MP_FOOTER1" = "Das Spiel ist momentan im Hotseat Modus. Die Spieler müssen zum Spielen sich das gleiche Gerät teilen. Es ist möglich über eine Bluetooth Verbindung mit 2 Geräten zu spielen.";
+"SETTINGS_MP_HEADER2" = "Mehrspieler - Bluetooth";
+"SETTINGS_MP_FOOTER2a" = "Bluetooth Verbindung aufgebaut. Dieses Gerät agiert als Server und die Kontrollen für das Starten neuer Spiele sowie Zugriff auf Spielstände sind aktiviert.";
+"SETTINGS_MP_FOOTER2b" = "Bluetooth Verbindung aufgebaut. Dieses Gerät agiert als Client und die Kontrollen für das Starten neuer Spiele sowie Zugriff auf Spielstände sind deaktiviert.";
+
 "SELECT_AI_COMPUTER_COLOR" = "Computer Farbe";
 "SELECT_AI_COMPUTER_STRENGTH" = "Computer Stärke";
 "AI_PICKER_COLOR" = "Farbe";
-"AI_PICKER_STRENGTH" = "Stärke";
+"AI_PICKER_STRENGTH" = "Computer Stärke";
 "AISTRENGTH_1" = "Schwach";
 "AISTRENGTH_2" = "Normal";
 "AISTRENGTH_3" = "Stark";
+"AICOLOR_RED" = "rot";
+"AICOLOR_BLUE" = "blau";
+
+"SETTINGS_CELL_CONNECT" = "Bluetooth Verbindung Aufbauen";
+"SETTINGS_CELL_REVOKE_CONTROL" = "Spielkontrolle Abgeben an:";
+"SETTINGS_CELL_DISCONNECT" = "Verbindung Trennen";
+
+/* Info Tab */
+
+"INFO_TAB_TITLE" = "Über";
 
 /* sonst. Text */
 
@@ -236,6 +288,7 @@
 "NO" = "Nein";
 "BLUE" = "blau";
 "RED" = "rot";
+"OK" = "OK";
 "CANCEL" = "Abbrechen";
 "SEND" = "Senden";
 "DISCONNECT" = "Trennen";

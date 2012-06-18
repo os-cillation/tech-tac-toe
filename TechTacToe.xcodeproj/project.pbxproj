@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A7BEC4701586170E00B9AB24 /* CustomBack.png in Resources */ = {isa = PBXBuildFile; fileRef = A7BEC46B1586170D00B9AB24 /* CustomBack.png */; };
+		A7BEC4711586170E00B9AB24 /* CustomFront.png in Resources */ = {isa = PBXBuildFile; fileRef = A7BEC46C1586170D00B9AB24 /* CustomFront.png */; };
+		A7BEC4721586170E00B9AB24 /* Gomoku.png in Resources */ = {isa = PBXBuildFile; fileRef = A7BEC46D1586170E00B9AB24 /* Gomoku.png */; };
+		A7BEC4731586170E00B9AB24 /* TechTacToe.png in Resources */ = {isa = PBXBuildFile; fileRef = A7BEC46E1586170E00B9AB24 /* TechTacToe.png */; };
+		A7BEC4741586170E00B9AB24 /* TicTacToe.png in Resources */ = {isa = PBXBuildFile; fileRef = A7BEC46F1586170E00B9AB24 /* TicTacToe.png */; };
+		A7E8B85E1585DA03005AFBD9 /* NewGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E8B85C1585DA03005AFBD9 /* NewGameViewController.m */; };
+		A7E8B85F1585DA03005AFBD9 /* NewGameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7E8B85D1585DA03005AFBD9 /* NewGameViewController.xib */; };
+		A7E946F7157F5464007C6028 /* ActiveGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E946F5157F5464007C6028 /* ActiveGameViewController.m */; };
+		A7E946F8157F5464007C6028 /* ActiveGameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7E946F6157F5464007C6028 /* ActiveGameViewController.xib */; };
 		A7EC02CF156F6B43003BC8CA /* SelectAIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EC02CD156F6B43003BC8CA /* SelectAIViewController.m */; };
 		A7EC02D0156F6B43003BC8CA /* SelectAIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7EC02CE156F6B43003BC8CA /* SelectAIViewController.xib */; };
 		A7EC02D5156FA84B003BC8CA /* SelectAIPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EC02D3156FA849003BC8CA /* SelectAIPickerViewController.m */; };
@@ -75,6 +84,17 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A7BEC46B1586170D00B9AB24 /* CustomBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CustomBack.png; sourceTree = "<group>"; };
+		A7BEC46C1586170D00B9AB24 /* CustomFront.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CustomFront.png; sourceTree = "<group>"; };
+		A7BEC46D1586170E00B9AB24 /* Gomoku.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Gomoku.png; sourceTree = "<group>"; };
+		A7BEC46E1586170E00B9AB24 /* TechTacToe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TechTacToe.png; sourceTree = "<group>"; };
+		A7BEC46F1586170E00B9AB24 /* TicTacToe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TicTacToe.png; sourceTree = "<group>"; };
+		A7E8B85B1585DA03005AFBD9 /* NewGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewGameViewController.h; sourceTree = "<group>"; };
+		A7E8B85C1585DA03005AFBD9 /* NewGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewGameViewController.m; sourceTree = "<group>"; };
+		A7E8B85D1585DA03005AFBD9 /* NewGameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewGameViewController.xib; sourceTree = "<group>"; };
+		A7E946F4157F5464007C6028 /* ActiveGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveGameViewController.h; sourceTree = "<group>"; };
+		A7E946F5157F5464007C6028 /* ActiveGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActiveGameViewController.m; sourceTree = "<group>"; };
+		A7E946F6157F5464007C6028 /* ActiveGameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActiveGameViewController.xib; sourceTree = "<group>"; };
 		A7EC02CC156F6B43003BC8CA /* SelectAIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectAIViewController.h; sourceTree = "<group>"; };
 		A7EC02CD156F6B43003BC8CA /* SelectAIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectAIViewController.m; sourceTree = "<group>"; };
 		A7EC02CE156F6B43003BC8CA /* SelectAIViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectAIViewController.xib; sourceTree = "<group>"; };
@@ -199,6 +219,11 @@
 				E16F86C214287E6700DF7722 /* free.png */,
 				CEAF49891443255200931E99 /* free@2x.png */,
 				E16F86C614287E7100DF7722 /* red.png */,
+				A7BEC46B1586170D00B9AB24 /* CustomBack.png */,
+				A7BEC46C1586170D00B9AB24 /* CustomFront.png */,
+				A7BEC46D1586170E00B9AB24 /* Gomoku.png */,
+				A7BEC46E1586170E00B9AB24 /* TechTacToe.png */,
+				A7BEC46F1586170E00B9AB24 /* TicTacToe.png */,
 				CEAF498C1443255200931E99 /* red@2x.png */,
 				E16F86C514287E7100DF7722 /* red_marked.png */,
 				CEAF498B1443255200931E99 /* red_marked@2x.png */,
@@ -222,8 +247,12 @@
 				CE7EF9591436033D00CA8DB2 /* Interface Builder xib Files */,
 				E17BB52A1414E44700DFBCB5 /* GameViewController.h */,
 				E17BB52B1414E44700DFBCB5 /* GameViewController.m */,
+				A7E8B85B1585DA03005AFBD9 /* NewGameViewController.h */,
+				A7E8B85C1585DA03005AFBD9 /* NewGameViewController.m */,
 				CEC1E92B14345B320053266F /* MainViewController.h */,
 				CEC1E92C14345B320053266F /* MainViewController.m */,
+				A7E946F4157F5464007C6028 /* ActiveGameViewController.h */,
+				A7E946F5157F5464007C6028 /* ActiveGameViewController.m */,
 				CE7C334E143F0BB7005EE0D9 /* LoadViewController.h */,
 				CE7C334F143F0BB7005EE0D9 /* LoadViewController.m */,
 				CE320ED7143F226500A688AB /* LoadDetailViewController.h */,
@@ -250,11 +279,13 @@
 				A7EC02D4156FA84A003BC8CA /* SelectAIPickerViewController.xib */,
 				A7EC02CE156F6B43003BC8CA /* SelectAIViewController.xib */,
 				CEC1E9281434557F0053266F /* MainWindow.xib */,
+				A7E8B85D1585DA03005AFBD9 /* NewGameViewController.xib */,
 				CE7C3350143F0BB7005EE0D9 /* LoadViewController.xib */,
 				CE320ED9143F226500A688AB /* LoadDetailViewController.xib */,
 				CE8146091433145D006E7099 /* SettingsViewController.xib */,
 				CEC6C649145187D00089827D /* SettingsPickerViewController.xib */,
 				CE8056091446E2AE00CE90C8 /* AboutViewController.xib */,
+				A7E946F6157F5464007C6028 /* ActiveGameViewController.xib */,
 				CEE6E615143B2EA400402251 /* RulesViewController.xib */,
 			);
 			name = "Interface Builder xib Files";
@@ -436,6 +467,13 @@
 				A7EEC28015764A1D00B71BE3 /* blue_marked_last_turn@2x.png in Resources */,
 				A7EEC28215764A2700B71BE3 /* red_marked_last_turn.png in Resources */,
 				A7EEC28415764A3000B71BE3 /* red_marked_last_turn@2x.png in Resources */,
+				A7E946F8157F5464007C6028 /* ActiveGameViewController.xib in Resources */,
+				A7E8B85F1585DA03005AFBD9 /* NewGameViewController.xib in Resources */,
+				A7BEC4701586170E00B9AB24 /* CustomBack.png in Resources */,
+				A7BEC4711586170E00B9AB24 /* CustomFront.png in Resources */,
+				A7BEC4721586170E00B9AB24 /* Gomoku.png in Resources */,
+				A7BEC4731586170E00B9AB24 /* TechTacToe.png in Resources */,
+				A7BEC4741586170E00B9AB24 /* TicTacToe.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,6 +520,8 @@
 				A7F0336C15662CB400EAEB99 /* GameAI.m in Sources */,
 				A7EC02CF156F6B43003BC8CA /* SelectAIViewController.m in Sources */,
 				A7EC02D5156FA84B003BC8CA /* SelectAIPickerViewController.m in Sources */,
+				A7E946F7157F5464007C6028 /* ActiveGameViewController.m in Sources */,
+				A7E8B85E1585DA03005AFBD9 /* NewGameViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

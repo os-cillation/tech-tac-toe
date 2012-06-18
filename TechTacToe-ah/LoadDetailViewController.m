@@ -12,7 +12,9 @@
 
 @synthesize gameInformation=_gameInformation;
 @synthesize gameName=_gameName;
-@synthesize mvc;
+@synthesize appDelegate=_appDelegate;
+
+@synthesize activeGameAlert41=_activeGameAlert41;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -53,6 +55,8 @@
 {
     [_gameName release];
     [_gameInformation release];
+    [_appDelegate release];
+    [_activeGameAlert41 release];
     [super dealloc];
 }
 
@@ -68,6 +72,7 @@
 
 - (void)viewDidLoad
 {
+    self.appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     // nav bar setup
     // load button
     UIBarButtonItem *tempButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"LOAD_DETAIL_VIEW_LOAD_BUTTON", @"Load")  style:UIBarButtonItemStyleDone target:self action:@selector(loadGame)];
@@ -83,6 +88,11 @@
     NSDictionary *plist = [[NSDictionary alloc] initWithContentsOfFile:path];
     self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[plist objectForKey:@"main view background"]]];
     [plist release];
+    
+    UIAlertView *alert41 = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"NEW_GAME_ALERT_ACTIVE_GAME_TITLE", @"Active Game Found") message:NSLocalizedString(@"NEW_GAME_ALERT_ACTIVE_GAME_MESSAGE", @"There is already an active game running. Abort active game and start a new game?") delegate:self cancelButtonTitle:NSLocalizedString(@"CANCEL", @"Cancel") otherButtonTitles:NSLocalizedString(@"OK", @"OK"),nil];
+    alert41.tag = 41;
+    self.activeGameAlert41 = alert41;
+    [alert41 release];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -369,28 +379,45 @@
      */
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 41)
+    {
+        if (buttonIndex != [alertView cancelButtonIndex])
+        {
+            self.appDelegate.currentGame = Nil;
+            [self loadGame];
+        }
+    }
+}
+
 - (void)loadGame
 {
+    if (self.appDelegate.currentGame && !self.appDelegate.currentGame.gameData.gameOver)
+    {
+        [self.activeGameAlert41 show];
+        return;
+    }
     // if the main view controller did not have a game before (e.g. on loading a game directly after the app starts) create one with standard init
-    if (!self.mvc.currentGame) {
+    if (!self.appDelegate.currentGame) {
         Game *loadedGame = [Game new];
-        self.mvc.currentGame = loadedGame;
+        self.appDelegate.currentGame = loadedGame;
         [loadedGame release];
     }
-    //TODO make AI saveable
     // assign the game data we loaded in initWithGameDataFromFile (mvc will take ownership), create a controller, assign it as well and display
-    self.mvc.currentGame.gameData = self.gameInformation;
-    GameViewController *tempGameViewController = [[GameViewController alloc] initWithSize:CGSizeMake(MAX(FIELDSIZE * (self.mvc.currentGame.gameData.boardWidth + 2), FIELDSIZE * 9), MAX(FIELDSIZE * (self.mvc.currentGame.gameData.boardHeight + 2), FIELDSIZE * 9)) gameData:self.mvc.currentGame.gameData];
-    self.mvc.currentGame.gameViewController = tempGameViewController;
+    self.appDelegate.currentGame.gameData = self.gameInformation;
+    GameViewController *tempGameViewController = [[GameViewController alloc] initWithSize:CGSizeMake(MAX(FIELDSIZE * (self.appDelegate.currentGame.gameData.boardWidth + 2), FIELDSIZE * 9), MAX(FIELDSIZE * (self.appDelegate.currentGame.gameData.boardHeight + 2), FIELDSIZE * 9)) gameData:self.appDelegate.currentGame.gameData];
+    self.appDelegate.currentGame.gameViewController = tempGameViewController;
     
     // on a Bluetooth game, send game data to the opponent and set the data handler for the game view controller
-    if (self.mvc.dataHandler.currentSession) {
-        [self.mvc.dataHandler transmitCurrentGameData];
-        self.mvc.currentGame.gameViewController.btDataHandler = self.mvc.dataHandler;
+    if (self.appDelegate.btdh.currentSession) {
+        [self.appDelegate.btdh transmitCurrentGameData];
+        self.appDelegate.currentGame.gameViewController.btDataHandler = self.appDelegate.btdh;
     }
     
-    [self.navigationController pushViewController:self.mvc.currentGame.gameViewController animated:YES];
+    //[self.navigationController pushViewController:self.appDelegate.currentGame.gameViewController animated:YES];
     [tempGameViewController release];
+    [self.appDelegate startGame];
 }
 
 @end

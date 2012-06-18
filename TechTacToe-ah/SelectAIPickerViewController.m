@@ -7,7 +7,7 @@
 //
 
 #import "SelectAIPickerViewController.h"
-#import "MainViewController.h"
+#import "SelectAIViewController.h"
 
 @interface SelectAIPickerViewController ()
 
@@ -15,7 +15,7 @@
 
 @implementation SelectAIPickerViewController
 
-@synthesize mvc;
+@synthesize svc;
 @synthesize pickerID;
 @synthesize pickerName;
 @synthesize picker;
@@ -47,14 +47,14 @@
     self.picker.delegate = self;
     self.picker.dataSource = self;
     
-    if (pickerID)
+    if (pickerID == 0)
     {
         //color
         self.pickerName.text = NSLocalizedString(@"AI_PICKER_COLOR", "COLOR");
         [self.dataArray addObject:NSLocalizedString(@"AICOLOR_BLUE", "blue")];
         [self.dataArray addObject:NSLocalizedString(@"AICOLOR_RED", "red")];
         
-        if (self.mvc.isAIRedPlayer)
+        if (self.svc.isAIRedPlayer)
         {
             [self.picker selectRow:1 inComponent:0 animated:NO];
         }
@@ -70,15 +70,15 @@
        /* for (int i = 1; i < 4; i++) {
             [self.dataArray addObject:[NSString stringWithFormat:@"%i",i]];
         }
-        [self.picker selectRow:self.mvc.strengthOfAI-1 inComponent:0 animated:NO];*/
+        [self.picker selectRow:self.svc.strengthOfAI-1 inComponent:0 animated:NO];*/
         [self.dataArray addObject:NSLocalizedString(@"AISTRENGTH_1", "weak")];
         [self.dataArray addObject:NSLocalizedString(@"AISTRENGTH_2", "normal")];
         [self.dataArray addObject:NSLocalizedString(@"AISTRENGTH_3", "strong")];
-        if (self.mvc.strengthOfAI == 1)
+        if (self.svc.strengthOfAI == 1)
         {
             [self.picker selectRow:0 inComponent:0 animated:NO];
         }
-        else if (self.mvc.strengthOfAI == 2)
+        else if (self.svc.strengthOfAI == 2)
         {
             [self.picker selectRow:1 inComponent:0 animated:NO];
         }
@@ -102,34 +102,34 @@
 {
     self.selectedValue = [self.dataArray objectAtIndex:row];
     
-    if (pickerID)
+    if (pickerID == 0)
     {
         //color
         //set values from picker to mvc
         if ([self.selectedValue isEqualToString:NSLocalizedString(@"AICOLOR_RED", "red")])
         {
-            self.mvc.isAIRedPlayer = YES;
+            self.svc.isAIRedPlayer = YES;
         }
         else
         {
-            self.mvc.isAIRedPlayer = NO;
+            self.svc.isAIRedPlayer = NO;
         }
     }
     else
     {
         //strength
-        //self.mvc.strengthOfAI = self.selectedValue.intValue;
+        //self.svc.strengthOfAI = self.selectedValue.intValue;
         if ([self.selectedValue isEqualToString:NSLocalizedString(@"AISTRENGTH_1", "weak")])
         {
-            self.mvc.strengthOfAI = 1;
+            self.svc.strengthOfAI = 1;
         }
         else if ([self.selectedValue isEqualToString:NSLocalizedString(@"AISTRENGTH_2", "normal")])
         {
-            self.mvc.strengthOfAI = 2;
+            self.svc.strengthOfAI = 2;
         }
         else
         {
-            self.mvc.strengthOfAI = 3;
+            self.svc.strengthOfAI = 3;
         }
     }
 }

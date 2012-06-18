@@ -33,8 +33,6 @@
     UITextField *boardHeightTextField;
     UITableViewCell *boardLimitCell;
     UISwitch *boardLimitSwitch;
-    
-    MainViewController *mvc;
 }
 
 @property (nonatomic, retain) IBOutlet UITableViewCell *boardLimitCell;
@@ -58,7 +56,9 @@
 @property (nonatomic, retain) IBOutlet UITableViewCell *playerSelectionCell;
 @property (nonatomic, retain) IBOutlet UITextField *playerColorTextField;
 
-@property (nonatomic, assign) MainViewController *mvc;
+@property (nonatomic, retain) AppDelegate *appDelegate;
+
+@property (nonatomic, retain) UIAlertView *activeGameAlert31;
 
 // Interface Builder actions will handle activating/deactivating controls depending on current setting
 

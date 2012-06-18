@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "GameViewController.h" //this includes GameAI
+#import "AppDelegate.h"
 
 @class MainViewController;
 
@@ -17,9 +18,10 @@
 }
 
 // will initialize a new game if passed nil as filename, else tries to load a saved game - will pass information about game mode and rules to the gameData object - use this instead of standard init
--(Game*)initInMode:(int)mode withBoardSize:(CGSize)sizeOrNil:(MainViewController *)mvc;
+-(Game*)initInMode:(int)mode withBoardSize:(CGSize)sizeOrNil;
 
 @property (nonatomic, retain) GameViewController *gameViewController;
 @property (nonatomic, retain) GameData *gameData;
+@property (nonatomic, retain) AppDelegate *appDelegate;
 
 @end

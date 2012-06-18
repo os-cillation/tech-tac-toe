@@ -7,19 +7,26 @@
 //
 
 #import <UIKit/UIKit.h>
-@class MainViewController;
+#import "AppDelegate.h"
 
 @interface SelectAIViewController : UITableViewController
 
-@property (nonatomic, retain) IBOutlet UITableViewCell *enableCell;
-@property (nonatomic, retain) IBOutlet UISwitch *enableSwitch;
+@property (nonatomic, retain) IBOutlet UITableViewCell *modeSelectCell;
+@property (nonatomic, retain) IBOutlet UISegmentedControl *modeSelectControl;
 @property (nonatomic, retain) IBOutlet UITableViewCell *colorCell;
 @property (nonatomic, retain) IBOutlet UITextField *colorTextField;
 @property (nonatomic, retain) IBOutlet UITableViewCell *strengthCell;
 @property (nonatomic, retain) IBOutlet UITextField *strengthTextField;
 
-@property (nonatomic, assign) MainViewController *mvc;
+@property (nonatomic, retain) IBOutlet UITableViewCell *connectCell;
+@property (nonatomic, retain) IBOutlet UITableViewCell *passControllCell;
+@property (nonatomic, retain) IBOutlet UITableViewCell *disconnectCell;
 
-- (IBAction)enableSwitchChanged:(id)sender;
+@property (nonatomic, retain) AppDelegate *appDelegate;
+@property (nonatomic) BOOL isAIActivated;
+@property (nonatomic) BOOL isAIRedPlayer;
+@property (nonatomic) int strengthOfAI;
+
+- (IBAction)modeSelectChanged:(id)sender;
 
 @end

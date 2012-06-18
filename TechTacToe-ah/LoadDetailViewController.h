@@ -17,7 +17,9 @@
 
 @property (nonatomic, retain) NSString *gameName;
 @property (nonatomic, retain) GameData *gameInformation;
-@property (nonatomic, assign) MainViewController *mvc;
+@property (nonatomic, retain) AppDelegate *appDelegate;
+
+@property (nonatomic, retain) UIAlertView *activeGameAlert41;
 
 // custom initializer - will load from nib and create and retain a game data object
 - (LoadDetailViewController*) initWithGameDataFromFile:(NSString*)filename;

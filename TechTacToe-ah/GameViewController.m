@@ -128,9 +128,8 @@
     [_activityIndicator release];
     [redMarkedLastTurn release];
     [blueMarkedLastTurn release];
-    
-    // release the image context - if we don't do this, a big chunk of memory will leak if we go back to menu and start a new game
-    UIGraphicsEndImageContext();
+    [_gameData release];
+    [_btDataHandler release];
     
     [super dealloc];
 }
@@ -150,95 +149,8 @@
     return self.containerView;
 }
 
-#pragma mark - Action sheet delegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 0) {
-        // resign: display alert view for confirmation, but only if the game is still ongoing and it is your turn on Bluetooth games
-        if (!self.gameData.isGameOver && ((self.btDataHandler.currentSession && self.gameData.isLocalPlayerBlue == self.gameData.isBluePlayerTurn) || !self.btDataHandler.currentSession)) {
-            // code deactivated: don't ask for confirmation - do it! activate this code for old behaviour
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_CONFIRMATION_TITLE", @"Resigning") message:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_CONFIRMATION_MESSAGE", @"Really resign the game?") delegate:self cancelButtonTitle:NSLocalizedString(@"NO", @"no") otherButtonTitles:NSLocalizedString(@"YES", @"yes"), nil];
-//            alert.tag = 12;
-//            [alert show];
-//            [alert release];
-            
-            // deactivate this code for old confirmation dialogue
-            // do resign
-            
-            // first clear any selection, so we don't keep them even when the game is already over - on Bluetooth games, there should be no marked field so skip it automatically
-            if (self.gameData.hasSelection) {
-                self.gameData.selection = NO;
-                [self.gameData changeDataAtPoint:CGPointMake(self.gameData.positionOfLastMarkedFieldX, self.gameData.positionOfLastMarkedFieldY)  withStatus:FREE_FIELD];
-                NSMutableArray *needsDrawing = [NSMutableArray arrayWithCapacity:1];
-                Field *drawMe = [[Field alloc] initWithStatus:FREE_FIELD atPositionX:self.gameData.positionOfLastMarkedFieldX atPositionY:self.gameData.positionOfLastMarkedFieldY];
-                [needsDrawing addObject:drawMe];
-                [drawMe release];
-                // reset position of our last selection
-                self.gameData.positionOfLastMarkedFieldX = -1;
-                self.gameData.positionOfLastMarkedFieldY = -1;
-                // draw the field we deselected
-                [self changeGameFields:needsDrawing orDrawAll:NO orSetMarkForLastTurn:NO];
-            }
-            // at last, do the resigning and declare game over
-            [self.gameData resignGame];
-            [self cleanUpAfterGameOver];
-            
-            // on Bluetooth games, tell the other player you have resigned
-            if (self.btDataHandler.currentSession && self.gameData.isBluePlayerTurn == self.gameData.isLocalPlayerBlue) {
-                [self.btDataHandler sendResign];
-            }
-        } else {
-            // display an alert view with a message that you cannot resign the game at this moment
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_UNAVAILBLE_TITLE", @"Resigning Not Possible") message:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_UNAVAILABLE_MESSAGE", @"Resigning the game is only possible if the game is not already over and if it is your turn on a game via Bluetooth.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-            [alert release];
-        }
-    }
-    if (buttonIndex == 1) {
-        // save
-        // first clear any selection
-        if (self.gameData.hasSelection) {
-            self.gameData.selection = NO;
-            [self.gameData changeDataAtPoint:CGPointMake(self.gameData.positionOfLastMarkedFieldX, self.gameData.positionOfLastMarkedFieldY)  withStatus:FREE_FIELD];
-            NSMutableArray *needsDrawing = [NSMutableArray arrayWithCapacity:1];
-            Field *drawMe = [[Field alloc] initWithStatus:FREE_FIELD atPositionX:self.gameData.positionOfLastMarkedFieldX atPositionY:self.gameData.positionOfLastMarkedFieldY];
-            [needsDrawing addObject:drawMe];
-            [drawMe release];
-            // reset position of our last selection
-            self.gameData.positionOfLastMarkedFieldX = -1;
-            self.gameData.positionOfLastMarkedFieldY = -1;
-            // draw the field we deselected
-            [self changeGameFields:needsDrawing orDrawAll:NO orSetMarkForLastTurn:NO];
-        }
-        NSString *filename = [NSDateFormatter localizedStringFromDate:[NSDate date] dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterShortStyle];
-        if([self.gameData saveGameToFile:filename]) {
-            NSString *message = NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_SAVE_GAME_ALERT_SUCCESSFUL_MESSAGE", @"The game was successfully saved as \"%@\".");
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_SAVE_GAME_ALERT_SUCCESSFUL_TITLE", @"Game Saved") message:[NSString stringWithFormat:message, filename] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-            [alert release];
-        } else {
-            // message for unsuccessful save
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_SAVE_GAME_ALERT_UNSUCCESSFUL_TITLE", @"Error") message:NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_SAVE_GAME_ALERT_UNSUCCESSFUL_MESSAGE", @"The game could not be saved.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-            [alert release];
-        }
-    }
-    if (buttonIndex == 2) {
-        // main menu
-        // back to menu if we are in hotseat mode - in a Bluetooth game we need to notify the other device and ask for confirmation
-        if (!self.btDataHandler.currentSession)
-            [self.navigationController popToRootViewControllerAnimated:YES];
-        else {
-            // ask for confirmation on Bluetooth games, send remote device notification to go back to menu as well or to disconnect and stay - if someone starts a new game while the old one is still running, memory will leak - so do not EVER allow only one peer to go back to menu!
-            [self.backToMenuReqView show];
-        }
-    }
-    // buttonIndex == 3 is the cancel button - don't do anything if it's clicked
-}
-
 #pragma mark - Alert view delegate
-
+//TODO get rid of unnecessary stuff here
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     // which alert view is caller
@@ -249,7 +161,10 @@
         } else if (buttonIndex == 1) {
             // back to menu if we are in hotseat mode - in a Bluetooth game we need to notify the other device and ask for confirmation
             if (!self.btDataHandler.currentSession)
+            {
+                [self.tabBarController setSelectedIndex:0];
                 [self.navigationController popToRootViewControllerAnimated:YES];
+            }
             else {
             // ask for confirmation on Bluetooth games, send remote device notification to go back to menu as well or to disconnect and stay - if someone starts a new game while the old one is still running, memory will leak - so do not EVER allow only one peer to go back to menu!
                 [self.backToMenuReqView show];
@@ -300,6 +215,7 @@
         } else if (buttonIndex == 2) {
             // disconnect from the session and go back to menu
             [self.btDataHandler doDisconnect];
+            [self.tabBarController setSelectedIndex:0];
             [self.navigationController popToRootViewControllerAnimated:YES];
         }
     } // waiting alert view - will be dismissed by the other device by sending a MESSAGE_MENU_ACK or by clicking the disconnect button
@@ -308,6 +224,7 @@
             // disconnect button - we don't have a cancel button per sé, but this is as close as it can get (stopping the activity indicator will be done in doDisconnect)
             [self.btDataHandler doDisconnect];
             // also, we can go back to the menu now
+            [self.tabBarController setSelectedIndex:0];
             [self.navigationController popToRootViewControllerAnimated:YES];
         }
     } // the alert view requesting an acknowledgement to go back to menu
@@ -318,6 +235,7 @@
         } else if (buttonIndex == 1) {
             // we agree to go back to menu, tell the other device, go back to menu
             [self.btDataHandler sendBackToMenuAcknowledge];
+            [self.tabBarController setSelectedIndex:0];
             [self.navigationController popToRootViewControllerAnimated:YES];
         }
     }
@@ -572,7 +490,7 @@
             bool markLastTurn = NO;
             if (!self.gameData.gameAI || (self.gameData.gameAI && !self.turnOfAI) )
             {
-                if (positionToMark.x > -1)
+                if (self.positionToMark.x > -1)
                 {
                     //demark old field
                     NSString *key = [NSString stringWithFormat:@"%i, %i",(int)self.positionToMark.x,(int)self.positionToMark.y];
@@ -686,7 +604,7 @@
                         }
                         else
                         {
-                            self.positionToMark = CGPointMake(self.self.positionToMark.x - position.x + 3, self.positionToMark.y);
+                            self.positionToMark = CGPointMake(self.positionToMark.x - position.x + 3, self.positionToMark.y);
                         }
                     }
                     else
@@ -776,7 +694,7 @@
                 // just draw the changes
                 [self changeGameFields:needsDrawing orDrawAll:NO orSetMarkForLastTurn:NO];
             }
-            if (markLastTurn && positionToMark.x > -1)
+            if (markLastTurn && self.positionToMark.x > -1)
             {
                 NSString *key = [NSString stringWithFormat:@"%i, %i",(int)self.positionToMark.x,(int)self.positionToMark.y];
                 Field *markMe = [self.gameData.fields objectForKey:key];
@@ -792,6 +710,7 @@
                 // deactivate controls (the data handler will re-activate them for us
                 [self.tapGestureRecognizer setEnabled:NO];
                 [self.navigationItem.rightBarButtonItem setEnabled:NO];
+                [self.navigationItem.leftBarButtonItem setEnabled:NO];
             }
             
             // check for game over - on game over, call cleanUpAfterGameOver and return and don't bother with updating labels or incrementing turn numbers
@@ -809,15 +728,6 @@
             
         }
     }
-}
-
--(void) showMenu {
-    // show in-game menu
-    // display action sheet with options (save game, save and quit, resign, just quit)
-    
-    UIActionSheet *menu = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_TITLE", @"Game Menu") delegate:self cancelButtonTitle:NSLocalizedString(@"CANCEL", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_RESIGN_BUTTON", @"Resign Game") otherButtonTitles:NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_SAVE_BUTTON", @"Save Game"), NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_MAIN_MENU_BUTTON", @"Back to Main Menu"), nil];
-    [menu showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
-    [menu release];
 }
 
 #pragma mark - Displaying game information
@@ -922,10 +832,54 @@
     [self.tapGestureRecognizer setEnabled:NO];
     //[self.navigationItem.rightBarButtonItem setHidden:YES];
     [self.navigationItem.rightBarButtonItem setEnabled:NO];
+    [self.navigationItem.leftBarButtonItem setEnabled:NO];
     [self updateLabels];
     
     // show alert view with the option to go back to main menu directly - this will also show on loading a game which is over. this behaviour is intended.
-    [self.backToMenuGameOver show];
+    //[self.backToMenuGameOver show];
+}
+
+- (void)resignButtonAction
+{
+    // resign: display alert view for confirmation, but only if the game is still ongoing and it is your turn on Bluetooth games
+    if (!self.gameData.isGameOver && ((self.btDataHandler.currentSession && self.gameData.isLocalPlayerBlue == self.gameData.isBluePlayerTurn) || !self.btDataHandler.currentSession)) {
+        // code deactivated: don't ask for confirmation - do it! activate this code for old behaviour
+        //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_CONFIRMATION_TITLE", @"Resigning") message:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_CONFIRMATION_MESSAGE", @"Really resign the game?") delegate:self cancelButtonTitle:NSLocalizedString(@"NO", @"no") otherButtonTitles:NSLocalizedString(@"YES", @"yes"), nil];
+        //            alert.tag = 12;
+        //            [alert show];
+        //            [alert release];
+        
+        // deactivate this code for old confirmation dialogue
+        // do resign
+        
+        // first clear any selection, so we don't keep them even when the game is already over - on Bluetooth games, there should be no marked field so skip it automatically
+        if (self.gameData.hasSelection) {
+            self.gameData.selection = NO;
+            [self.gameData changeDataAtPoint:CGPointMake(self.gameData.positionOfLastMarkedFieldX, self.gameData.positionOfLastMarkedFieldY)  withStatus:FREE_FIELD];
+            NSMutableArray *needsDrawing = [NSMutableArray arrayWithCapacity:1];
+            Field *drawMe = [[Field alloc] initWithStatus:FREE_FIELD atPositionX:self.gameData.positionOfLastMarkedFieldX atPositionY:self.gameData.positionOfLastMarkedFieldY];
+            [needsDrawing addObject:drawMe];
+            [drawMe release];
+            // reset position of our last selection
+            self.gameData.positionOfLastMarkedFieldX = -1;
+            self.gameData.positionOfLastMarkedFieldY = -1;
+            // draw the field we deselected
+            [self changeGameFields:needsDrawing orDrawAll:NO orSetMarkForLastTurn:NO];
+        }
+        // at last, do the resigning and declare game over
+        [self.gameData resignGame];
+        [self cleanUpAfterGameOver];
+        
+        // on Bluetooth games, tell the other player you have resigned
+        if (self.btDataHandler.currentSession && self.gameData.isBluePlayerTurn == self.gameData.isLocalPlayerBlue) {
+            [self.btDataHandler sendResign];
+        }
+    } else {
+        // display an alert view with a message that you cannot resign the game at this moment
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_UNAVAILBLE_TITLE", @"Resigning Not Possible") message:NSLocalizedString(@"GAME_VIEW_ALERT_RESIGN_UNAVAILABLE_MESSAGE", @"Resigning the game is only possible if the game is not already over and if it is your turn on a game via Bluetooth.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    }
 }
 
 - (void)layoutElements:(UIInterfaceOrientation)orientation {
@@ -942,12 +896,12 @@
         self.containerView.frame = frame;
         frame = [[UIScreen mainScreen]applicationFrame];
         self.view.frame = frame;
-        frame.size.height -= 70;
+        frame.size.height -= 70 + self.tabBarController.tabBar.frame.size.height;
         self.gameScrollView.frame = frame;
         self.gameScrollView.contentSize = CGSizeMake(self.containerView.frame.size.width, self.containerView.frame.size.height);
-        frame = CGRectMake(5, 400, 300, 50);
+        frame = CGRectMake(5, 400 - self.tabBarController.tabBar.frame.size.height, 300, 50);
         self.gameInfo.frame = frame;
-        frame = CGRectMake(284, 401, 44, 44);
+        frame = CGRectMake(284, 401 - self.tabBarController.tabBar.frame.size.height, 44, 44);
         self.rulesButton.frame = frame;
     } else {
         // frame setups for landscape orientations
@@ -956,12 +910,12 @@
         frame = [[UIScreen mainScreen]applicationFrame];
         frame.size = CGSizeMake(frame.size.height, frame.size.width);
         self.view.frame = frame;
-        frame.size.height -= 55;
+        frame.size.height -= 55 + self.tabBarController.tabBar.frame.size.height;
         self.gameScrollView.frame = frame;
         self.gameScrollView.contentSize = CGSizeMake(self.containerView.frame.size.height, self.containerView.frame.size.width);
-        frame = CGRectMake(5, 255, 300, 50);
+        frame = CGRectMake(5, 255 - self.tabBarController.tabBar.frame.size.height, 300, 50);
         self.gameInfo.frame = frame;
-        frame = CGRectMake(440, 255, 44, 44);
+        frame = CGRectMake(440, 255 - self.tabBarController.tabBar.frame.size.height, 44, 44);
         self.rulesButton.frame = frame;
     }
     // finally, re-apply zoom
@@ -979,9 +933,16 @@
     self.displayedGameFields = tempDisplayedGameFields;
     [tempDisplayedGameFields release];
     
+    self.positionToMark = CGPointMake( (int) self.gameData.positionOfLastMarkedFieldX, (int) self.gameData.positionOfLastMarkedFieldY);
+    
+    self.gameData.positionOfLastMarkedFieldX = -1;
+    self.gameData.positionOfLastMarkedFieldY = -1;
+    
     // create container to scroll in
     // has to be size.width + FIELDSIZE and size.height + FIELDSIZE to display lower and right fields because of the way the images are drawn
-    UIView *tempContainerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.currentSize.width, self.currentSize.height)];
+    //Note: above information was from the time before tabbar was added
+    //With tabbar the size has to be smaller
+    UIView *tempContainerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.currentSize.width, self.currentSize.height - self.tabBarController.tabBar.frame.size.height)];
     self.containerView = tempContainerView;
     [tempContainerView release];
     [self.containerView setBackgroundColor:[UIColor blackColor]];
@@ -1016,7 +977,6 @@
         self.gameScrollView.zoomScale = 1.2f;
         self.gameScrollView.bouncesZoom = NO;
     }
-    
     //set up the game view
     [self changeGameFields:nil orDrawAll:YES orSetMarkForLastTurn:NO];
     
@@ -1077,6 +1037,8 @@
     //[self.gameInfo setShadowOffset:CGSizeMake(1, -1)];
     //[self.gameInfo setShadowColor:[UIColor blackColor]];
     
+    //self.gameInfo
+    
     // set the navbar title with turn information, make it black
     self.navigationItem.titleView = self.turnInfo;
     
@@ -1084,12 +1046,11 @@
     UIBarButtonItem *commitButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_COMMIT_BUTTON", @"Commit") style:UIBarButtonItemStyleDone target:self action:@selector(commitTurn)];
     self.navigationItem.rightBarButtonItem = commitButton;
     [commitButton release];
-    
-    //set up a custom back button that will get the user all the way back to the main menu by calling a custom action
-    UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_MENU_BUTTON", @"Menu") style:UIBarButtonItemStyleBordered target:self action:@selector(showMenu)];
-    self.navigationItem.leftBarButtonItem = menuButton;
-    [menuButton release];
-    
+    //set up a custom back button that will let the player resign
+    UIBarButtonItem *resignButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_RESIGN_BUTTON", @"Menu") style:UIBarButtonItemStyleDone target:self action:@selector(resignButtonAction)];
+    self.navigationItem.leftBarButtonItem = resignButton;
+    [resignButton release];
+//TODO - get rid of alert views    
     // init and config the alert views we might need on a Bluetooth game
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_GAME_OVER_TITLE", @"Game Over") message:NSLocalizedString(@"GAME_VIEW_ALERT_GAME_OVER_MESSAGE", @"The game is over. Back to menu?") delegate:self cancelButtonTitle:NSLocalizedString(@"NO", @"no") otherButtonTitles:NSLocalizedString(@"YES", @"yes"), nil];
     alert.tag = 11;
@@ -1123,6 +1084,7 @@
     if (self.btDataHandler.currentSession && (self.gameData.isLocalPlayerBlue != self.gameData.isBluePlayerTurn)) {
         [self.tapGestureRecognizer setEnabled:NO];
         [self.navigationItem.rightBarButtonItem setEnabled:NO];
+        [self.navigationItem.leftBarButtonItem setEnabled:NO];
     }
     
     //update the labels with initial data
@@ -1135,13 +1097,19 @@
     self.turnOfAI = NO;
     self.needsExtraRedraw = NO;
     
-    if (self.gameData.rules.isExtendableBoard)
+    if (self.gameData.rules.isExtendableBoard && self.gameData.numberOfTurn == 2)
     {
         self.positionToMark = CGPointMake(3, 3);
     }
-    else
+    
+    if (self.positionToMark.x > 0)
     {
-        self.positionToMark = CGPointMake(-1, -1);
+        NSString *key = [NSString stringWithFormat:@"%i, %i",(int)self.positionToMark.x,(int)self.positionToMark.y];
+        Field *markMe = [self.gameData.fields objectForKey:key];
+        NSMutableArray *needsMarking = [[NSMutableArray alloc] init ];
+        [needsMarking addObject:markMe];
+        [self changeGameFields:needsMarking orDrawAll:NO orSetMarkForLastTurn:YES];
+        [needsMarking release];
     }
 
     //if AI has first commit AI needs to be called here
@@ -1179,18 +1147,12 @@
     if (self.gameData.gameOver || (self.btDataHandler.currentSession && (self.gameData.isLocalPlayerBlue != self.gameData.isBluePlayerTurn))) {
         [self.tapGestureRecognizer setEnabled:NO];
         [self.navigationItem.rightBarButtonItem setEnabled:NO];
+        [self.navigationItem.leftBarButtonItem setEnabled:NO];
     }
     [self updateLabels];
     
     [super viewWillAppear:animated];
 }
-
-/*
-- (void) viewWillDisappear:(BOOL)animated
-{
-    
-}
-*/
 
 - (void) viewDidUnload
 {
@@ -1208,9 +1170,6 @@
     self.backToMenuWaitView = nil;
     self.backToMenuAckView = nil;
     self.activityIndicator = nil;
-    
-    // release the image context
-    UIGraphicsEndImageContext();
     
     self.lastDrawn = nil;
     

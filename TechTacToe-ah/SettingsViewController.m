@@ -33,7 +33,8 @@
 @synthesize reuseLineSwitch;
 @synthesize playerSelectionCell;
 @synthesize playerColorTextField;
-@synthesize mvc;
+@synthesize appDelegate;
+@synthesize activeGameAlert31;
 
 #pragma mark - Initializer and memory management
 
@@ -67,6 +68,8 @@
     [boardLimitSwitch release];
     [playerSelectionCell release];
     [playerSelectionSwitch release];
+    [appDelegate release];
+    [activeGameAlert31 release];
     [super dealloc];
 }
 
@@ -82,6 +85,7 @@
 
 - (void)viewDidLoad
 {
+    self.appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     // set the title and back button of the nav bar
     self.navigationItem.title = NSLocalizedString(@"SETTINGS_VIEW_TITLE", @"Customize Game");
     UIBarButtonItem *tempButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"BACK_BUTTON", @"Back") style:UIBarButtonItemStyleBordered target:nil action:nil];
@@ -122,8 +126,6 @@
     self.reuseLineCell.accessoryView = self.reuseLineSwitch;
     self.playerSelectionCell.textLabel.text = NSLocalizedString(@"SETTINGS_VIEW_CELL_PLAYER_COLOR", @"Local Player is Blue");
     self.playerSelectionCell.accessoryView = self.playerColorTextField;
-    self.playerColorTextField.textColor = [UIColor blueColor];
-    self.playerColorTextField.text = NSLocalizedString(@"AICOLOR_BLUE","blue");
     
     // code disabled so we can choose the local player even on a hotseat game, because if you can save it and load it as a Bluetooth game later, you should be able to choose player colors
 //    // disable the Bluetooth options if we don't have a Bluetooth game
@@ -137,6 +139,34 @@
     NSDictionary *plist = [[NSDictionary alloc] initWithContentsOfFile:path];
     self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[plist objectForKey:@"main view background"]]];
     [plist release];
+    
+    UIAlertView *alert31 = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"NEW_GAME_ALERT_ACTIVE_GAME_TITLE", @"Active Game Found") message:NSLocalizedString(@"NEW_GAME_ALERT_ACTIVE_GAME_MESSAGE", @"There is already an active game running. Abort active game and start a new game?") delegate:self cancelButtonTitle:NSLocalizedString(@"CANCEL", @"Cancel") otherButtonTitles:NSLocalizedString(@"OK", @"OK"),nil];
+    alert31.tag = 31;
+    self.activeGameAlert31 = alert31;
+    [alert31 release];
+    //Load values and set Interface according to them
+    self.limitTurnsSwitch.on = self.appDelegate.turnLimit;
+    self.numberOfTurnsTextField.text = [NSString stringWithFormat:@"%i", self.appDelegate.turnLimitNumber];
+    self.boardLimitSwitch.on = self.appDelegate.boardSizeLimit;
+    self.boardWidthTextField.text = [NSString stringWithFormat:@"%i", self.appDelegate.boardSizeWidth];
+    self.boardHeightTextField.text = [NSString stringWithFormat:@"%i", self.appDelegate.boardSizeHeight];
+    self.minimumForLineTextField.text = [NSString stringWithFormat:@"%i", self.appDelegate.minimumLineSize];
+    self.scoreModeSwitch.on = self.appDelegate.scoreMode;
+    self.additionalRedTurnSwitch.on = self.appDelegate.additionalRedTurn;
+    self.reuseLineSwitch.on = self.appDelegate.reuseLines;
+    if (self.appDelegate.localPlayerColorBlue)
+    {
+        self.playerColorTextField.textColor = [UIColor blueColor];
+        self.playerColorTextField.text = NSLocalizedString(@"AICOLOR_BLUE","blue");
+    }
+    else
+    {
+        self.playerColorTextField.textColor = [UIColor redColor];
+        self.playerColorTextField.text = NSLocalizedString(@"AICOLOR_RED","red");
+    }
+    [self performSelector:@selector(boardLimitChanged:)];
+    [self performSelector:@selector(limitTurnsChanged:)];
+    [self performSelector:@selector(scoreModeChanged:)];
 }
 
 - (void)viewDidUnload
@@ -201,6 +231,23 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
+    self.appDelegate.turnLimit = self.limitTurnsSwitch.on;
+    self.appDelegate.turnLimitNumber = self.numberOfTurnsTextField.text.intValue;
+    self.appDelegate.boardSizeLimit = self.boardLimitSwitch.on;
+    self.appDelegate.boardSizeWidth = self.boardWidthTextField.text.intValue;
+    self.appDelegate.boardSizeHeight = self.boardHeightTextField.text.intValue;
+    self.appDelegate.minimumLineSize = self.minimumForLineTextField.text.intValue;
+    self.appDelegate.scoreMode = self.scoreModeSwitch.on;
+    self.appDelegate.additionalRedTurn = self.additionalRedTurnSwitch.on;
+    self.appDelegate.reuseLines = self.reuseLineSwitch.on;
+    if ([self.playerColorTextField.text isEqualToString:NSLocalizedString(@"AICOLOR_BLUE", "blue")])
+    {
+        self.appDelegate.localPlayerColorBlue = YES;
+    }
+    else
+    {
+        self.appDelegate.localPlayerColorBlue = NO;
+    }
     [super viewDidDisappear:animated];
 }
 
@@ -553,9 +600,27 @@
     }
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 31)
+    {
+        if (buttonIndex != [alertView cancelButtonIndex])
+        {
+            self.appDelegate.currentGame = Nil;
+            [self startGame];
+        }
+    }
+}
+
 #pragma mark - Start game
 
 - (void) startGame {
+    
+    if (self.appDelegate.currentGame && !self.appDelegate.currentGame.gameData.gameOver)
+    {
+        [self.activeGameAlert31 show];
+        return;
+    }
     // create rules, start a new game and tell the navigation controller to display it
     
     // if no turn limit, override value in the text field with maximum - if also no board limit, set turn limit to zero
@@ -575,7 +640,7 @@
     }
     // create the rules, the game, retain it by setter and display new game
     Rules *customRules = [[Rules alloc] initWithMinFieldsForLine:self.minimumForLineTextField.text.intValue numberOfTurns:turns extendableBoard:extendable scoreMode:self.scoreModeSwitch.isOn additionalRedTurn:self.additionalRedTurnSwitch.isOn reuseOfLines:self.reuseLineSwitch.isOn];
-    Game *newGame = [[Game alloc]initInMode:CUSTOM_GAME withBoardSize:boardSize:self.mvc];
+    Game *newGame = [[Game alloc]initInMode:CUSTOM_GAME withBoardSize:boardSize];
     newGame.gameData.rules = customRules;
 //    newGame.gameData.localPlayerBlue = self.playerSelectionSwitch.isOn;
     if ([self.playerColorTextField.text isEqualToString:NSLocalizedString(@"AICOLOR_BLUE", "blue")])
@@ -586,17 +651,18 @@
     {
         newGame.gameData.localPlayerBlue = NO;
     }
-    self.mvc.currentGame = newGame;
+    self.appDelegate.currentGame = newGame;
     [customRules release];
     [newGame release];
     
     // on a Bluetooth game, send game data to the opponent and set the data handler for the game view controller
-    if (self.mvc.dataHandler.currentSession) {
-        [self.mvc.dataHandler transmitCurrentGameData];
-        self.mvc.currentGame.gameViewController.btDataHandler = self.mvc.dataHandler;
+    if (self.appDelegate.btdh.currentSession) {
+        [self.appDelegate.btdh transmitCurrentGameData];
+        self.appDelegate.currentGame.gameViewController.btDataHandler = self.appDelegate.btdh;
     }
     
-    [self.navigationController pushViewController:self.mvc.currentGame.gameViewController animated:YES];
+    //[self.navigationController pushViewController:self.appDelegate.currentGame.gameViewController animated:YES];
+    [self.appDelegate startGame];
 }
 
 @end
