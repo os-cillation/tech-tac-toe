@@ -36,7 +36,7 @@
 
 
 /* load view */
-"LOAD_VIEW_TITLE" = "Load Game";
+
 
 // alert views
 "LOAD_VIEW_ALERT_DELETE_GAME_UNSUCCESSFUL_TITLE" = "Error";
@@ -218,12 +218,14 @@
 /* Active Game Tab */
 
 "ACTIVE_GAME_TAB_TITLE" = "Active Game";
+
 "ACTIVE_GAME_TITLE" = "No Active Game";
 "ACTIVE_GAME_LABEL" = "Active games can be accessed in this tab. A new game has to be started or a previously saved game has to be loaded first.";
 
 /* New Game Tab */
 
 "NEW_GAME_TAB_TITLE" = "New Game";
+
 "NEW_GAME_TITLE" = "Start New Game";
 "NEW_GAME_TECHTACTOE" = "TechTacToe";
 "NEW_GAME_TICTACTOE" = "TicTacToe";
@@ -235,7 +237,10 @@
 
 /* Load Tab */
 
-"LOAD_TAB_TITLE" = "Load";
+"LOAD_VIEW_TITLE" = "Savegames";
+
+"LOAD_TAB_TITLE" = "Savegames";
+
 "SAVE_ACTIVE_GAME_CELL" = "Save active game";
 
 "LOAD_GAME_ALERT_ACTIVE_GAME_TITLE" = "Active Game Found";
@@ -248,7 +253,7 @@
 "SELECT_MODE_HEADER" = "Game Mode";
 "SINGLEPLAYER" = "Singleplayer";
 "MULTIPLAYER" = "Multiplayer";
-"SELECT_MODE_FOOTER" = "";
+"SELECT_MODE_FOOTER" = "Changes will only become effective after starting a new game.";
 
 "SELECT_AI_OPTIONS" = "Computer Opponent Options";
 "SELECT_AI_OPTIONS_FOOTER" = "Change the strength and the color of the computer opponent. The first turn always belongs to the blue player. However since the first move is set automatically in games on extendable boards the red player has the first move in this case";
@@ -256,8 +261,8 @@
 "SETTINGS_MP_HEADER1" = "Multiplayer - Hotseat";
 "SETTINGS_MP_FOOTER1" = "Game currently in Hotseat mode. Players need to share the same device to play. It is possible to play with 2 devices by connecting via bluetooth.";
 "SETTINGS_MP_HEADER2" = "Multiplayer - Bluetooth";
-"SETTINGS_MP_FOOTER2a" = "Bluetooth connection active. This device acts as the server and controls for starting new games and access to savegames are activated.";
-"SETTINGS_MP_FOOTER2b" = "Bluetooth connection active. This device acts as the client and controls for starting new games and access to savegames are deactivated.";
+"SETTINGS_MP_FOOTER2a" = "Bluetooth connection active. This device acts as the server. Controls for starting new games and access to savegames are activated.";
+"SETTINGS_MP_FOOTER2b" = "Bluetooth connection active. This device acts as the client. Controls for starting new games and access to savegames are deactivated.";
 
 "SELECT_AI_COMPUTER_COLOR" = "Computer Color";
 "SELECT_AI_COMPUTER_STRENGTH" = "Computer Strength";
@@ -272,6 +277,9 @@
 "SETTINGS_CELL_CONNECT" = "Connect Via Bluetooth";
 "SETTINGS_CELL_REVOKE_CONTROL" = "Pass Game Control to:";
 "SETTINGS_CELL_DISCONNECT" = "Disconnect";
+
+"BTALERT_SINGLEPLAYER_TITLE" = "Bluetooth Connection Found";
+"BTALERT_SINGLEPLAYER_MESSAGE" = "There is an active bluetooth connection. Disconnect and switch to singleplayer?";
 
 /* Info Tab */
 

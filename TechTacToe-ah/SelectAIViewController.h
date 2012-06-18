@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
-@interface SelectAIViewController : UITableViewController
+@interface SelectAIViewController : UITableViewController <UIAlertViewDelegate>
 
 @property (nonatomic, retain) IBOutlet UITableViewCell *modeSelectCell;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *modeSelectControl;
@@ -26,6 +26,8 @@
 @property (nonatomic) BOOL isAIActivated;
 @property (nonatomic) BOOL isAIRedPlayer;
 @property (nonatomic) int strengthOfAI;
+
+@property (nonatomic, retain) UIAlertView *btAlert51;
 
 - (IBAction)modeSelectChanged:(id)sender;
 

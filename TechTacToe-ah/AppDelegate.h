@@ -16,6 +16,7 @@
     BluetoothDataHandler *btdh; // the object managing bluetooth data transfers and disconnects - we need a reference to this, so we can disconnect on application termination
 }
 -(void) startGame;
+-(void) endGame;
 
 @property (nonatomic, retain) IBOutlet UIWindow *mainWindow;
 @property (nonatomic, retain) BluetoothDataHandler *btdh;
@@ -37,6 +38,7 @@
 @property (nonatomic) BOOL reuseLines;
 @property (nonatomic) BOOL localPlayerColorBlue;
 
+@property (nonatomic, retain) UIViewController *noActiveGameViewController;
 
 @property (nonatomic, retain) UINavigationController *tab0NavigationController;
 @property (nonatomic, retain) UINavigationController *tab1NavigationController;

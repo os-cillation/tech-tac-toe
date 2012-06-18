@@ -18,6 +18,8 @@
 @synthesize cointossResult=_cointossResult;
 @synthesize mvc=_mvc;
 
+@synthesize currentSessionBool;
+
 #pragma mark - Initializer and memory management
 
 - (id)init

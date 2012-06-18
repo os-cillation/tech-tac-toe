@@ -37,7 +37,7 @@
 
 
 /* Laden: Übersicht */
-"LOAD_VIEW_TITLE" = "Spiel Laden";
+
 
 // Warnmeldungen
 "LOAD_VIEW_ALERT_DELETE_GAME_UNSUCCESSFUL_TITLE" = "Fehler";
@@ -234,7 +234,9 @@
 "NEW_GAME_ALERT_ACTIVE_GAME_MESSAGE" = "Es läuft bereits ein aktives Spiel. Aktives Spiel abbrechen und ein neues Spiel starten?";
 /*Load Tab*/
 
-"LOAD_TAB_TITLE" = "Laden";
+"LOAD_VIEW_TITLE" = "Spielstände";
+
+"LOAD_TAB_TITLE" = "Spielstände";
 "SAVE_ACTIVE_GAME_CELL" = "aktives Spiel speichern";
 
 "LOAD_GAME_ALERT_ACTIVE_GAME_TITLE" = "Aktives Spiel Gefunden";
@@ -247,7 +249,7 @@
 "SELECT_MODE_HEADER" = "Spielmodus";
 "SINGLEPLAYER" = "Einzelspieler";
 "MULTIPLAYER" = "Mehrspieler";
-"SELECT_MODE_FOOTER" = "";
+"SELECT_MODE_FOOTER" = "Änderungen treten erst nach Starten eines neuen Spieles in Kraft.";
 
 "SELECT_AI_OPTIONS" = "Computergegner Optionen";
 "SELECT_AI_OPTIONS_FOOTER" = "Ändert die Stärke und Farbe des Computergegners. Der erste Zug gehört immer dem blauen Spieler. Allerdings wird der erste Zug in Spielen mit unbegrenzten Spielbrett automatisch gesetzt wodurch der rote Spieler in diesem Falle den ersten wählbaren Zug hat.";
@@ -255,8 +257,8 @@
 "SETTINGS_MP_HEADER1" = "Mehrspieler - Hotseat";
 "SETTINGS_MP_FOOTER1" = "Das Spiel ist momentan im Hotseat Modus. Die Spieler müssen zum Spielen sich das gleiche Gerät teilen. Es ist möglich über eine Bluetooth Verbindung mit 2 Geräten zu spielen.";
 "SETTINGS_MP_HEADER2" = "Mehrspieler - Bluetooth";
-"SETTINGS_MP_FOOTER2a" = "Bluetooth Verbindung aufgebaut. Dieses Gerät agiert als Server und die Kontrollen für das Starten neuer Spiele sowie Zugriff auf Spielstände sind aktiviert.";
-"SETTINGS_MP_FOOTER2b" = "Bluetooth Verbindung aufgebaut. Dieses Gerät agiert als Client und die Kontrollen für das Starten neuer Spiele sowie Zugriff auf Spielstände sind deaktiviert.";
+"SETTINGS_MP_FOOTER2a" = "Bluetooth Verbindung aufgebaut. Dieses Gerät agiert als Server. Die Kontrollen für das Starten neuer Spiele sowie Zugriff auf Spielstände sind aktiviert.";
+"SETTINGS_MP_FOOTER2b" = "Bluetooth Verbindung aufgebaut. Dieses Gerät agiert als Client. Die Kontrollen für das Starten neuer Spiele sowie Zugriff auf Spielstände sind deaktiviert.";
 
 "SELECT_AI_COMPUTER_COLOR" = "Computer Farbe";
 "SELECT_AI_COMPUTER_STRENGTH" = "Computer Stärke";
@@ -271,6 +273,9 @@
 "SETTINGS_CELL_CONNECT" = "Bluetooth Verbindung Aufbauen";
 "SETTINGS_CELL_REVOKE_CONTROL" = "Spielkontrolle Abgeben an:";
 "SETTINGS_CELL_DISCONNECT" = "Verbindung Trennen";
+
+"BTALERT_SINGLEPLAYER_TITLE" = "Bluetooth Verbindiung gefunden";
+"BTALERT_SINGLEPLAYER_MESSAGE" = "Es besteht eine aktive Bluetooth Verbindung. Verbindung trennen und in Einzelspielermodus wechseln?";
 
 /* Info Tab */
 

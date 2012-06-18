@@ -7,16 +7,14 @@
 //
 
 
-//TODO dynamic Settings
 //TODO get rid of alerts in GVC
-//TODO new start Image
-//TODO Retina Display Images
 //TODO clean Localized Strings
 //TODO clean unneeded files
 
 //TODO get rid of message "needs permission to get back to main menu
-//TODO Disable Settings / include Warnings fpr BT
-//TOOD Disable LoadVC on Client for BT
+//TODO BT stuff
+//TODO Tabbar icons
+//TODO BT disconnect -> end game on both devices ->don't forget Active Game Tab
 
 #import "AppDelegate.h"
 #import "BluetoothDataHandler.h"
@@ -42,6 +40,8 @@
 @synthesize reuseLines = _reuseLines;
 @synthesize localPlayerColorBlue = _localPlayerColorBlue;
 
+@synthesize noActiveGameViewController = _noActiveGameViewController;
+
 @synthesize bluetoothIndicator=_bluetoothIndicator;
 
 @synthesize tab0NavigationController=_tab0NavigationController;
@@ -59,6 +59,7 @@
     [_btdh release];
     [_currentGame release];
     [_bluetoothIndicator release];
+    [_noActiveGameViewController release];
     [_tab0NavigationController release];
     [_tab1NavigationController release];
     [_tab2NavigationController release];
@@ -81,6 +82,8 @@
     self.tab3NavigationController = [self.tabBarController.viewControllers objectAtIndex:3];
     self.tab4ViewController = [self.tabBarController.viewControllers objectAtIndex:4];
     
+    self.noActiveGameViewController = [self.tab0NavigationController.viewControllers objectAtIndex:0];
+    
     self.tab0NavigationController.tabBarItem.title = NSLocalizedString(@"ACTIVE_GAME_TAB_TITLE", "Active Game");
     self.tab1NavigationController.tabBarItem.title = NSLocalizedString(@"NEW_GAME_TAB_TITLE", "New Game");
     self.tab2NavigationController.tabBarItem.title = NSLocalizedString(@"LOAD_TAB_TITLE", "Load");
@@ -93,7 +96,7 @@
     self.isAIRedPlayer = YES;
     self.isAIActivated = YES;
     
-    //init Custom Game
+    //init Custom Game variables
     self.turnLimit = YES;
     self.turnLimitNumber = 100;
     self.boardSizeLimit = YES;
@@ -170,6 +173,15 @@
     }
 }
 
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
+{
+    if (self.btdh.currentSessionBool && !self.btdh.localUserActAsServer && (viewController == self.tab1NavigationController || viewController == self.tab2NavigationController))
+    {
+        return NO;
+    }
+    return YES;
+}
+
 - (void)startGame
 {
     self.tabBarController.selectedIndex = 0;
@@ -180,4 +192,10 @@
     [resetNavCon release];
 }
 
+- (void)endGame
+{
+    NSArray *resetNavCon = [[NSArray alloc] initWithObjects:self.noActiveGameViewController, nil];
+    self.tab0NavigationController.viewControllers = resetNavCon;
+    [resetNavCon release];
+}
 @end

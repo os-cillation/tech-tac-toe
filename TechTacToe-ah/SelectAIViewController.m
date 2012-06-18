@@ -29,6 +29,7 @@
 @synthesize passControllCell;
 @synthesize connectCell;
 @synthesize disconnectCell;
+@synthesize btAlert51;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -71,12 +72,17 @@
     self.passControllCell.textLabel.text = NSLocalizedString(@"SETTINGS_CELL_REVOKE_CONTROL", "pass Controll");
     
     /*
-    if (self.appDelegate.btdh.currentSession) {
+    if (self.appDelegate.btdh.currentSessionBool) {
         NSString *peerID = [[self.appDelegate.btdh.currentSession peersWithConnectionState:GKPeerStateConnected] objectAtIndex:0];
         NSString *peerName = [self.appDelegate.btdh.currentSession displayNameForPeer:peerID];
         detailCell.detailTextLabel.text = peerName;
     }
      */
+    
+    UIAlertView *alert51 = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"BTALERT_SINGLEPLAYER_TITLE", @"Active BT Connection Found") message:NSLocalizedString(@"BTALERT_SINGLEPLAYER_MESSAGE", @"disconnect?") delegate:self cancelButtonTitle:NSLocalizedString(@"CANCEL", @"Cancel") otherButtonTitles:NSLocalizedString(@"OK", @"OK"),nil];
+    alert51.tag = 51;
+    self.btAlert51 = alert51;
+    [alert51 release];
     
     //initialize AIvariables
     self.isAIRedPlayer = self.appDelegate.isAIRedPlayer;
@@ -124,7 +130,8 @@
     else
     {
         self.strengthTextField.text = NSLocalizedString(@"AISTRENGTH_3", "strong");
-    }
+    }    
+    [self.tableView reloadData];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -163,6 +170,7 @@
     [connectCell release];
     [disconnectCell release];
     [passControllCell release];
+    [btAlert51 release];
     [super dealloc];
 }
 
@@ -175,14 +183,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-//#warning Potentially incomplete method implementation.
     // Return the number of sections.
     return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-//#warning Incomplete method implementation.
     // Return the number of rows in the section.
     //return 0;
     if (section == 0)
@@ -191,7 +197,7 @@
     }
     else
     {
-        if (self.isAIActivated || self.appDelegate.btdh.currentSession)
+        if (self.isAIActivated || self.appDelegate.btdh.currentSessionBool)
         {
             return 2;
         }
@@ -216,7 +222,7 @@
             }
             else
             {
-                if (self.appDelegate.btdh.currentSession)
+                if (self.appDelegate.btdh.currentSessionBool)
                 {
                     return NSLocalizedString(@"SETTINGS_MP_HEADER2", "BT Header");
                 }
@@ -233,7 +239,15 @@
 {
     switch (section) {
         case 0:
-            return NSLocalizedString(@"SELECT_MODE_FOOTER", "Game Mode description");
+            if (self.appDelegate.currentGame)
+            {
+                return NSLocalizedString(@"SELECT_MODE_FOOTER", "Game Mode description");
+            }
+            else
+            {
+                return @"";
+            }
+            
             break;
         default:
             if (self.isAIActivated)
@@ -242,7 +256,7 @@
             }
             else
             {
-                if (self.appDelegate.btdh.currentSession)
+                if (self.appDelegate.btdh.currentSessionBool)
                 {
                     if (self.appDelegate.btdh.localUserActAsServer)
                     {
@@ -289,7 +303,7 @@
         }
         else
         {
-            if (self.appDelegate.btdh.currentSession)
+            if (self.appDelegate.btdh.currentSessionBool)
             {
                 if (indexPath.row == 0)
                 {
@@ -297,6 +311,16 @@
                 }
                 else
                 {
+                    if (!self.appDelegate.btdh.localUserActAsServer)
+                    {
+                        self.passControllCell.textLabel.enabled = NO;
+                        self.passControllCell.userInteractionEnabled = NO;
+                    }
+                    else
+                    {
+                        self.passControllCell.textLabel.enabled = YES;
+                        self.passControllCell.userInteractionEnabled = YES;
+                    }
                     return self.passControllCell;
                 }
             }
@@ -304,9 +328,7 @@
             {
                 return self.connectCell;
             }
-
         }
-
     }
 }
 
@@ -387,10 +409,54 @@
         if (indexPath.row == 0)
         {
             //Connect or disconnect
+            if (self.appDelegate.btdh.currentSessionBool)
+            {
+                self.appDelegate.btdh.currentSessionBool = NO;
+                [self.tableView reloadData];
+            }
+            else
+            {
+                // make a data handler if none exists
+                if (!self.appDelegate.btdh) {
+                    BluetoothDataHandler *btdh = [BluetoothDataHandler new];
+                    self.appDelegate.btdh = btdh;
+                    //self.appDelegate.btdh.mvc = self;
+                    [btdh release];
+                }
+                self.appDelegate.btdh.currentSessionBool = YES;
+                self.appDelegate.btdh.localUserActAsServer = YES;
+                [self.tableView reloadData];
+            }
         }
         else
         {
             //pass game control
+            if (self.appDelegate.btdh.localUserActAsServer)
+            {
+                self.appDelegate.btdh.localUserActAsServer = NO;
+            }
+            else
+            {
+                self.appDelegate.btdh.localUserActAsServer = YES;
+            }
+            [self.tableView reloadData];
+        }
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 51)
+    {
+        if (buttonIndex != [alertView cancelButtonIndex])
+        {
+            //disconnect
+            self.appDelegate.btdh.currentSessionBool = NO;
+            [self modeSelectChanged:Nil];
+        }
+        else
+        {
+            self.modeSelectControl.selectedSegmentIndex = 1;
         }
     }
 }
@@ -405,6 +471,11 @@
     }
     else
     {
+        if (self.appDelegate.btdh.currentSessionBool)
+        {
+            [self.btAlert51 show];
+            return;
+        }
         //Singleplayer
         self.isAIActivated = YES;
         [self.tableView reloadData];
