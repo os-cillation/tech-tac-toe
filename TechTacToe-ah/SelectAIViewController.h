@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <GameKit/GKSession.h>
+#import <GameKit/GKPeerPickerController.h>
 #import "AppDelegate.h"
 
-@interface SelectAIViewController : UITableViewController <UIAlertViewDelegate>
+@interface SelectAIViewController : UITableViewController <UIAlertViewDelegate, GKPeerPickerControllerDelegate>
 
 @property (nonatomic, retain) IBOutlet UITableViewCell *modeSelectCell;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *modeSelectControl;
@@ -28,6 +30,7 @@
 @property (nonatomic) int strengthOfAI;
 
 @property (nonatomic, retain) UIAlertView *btAlert51;
+@property (nonatomic, retain) UIAlertView *btAlert52;
 
 - (IBAction)modeSelectChanged:(id)sender;
 

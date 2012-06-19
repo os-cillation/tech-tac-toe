@@ -253,6 +253,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    return YES;
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
 }
@@ -618,8 +619,17 @@
     
     if (self.appDelegate.currentGame && !self.appDelegate.currentGame.gameData.gameOver)
     {
-        [self.activeGameAlert31 show];
-        return;
+        if (self.appDelegate.btdh.currentSession && self.appDelegate.needsAck)
+        {
+            [self.appDelegate.currentGame.gameViewController.backToMenuReqView show];
+            self.appDelegate.menuReqType = 3;
+            return;
+        }
+        else
+        {
+            [self.activeGameAlert31 show];
+            return;
+        }
     }
     // create rules, start a new game and tell the navigation controller to display it
     
@@ -660,7 +670,7 @@
         [self.appDelegate.btdh transmitCurrentGameData];
         self.appDelegate.currentGame.gameViewController.btDataHandler = self.appDelegate.btdh;
     }
-    
+    self.appDelegate.needsAck = YES;
     //[self.navigationController pushViewController:self.appDelegate.currentGame.gameViewController animated:YES];
     [self.appDelegate startGame];
 }

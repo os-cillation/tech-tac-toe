@@ -164,12 +164,20 @@
 "GAME_VIEW_ALERT_RESIGN_UNAVAILABLE_MESSAGE" = "Resigning the game is only possible if the game is not already over and if it is your turn in a game via Bluetooth.";
 "GAME_VIEW_ALERT_BOARD_LIMITATION_TITLE" = "Notification";
 "GAME_VIEW_ALERT_BOARD_LIMITATION_MESSAGE" = "The board is now limited to the size of %i by %i fields.";
+/*
 "GAME_VIEW_ALERT_BACK_TO_MENU_REQUEST_TITLE" = "Back to Menu";
 "GAME_VIEW_ALERT_BACK_TO_MENU_REQUEST_MESSAGE" = "Going back to the main menu on a Bluetooth game will require confirmation from the other device. Send request to go back to menu or disconnect from the session?";
 "GAME_VIEW_ALERT_BACK_TO_MENU_WAIT_FOR_ACK_TITLE" = "Waiting for Response";
 "GAME_VIEW_ALERT_BACK_TO_MENU_WAIT_FOR_ACK_MESSAGE" = "The request to go back to the main menu has been sent.\nWaiting for the other device to respond ...\n ";
 "GAME_VIEW_ALERT_BACK_TO_MENU_ACKNOWLEDGE_TITLE" = "Peer Wants Back to Menu";
 "GAME_VIEW_ALERT_BACK_TO_MENU_ACKNOWLEDGE_MESSAGE" = "The peer has send a request to go back to the main menu. Agree?\n(Selecting 'no' will end the session.)";
+*/
+"GAME_VIEW_ALERT_BACK_TO_MENU_REQUEST_TITLE" = "Start Game";
+"GAME_VIEW_ALERT_BACK_TO_MENU_REQUEST_MESSAGE" = "Starting and Loading a game while a Bluetooth game is running will require confirmation from the other device. Send request to start a new game or disconnect from the session?";
+"GAME_VIEW_ALERT_BACK_TO_MENU_WAIT_FOR_ACK_TITLE" = "Waiting for Response";
+"GAME_VIEW_ALERT_BACK_TO_MENU_WAIT_FOR_ACK_MESSAGE" = "The request has been sent.\nWaiting for the other device to respond ...\n ";
+"GAME_VIEW_ALERT_BACK_TO_MENU_ACKNOWLEDGE_TITLE" = "Peer wants to start a game";
+"GAME_VIEW_ALERT_BACK_TO_MENU_ACKNOWLEDGE_MESSAGE" = "The peer has send a request to start or load a game. Agree?\n(Selecting 'no' will end the session.)";
 
 
 /* rules view */
@@ -280,6 +288,8 @@
 
 "BTALERT_SINGLEPLAYER_TITLE" = "Bluetooth Connection Found";
 "BTALERT_SINGLEPLAYER_MESSAGE" = "There is an active bluetooth connection. Disconnect and switch to singleplayer?";
+"BTALERT_RUNNING_GAME_TITLE" = "Active Game Found";
+"BTALERT_RUNNING_GAME_MESSAGE" = "There is already an active game running. Abort active game and start a bluetooth connection?";
 
 /* Info Tab */
 

@@ -38,6 +38,15 @@
 @property (nonatomic) BOOL reuseLines;
 @property (nonatomic) BOOL localPlayerColorBlue;
 
+@property (nonatomic) BOOL needsAck;
+@property (nonatomic) int menuReqType;
+/*  0 - TechTacToe
+    1 - TicTacToe
+    2 - Gomoku
+    3 - Custom Game
+    4 - Load Game
+ */
+
 @property (nonatomic, retain) UIViewController *noActiveGameViewController;
 
 @property (nonatomic, retain) UINavigationController *tab0NavigationController;

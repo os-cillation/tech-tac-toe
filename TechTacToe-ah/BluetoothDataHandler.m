@@ -9,6 +9,10 @@
 #import "BluetoothDataHandler.h"
 #import "MainViewController.h"
 #import "AppDelegate.h"
+#import "SelectAIViewController.h"
+#import "NewGameViewController.h"
+#import "SettingsViewController.h"
+#import "LoadDetailViewController.h"
 
 @implementation BluetoothDataHandler
 
@@ -99,25 +103,34 @@
         self.currentSession = nil;
     }
     // update the main menu to reflect new status
-    [self.mvc.tableView reloadData];
+    //[self.mvc.tableView reloadData];
     self.appDelegate.bluetoothIndicator.hidden = YES;
     
     // then, if we had a running game open, set it to hotseat mode again by reactivating controls and updating labels
     // also, dismiss any open dialogues (alert views) regarding going back to menu or waiting for the other device and stop the activity indicator
-    if (self.appDelegate.currentGame) {
+    if (self.appDelegate.currentGame)
+    {
         [self.appDelegate.currentGame.gameViewController.backToMenuGameOver dismissWithClickedButtonIndex:-1 animated:YES];
         [self.appDelegate.currentGame.gameViewController.backToMenuWaitView dismissWithClickedButtonIndex:-1 animated:YES];
         [self.appDelegate.currentGame.gameViewController.backToMenuReqView dismissWithClickedButtonIndex:-1 animated:YES];
         [self.appDelegate.currentGame.gameViewController.backToMenuAckView dismissWithClickedButtonIndex:-1 animated:YES];
         [self.appDelegate.currentGame.gameViewController.activityIndicator stopAnimating];
         
-        if (!self.appDelegate.currentGame.gameData.isGameOver) {
+        if (!self.appDelegate.currentGame.gameData.isGameOver)
+        {
             [self.appDelegate.currentGame.gameViewController.tapGestureRecognizer setEnabled:YES];
             [self.appDelegate.currentGame.gameViewController.navigationItem.rightBarButtonItem setEnabled:YES];
             [self.appDelegate.currentGame.gameViewController.navigationItem.leftBarButtonItem setEnabled:YES];
             [self.appDelegate.currentGame.gameViewController updateLabels];
         }
+        [self.appDelegate endGame];
     }
+    
+    [self.appDelegate endGame];
+    
+    SelectAIViewController *tempVC = (SelectAIViewController*) self.appDelegate.tab3NavigationController.topViewController;
+    [tempVC.tableView reloadData];
+    //[self.appDelegate.tab3NavigationController reloadInputViews];
 }
 
 #pragma mark - Receiving and handling data
@@ -147,10 +160,14 @@
     } else if (type == MESSAGE_REVOKE_CONTROL) {
         // handle revoking control of main menu
         self.localUserActAsServer = YES;
-        [self.mvc.tableView reloadData];
+        //[self.mvc.tableView reloadData];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"BLUETOOTH_ALERT_ASSUMED_CONTROL_TITLE", @"Assumed Game Control") message:NSLocalizedString(@"BLUETOOTH_ALERT_ASSUMED_CONTROL_MESSAGE", @"The other device has relinquished control.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
         [alert release];
+        
+        SelectAIViewController *tempVC = (SelectAIViewController*) self.appDelegate.tab3NavigationController.topViewController;
+        [tempVC.tableView reloadData];
+        //[self.appDelegate.tab3NavigationController reloadInputViews];
         
     } else if (type == MESSAGE_GAME_DATA) {
         // handle receiving the game data
@@ -238,7 +255,34 @@
         [self.appDelegate.currentGame.gameViewController.backToMenuGameOver dismissWithClickedButtonIndex:-1 animated:YES];
         [self.appDelegate.currentGame.gameViewController.backToMenuWaitView dismissWithClickedButtonIndex:-1 animated:YES];
         [self.appDelegate.currentGame.gameViewController.activityIndicator stopAnimating];
-        [self.appDelegate.currentGame.gameViewController.navigationController popToRootViewControllerAnimated:YES];
+        //[self.appDelegate.currentGame.gameViewController.navigationController popToRootViewControllerAnimated:YES];
+        self.appDelegate.needsAck = NO;
+        if (self.appDelegate.menuReqType == 0)
+        {
+            NewGameViewController *tempVC = (NewGameViewController*) self.appDelegate.tab1NavigationController.topViewController;
+            [tempVC techTacToe:nil];
+        }
+        else if (self.appDelegate.menuReqType == 1)
+        {
+            NewGameViewController *tempVC = (NewGameViewController*) self.appDelegate.tab1NavigationController.topViewController;
+            [tempVC ticTacToe:nil];
+        }
+        else if (self.appDelegate.menuReqType == 2)
+        {
+            NewGameViewController *tempVC = (NewGameViewController*) self.appDelegate.tab1NavigationController.topViewController;
+            [tempVC gomoku:nil];
+        }
+        else if (self.appDelegate.menuReqType == 3)
+        {
+            SettingsViewController *tempVC = (SettingsViewController*) self.appDelegate.tab1NavigationController.topViewController;
+            [tempVC startGame];
+        }
+        else if (self.appDelegate.menuReqType == 4)
+        {
+            LoadDetailViewController *tempVC = (LoadDetailViewController*) self.appDelegate.tab2NavigationController.topViewController;
+            [tempVC loadGame];
+        }
+        self.appDelegate.menuReqType = -1;
     }
     // clean up
     [unarchiver finishDecoding];
@@ -279,7 +323,7 @@
 {
     // first, let the local device know it has no server rights
     self.localUserActAsServer = NO;
-    [self.mvc.tableView reloadData];
+    //[self.mvc.tableView reloadData];
     
     // then let the other device know we rescinded control of the menu (or lost the cointoss)
     NSMutableData *data = [[NSMutableData alloc] init];
@@ -293,6 +337,8 @@
     
     [archiver release];
     [data release];
+    
+    //[self.appDelegate.tab3NavigationController reloadInputViews];
 }
 
 - (void)transmitCurrentGameData
@@ -352,6 +398,7 @@
     [archiver encodeInt:MESSAGE_MENU_REQ forKey:@"messageType"];
     [archiver finishEncoding];
     
+    self.appDelegate.needsAck = YES;
     [self mySendDataToPeers:data];
     
     [archiver release];

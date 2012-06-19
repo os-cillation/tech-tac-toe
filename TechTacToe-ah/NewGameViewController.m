@@ -117,6 +117,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    return YES;
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
@@ -152,8 +153,17 @@
 {
     if (self.appDelegate.currentGame && !self.appDelegate.currentGame.gameData.gameOver)
     {
-        [self.activeGameAlert21 show];
-        return;
+        if (self.appDelegate.btdh.currentSession && self.appDelegate.needsAck)
+        {
+            [self.appDelegate.currentGame.gameViewController.backToMenuReqView show];
+            self.appDelegate.menuReqType = 0;
+            return;
+        }
+        else
+        {
+            [self.activeGameAlert21 show];
+            return;
+        }
     }
     Game *newGame = [[Game alloc]initInMode:DEFAULT_GAME withBoardSize:CGSizeMake(0, 0)];
     self.appDelegate.currentGame = newGame;
@@ -164,6 +174,7 @@
     if (self.appDelegate.btdh.currentSession) {
         [self.appDelegate.btdh transmitCurrentGameData];
     }
+    self.appDelegate.needsAck = YES;
     [self.appDelegate startGame];
 }
 
@@ -171,8 +182,17 @@
 {
     if (self.appDelegate.currentGame && !self.appDelegate.currentGame.gameData.gameOver)
     {
-        [self.activeGameAlert22 show];
-        return;
+        if (self.appDelegate.btdh.currentSession && self.appDelegate.needsAck) 
+        {
+            [self.appDelegate.currentGame.gameViewController.backToMenuReqView show];
+            self.appDelegate.menuReqType = 1;
+            return;
+        }
+        else
+        {
+            [self.activeGameAlert22 show];
+            return;
+        }
     }
     Game *newGame = [[Game alloc]initInMode:TICTACTOE withBoardSize:CGSizeMake(3, 3)];
     self.appDelegate.currentGame = newGame;
@@ -181,6 +201,7 @@
     if (self.appDelegate.btdh.currentSession) {
         [self.appDelegate.btdh transmitCurrentGameData];
     }
+    self.appDelegate.needsAck = YES;
     [self.appDelegate startGame];
 }
 
@@ -188,8 +209,17 @@
 {
     if (self.appDelegate.currentGame && !self.appDelegate.currentGame.gameData.gameOver)
     {
-        [self.activeGameAlert23 show];
-        return;
+        if (self.appDelegate.btdh.currentSession && self.appDelegate.needsAck)
+        {
+            [self.appDelegate.currentGame.gameViewController.backToMenuReqView show];
+            self.appDelegate.menuReqType = 2;
+            return;
+        }
+        else
+        {
+            [self.activeGameAlert23 show];
+            return;
+        }
     }
     Game *newGame = [[Game alloc]initInMode:GOMOKU withBoardSize:CGSizeMake(19, 19)];
     self.appDelegate.currentGame = newGame;
@@ -198,6 +228,7 @@
     if (self.appDelegate.btdh.currentSession) {
         [self.appDelegate.btdh transmitCurrentGameData];
     }
+    self.appDelegate.needsAck = YES;
     [self.appDelegate startGame];
 }
 

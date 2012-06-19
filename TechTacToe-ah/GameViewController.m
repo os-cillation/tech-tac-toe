@@ -1047,7 +1047,7 @@
     self.navigationItem.rightBarButtonItem = commitButton;
     [commitButton release];
     //set up a custom back button that will let the player resign
-    UIBarButtonItem *resignButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_RESIGN_BUTTON", @"Menu") style:UIBarButtonItemStyleDone target:self action:@selector(resignButtonAction)];
+    UIBarButtonItem *resignButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_RESIGN_BUTTON", @"Resign") style:UIBarButtonItemStyleDone target:self action:@selector(resignButtonAction)];
     self.navigationItem.leftBarButtonItem = resignButton;
     [resignButton release];
 //TODO - get rid of alert views    

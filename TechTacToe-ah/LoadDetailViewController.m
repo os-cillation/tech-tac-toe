@@ -131,6 +131,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    return YES;
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
 }
@@ -395,8 +396,17 @@
 {
     if (self.appDelegate.currentGame && !self.appDelegate.currentGame.gameData.gameOver)
     {
-        [self.activeGameAlert41 show];
-        return;
+        if (self.appDelegate.btdh.currentSession && self.appDelegate.needsAck)
+        {
+            [self.appDelegate.currentGame.gameViewController.backToMenuReqView show];
+            self.appDelegate.menuReqType = 4;
+            return;
+        }
+        else
+        {
+            [self.activeGameAlert41 show];
+            return;
+        }
     }
     // if the main view controller did not have a game before (e.g. on loading a game directly after the app starts) create one with standard init
     if (!self.appDelegate.currentGame) {
@@ -417,6 +427,7 @@
     
     //[self.navigationController pushViewController:self.appDelegate.currentGame.gameViewController animated:YES];
     [tempGameViewController release];
+    self.appDelegate.needsAck = YES;
     [self.appDelegate startGame];
 }
 

@@ -46,8 +46,15 @@
     // e.g. self.myOutlet = nil;
 }
 
+- (void)dealloc
+{
+    [textLabel release];
+    [super dealloc];
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    return YES;
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 

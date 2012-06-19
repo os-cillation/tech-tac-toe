@@ -6,15 +6,11 @@
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
-
-//TODO get rid of alerts in GVC
 //TODO clean Localized Strings
 //TODO clean unneeded files
 
-//TODO get rid of message "needs permission to get back to main menu
-//TODO BT stuff
 //TODO Tabbar icons
-//TODO BT disconnect -> end game on both devices ->don't forget Active Game Tab
+//TODO Orientation changes
 
 #import "AppDelegate.h"
 #import "BluetoothDataHandler.h"
@@ -39,6 +35,8 @@
 @synthesize additionalRedTurn = _additionalRedTurn;
 @synthesize reuseLines = _reuseLines;
 @synthesize localPlayerColorBlue = _localPlayerColorBlue;
+@synthesize menuReqType = _menuReqType;
+@synthesize needsAck = _needsAck;
 
 @synthesize noActiveGameViewController = _noActiveGameViewController;
 
@@ -90,6 +88,9 @@
     self.tab3NavigationController.tabBarItem.title = NSLocalizedString(@"SETTINGS_TAB_TITLE", "Settings");
     self.tab4ViewController.tabBarItem.title = NSLocalizedString(@"INFO_TAB_TITLE", "Info");
     [self.tabBarController reloadInputViews];
+    
+    self.menuReqType = -1;
+    self.needsAck = YES;
     
     //init AI variables
     self.strengthOfAI = 2;
@@ -197,5 +198,6 @@
     NSArray *resetNavCon = [[NSArray alloc] initWithObjects:self.noActiveGameViewController, nil];
     self.tab0NavigationController.viewControllers = resetNavCon;
     [resetNavCon release];
+    self.currentGame = Nil;
 }
 @end

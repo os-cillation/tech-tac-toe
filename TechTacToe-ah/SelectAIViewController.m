@@ -30,6 +30,7 @@
 @synthesize connectCell;
 @synthesize disconnectCell;
 @synthesize btAlert51;
+@synthesize btAlert52;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -72,17 +73,24 @@
     self.passControllCell.textLabel.text = NSLocalizedString(@"SETTINGS_CELL_REVOKE_CONTROL", "pass Controll");
     
     /*
-    if (self.appDelegate.btdh.currentSessionBool) {
+    if (self.appDelegate.btdh.currentSession) {
         NSString *peerID = [[self.appDelegate.btdh.currentSession peersWithConnectionState:GKPeerStateConnected] objectAtIndex:0];
         NSString *peerName = [self.appDelegate.btdh.currentSession displayNameForPeer:peerID];
         detailCell.detailTextLabel.text = peerName;
     }
      */
     
+    //self.modeSelectControl.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
     UIAlertView *alert51 = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"BTALERT_SINGLEPLAYER_TITLE", @"Active BT Connection Found") message:NSLocalizedString(@"BTALERT_SINGLEPLAYER_MESSAGE", @"disconnect?") delegate:self cancelButtonTitle:NSLocalizedString(@"CANCEL", @"Cancel") otherButtonTitles:NSLocalizedString(@"OK", @"OK"),nil];
     alert51.tag = 51;
     self.btAlert51 = alert51;
     [alert51 release];
+    
+    UIAlertView *alert52 = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"BTALERT_RUNNING_GAME_TITLE", @"Active Game") message:NSLocalizedString(@"BTALERT_RUNNING_GAME_MESSAGE", @"disconnect?") delegate:self cancelButtonTitle:NSLocalizedString(@"CANCEL", @"Cancel") otherButtonTitles:NSLocalizedString(@"OK", @"OK"),nil];
+    alert52.tag = 52;
+    self.btAlert52 = alert52;
+    [alert52 release];
     
     //initialize AIvariables
     self.isAIRedPlayer = self.appDelegate.isAIRedPlayer;
@@ -107,6 +115,7 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    
     if (self.isAIRedPlayer)
     {
         self.colorTextField.text = NSLocalizedString(@"AICOLOR_RED", "red");
@@ -132,6 +141,7 @@
         self.strengthTextField.text = NSLocalizedString(@"AISTRENGTH_3", "strong");
     }    
     [self.tableView reloadData];
+
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -171,11 +181,13 @@
     [disconnectCell release];
     [passControllCell release];
     [btAlert51 release];
+    [btAlert52 release];
     [super dealloc];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    return YES;
     return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
 }
 
@@ -197,7 +209,7 @@
     }
     else
     {
-        if (self.isAIActivated || self.appDelegate.btdh.currentSessionBool)
+        if (self.isAIActivated || self.appDelegate.btdh.currentSession)
         {
             return 2;
         }
@@ -222,7 +234,7 @@
             }
             else
             {
-                if (self.appDelegate.btdh.currentSessionBool)
+                if (self.appDelegate.btdh.currentSession)
                 {
                     return NSLocalizedString(@"SETTINGS_MP_HEADER2", "BT Header");
                 }
@@ -256,7 +268,7 @@
             }
             else
             {
-                if (self.appDelegate.btdh.currentSessionBool)
+                if (self.appDelegate.btdh.currentSession)
                 {
                     if (self.appDelegate.btdh.localUserActAsServer)
                     {
@@ -303,7 +315,7 @@
         }
         else
         {
-            if (self.appDelegate.btdh.currentSessionBool)
+            if (self.appDelegate.btdh.currentSession)
             {
                 if (indexPath.row == 0)
                 {
@@ -409,13 +421,20 @@
         if (indexPath.row == 0)
         {
             //Connect or disconnect
-            if (self.appDelegate.btdh.currentSessionBool)
+            if (self.appDelegate.btdh.currentSession)
             {
-                self.appDelegate.btdh.currentSessionBool = NO;
-                [self.tableView reloadData];
+                //self.appDelegate.btdh.currentSessionBool = NO;
+                [self.appDelegate.btdh doDisconnect];
+                //[self.tableView reloadData];
             }
             else
             {
+                if (self.appDelegate.currentGame && !self.appDelegate.currentGame.gameData.isGameOver)
+                {
+                    [self.btAlert52 show];
+                    return;
+                }
+                
                 // make a data handler if none exists
                 if (!self.appDelegate.btdh) {
                     BluetoothDataHandler *btdh = [BluetoothDataHandler new];
@@ -423,22 +442,19 @@
                     //self.appDelegate.btdh.mvc = self;
                     [btdh release];
                 }
-                self.appDelegate.btdh.currentSessionBool = YES;
-                self.appDelegate.btdh.localUserActAsServer = YES;
+                //self.appDelegate.btdh.currentSessionBool = YES;
+                //self.appDelegate.btdh.localUserActAsServer = YES;
+                GKPeerPickerController *picker = [[GKPeerPickerController alloc] init];
+                picker.delegate = self;
+                picker.connectionTypesMask = GKPeerPickerConnectionTypeNearby;
+                [picker show];
+                
                 [self.tableView reloadData];
             }
         }
         else
         {
-            //pass game control
-            if (self.appDelegate.btdh.localUserActAsServer)
-            {
-                self.appDelegate.btdh.localUserActAsServer = NO;
-            }
-            else
-            {
-                self.appDelegate.btdh.localUserActAsServer = YES;
-            }
+            [self.appDelegate.btdh doRevokeControl];
             [self.tableView reloadData];
         }
     }
@@ -451,12 +467,37 @@
         if (buttonIndex != [alertView cancelButtonIndex])
         {
             //disconnect
-            self.appDelegate.btdh.currentSessionBool = NO;
+            //self.appDelegate.btdh.currentSessionBool = NO;
+            [self.appDelegate.btdh doDisconnect];
             [self modeSelectChanged:Nil];
         }
         else
         {
             self.modeSelectControl.selectedSegmentIndex = 1;
+        }
+    }
+    if (alertView.tag == 52)
+    {
+        if (buttonIndex != [alertView cancelButtonIndex])
+        {
+            // make a data handler if none exists
+            if (!self.appDelegate.btdh) {
+                BluetoothDataHandler *btdh = [BluetoothDataHandler new];
+                self.appDelegate.btdh = btdh;
+                //self.appDelegate.btdh.mvc = self;
+                [btdh release];
+            }
+            
+            [self.appDelegate endGame];
+            
+            //self.appDelegate.btdh.currentSessionBool = YES;
+            //self.appDelegate.btdh.localUserActAsServer = YES;
+            GKPeerPickerController *picker = [[GKPeerPickerController alloc] init];
+            picker.delegate = self;
+            picker.connectionTypesMask = GKPeerPickerConnectionTypeNearby;
+            [picker show];
+            
+            [self.tableView reloadData];
         }
     }
 }
@@ -471,7 +512,7 @@
     }
     else
     {
-        if (self.appDelegate.btdh.currentSessionBool)
+        if (self.appDelegate.btdh.currentSession)
         {
             [self.btAlert51 show];
             return;
@@ -480,6 +521,31 @@
         self.isAIActivated = YES;
         [self.tableView reloadData];
     }
+}
+
+#pragma mark - Peer picker delegate
+
+- (void)peerPickerController:(GKPeerPickerController *)picker didConnectPeer:(NSString *)peerID toSession:(GKSession *) session
+{
+    self.appDelegate.btdh.currentSession = session;
+    self.appDelegate.btdh.currentSession.delegate = self.appDelegate.btdh;
+    [self.appDelegate.btdh.currentSession setDataReceiveHandler:self.appDelegate.btdh withContext:nil];
+    
+    //disable computer opponent
+    self.appDelegate.isAIActivated = NO;
+    
+    // refresh table view
+    [self.tableView reloadData];  
+    
+    picker.delegate = nil;
+    [picker dismiss];
+    [picker autorelease];
+}
+
+- (void)peerPickerControllerDidCancel:(GKPeerPickerController *)picker
+{
+    picker.delegate = nil;
+    [picker autorelease];
 }
 
 @end
