@@ -64,9 +64,12 @@
     self.strengthCell.textLabel.text = NSLocalizedString(@"SELECT_AI_COMPUTER_STRENGTH","Computer Strength");
     self.strengthCell.accessoryView = self.strengthTextField;
     
-    self.modeSelectCell.accessoryView = self.modeSelectControl;
     [self.modeSelectControl setTitle:NSLocalizedString(@"SINGLEPLAYER", "Singleplayer") forSegmentAtIndex:0];
     [self.modeSelectControl setTitle:NSLocalizedString(@"MULTIPLAYER", "Multiplayer") forSegmentAtIndex:1];
+    
+    //self.modeSelectCell.accessoryView = self.modeSelectControl;
+    
+    [self.modeSelectCell.contentView addSubview:self.modeSelectControl];
     
     self.connectCell.textLabel.text = NSLocalizedString(@"SETTINGS_CELL_CONNECT", "Connect");
     self.disconnectCell.textLabel.text = NSLocalizedString(@"SETTINGS_CELL_DISCONNECT", "Disconnect");
