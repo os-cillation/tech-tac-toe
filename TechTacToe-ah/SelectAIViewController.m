@@ -508,6 +508,7 @@
     {
         //Multiplayer
         self.isAIActivated = NO;
+        self.appDelegate.isAIActivated = NO;
         [self.tableView reloadData];
     }
     else
@@ -519,6 +520,7 @@
         }
         //Singleplayer
         self.isAIActivated = YES;
+        self.appDelegate.isAIActivated = YES;
         [self.tableView reloadData];
     }
 }

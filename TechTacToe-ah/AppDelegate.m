@@ -9,6 +9,10 @@
 //TODO clean Localized Strings
 //TODO clean unneeded files
 
+//TODO Singleplayer Savegames can be loaded in BT-session
+
+//TODO BT Indicator?
+
 //TODO Tabbar icons
 //TODO Orientation changes
 
@@ -176,7 +180,7 @@
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
-    if (self.btdh.currentSessionBool && !self.btdh.localUserActAsServer && (viewController == self.tab1NavigationController || viewController == self.tab2NavigationController))
+    if (self.btdh.currentSession && !self.btdh.localUserActAsServer && (viewController == self.tab1NavigationController || viewController == self.tab2NavigationController))
     {
         return NO;
     }

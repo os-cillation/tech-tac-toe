@@ -22,8 +22,6 @@
 @synthesize cointossResult=_cointossResult;
 @synthesize mvc=_mvc;
 
-@synthesize currentSessionBool;
-
 #pragma mark - Initializer and memory management
 
 - (id)init
@@ -130,6 +128,9 @@
     
     SelectAIViewController *tempVC = (SelectAIViewController*) self.appDelegate.tab3NavigationController.topViewController;
     [tempVC.tableView reloadData];
+    
+    self.appDelegate.tabBarController.selectedIndex = 3;
+    [self.appDelegate.tab3NavigationController popToRootViewControllerAnimated:NO];
     //[self.appDelegate.tab3NavigationController reloadInputViews];
 }
 
@@ -157,6 +158,7 @@
         } else if (otherDeviceCoinValue == self.cointossResult) {
             [self doCointoss];
         }
+        
     } else if (type == MESSAGE_REVOKE_CONTROL) {
         // handle revoking control of main menu
         self.localUserActAsServer = YES;
@@ -257,6 +259,7 @@
         [self.appDelegate.currentGame.gameViewController.activityIndicator stopAnimating];
         //[self.appDelegate.currentGame.gameViewController.navigationController popToRootViewControllerAnimated:YES];
         self.appDelegate.needsAck = NO;
+        self.appDelegate.currentGame = Nil;
         if (self.appDelegate.menuReqType == 0)
         {
             NewGameViewController *tempVC = (NewGameViewController*) self.appDelegate.tab1NavigationController.topViewController;
@@ -337,6 +340,9 @@
     
     [archiver release];
     [data release];
+    
+    SelectAIViewController *tempVC = (SelectAIViewController*) self.appDelegate.tab3NavigationController.topViewController;
+    [tempVC.tableView reloadData];
     
     //[self.appDelegate.tab3NavigationController reloadInputViews];
 }

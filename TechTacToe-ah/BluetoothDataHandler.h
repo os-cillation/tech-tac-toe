@@ -38,8 +38,6 @@ typedef enum {
 @property (nonatomic, getter = doesLocalUserActAsServer) BOOL localUserActAsServer;
 @property (nonatomic) int cointossResult;
 
-@property (nonatomic) BOOL currentSessionBool;
-
 // handle disconnecting from and closing a session
 -(void) doDisconnect;
 
