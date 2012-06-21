@@ -1049,8 +1049,7 @@
     //set up a custom back button that will let the player resign
     UIBarButtonItem *resignButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_RESIGN_BUTTON", @"Resign") style:UIBarButtonItemStyleDone target:self action:@selector(resignButtonAction)];
     self.navigationItem.leftBarButtonItem = resignButton;
-    [resignButton release];
-//TODO - get rid of alert views    
+    [resignButton release]; 
     // init and config the alert views we might need on a Bluetooth game
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_GAME_OVER_TITLE", @"Game Over") message:NSLocalizedString(@"GAME_VIEW_ALERT_GAME_OVER_MESSAGE", @"The game is over. Back to menu?") delegate:self cancelButtonTitle:NSLocalizedString(@"NO", @"no") otherButtonTitles:NSLocalizedString(@"YES", @"yes"), nil];
     alert.tag = 11;
@@ -1136,8 +1135,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    // layout if orientation changed: always assume portrait after leaving another view
-    [self layoutElements:UIInterfaceOrientationPortrait];
+    // layout if orientation changed: Do not always assume portrait after leaving another view
+    [self layoutElements:self.interfaceOrientation];
     
     // set tint of the navbar to something more fitting
     self.navigationController.navigationBar.tintColor = [UIColor grayColor];
@@ -1197,6 +1196,7 @@
     // unhide elements we hid before
     self.gameInfo.hidden = NO;
     self.rulesButton.hidden = NO;
+    
 }
 
 @end

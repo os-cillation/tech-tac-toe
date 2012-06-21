@@ -68,7 +68,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated
-{    
+{   
     [super viewWillAppear:animated];
 }
 
@@ -77,6 +77,15 @@
     [super viewDidAppear:animated];
     // set nav bar content
     self.navigationController.navigationBar.tintColor = [UIColor grayColor];
+    
+    if (self.appDelegate.isAIActivated)
+    {
+        self.navigationItem.title = @"Savegames - Singleplayer";
+    }
+    else
+    {
+        self.navigationItem.title = @"Savegames - Multiplayer";
+    }
     
     /*
     UIBarButtonItem *tempButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"BACK_BUTTON", @"Back") style:UIBarButtonItemStyleBordered target:nil action:nil];
@@ -88,12 +97,36 @@
     //[self.tableView setEditing:NO];
     self.editing = NO;
     
-    self.navigationItem.title = NSLocalizedString(@"LOAD_VIEW_TITLE", @"Load Game");
+    //self.navigationItem.title = NSLocalizedString(@"LOAD_VIEW_TITLE", @"Load Game");
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     // get contents of documents directory
-    self.files = [NSMutableArray arrayWithArray:[[NSFileManager defaultManager] contentsOfDirectoryAtPath:self.path error:NULL]];
+    //self.files = [NSMutableArray arrayWithArray:[[NSFileManager defaultManager] contentsOfDirectoryAtPath:self.path error:NULL]];
+    
+    NSMutableArray *allFiles = [NSMutableArray arrayWithArray:[[NSFileManager defaultManager] contentsOfDirectoryAtPath:self.path error:NULL]];
+    NSMutableArray *filesToKeep = [[NSMutableArray alloc] init ];
+    
+    for (NSString *tempSaveName in allFiles)
+    {
+        if([tempSaveName hasPrefix:@"SP"])
+        {
+            if (self.appDelegate.isAIActivated)
+            {
+                //NSString *saveName = [tempSaveName substringFromIndex:2];
+                [filesToKeep addObject:tempSaveName];
+            }
+        }
+        else
+        {
+            if (!self.appDelegate.isAIActivated)
+            {
+                [filesToKeep addObject:tempSaveName];
+            }
+        }
+    }
+    self.files = filesToKeep;
+    [filesToKeep release];
     
     [self.tableView reloadData];
     
@@ -102,6 +135,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    self.navigationItem.title = NSLocalizedString(@"LOAD_VIEW_TITLE", @"Load Game");
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -165,6 +199,10 @@
         filename = [self.files objectAtIndex:indexPath.row];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
+    if([filename hasPrefix:@"SP"])
+    {
+        filename = [filename substringFromIndex:2];
+    }
     cell.textLabel.text = filename;
     return cell;
 }
@@ -221,6 +259,12 @@
     {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         NSString *filename = [NSDateFormatter localizedStringFromDate:[NSDate date] dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterShortStyle];
+        
+        if (self.appDelegate.currentGame.gameData.gameAI)
+        {
+            filename = [NSString stringWithFormat:@"%@%@",@"SP",filename];
+        }
+        
         if (self.appDelegate.currentGame.gameData.hasSelection)
         {
             self.appDelegate.currentGame.gameData.selection = NO;
@@ -244,20 +288,6 @@
                 [self.tableView reloadData];
             }
         }
-        /*
-
-                              if([self.gameData saveGameToFile:filename]) {
-                                  NSString *message = NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_SAVE_GAME_ALERT_SUCCESSFUL_MESSAGE", @"The game was successfully saved as \"%@\".");
-                                  UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_SAVE_GAME_ALERT_SUCCESSFUL_TITLE", @"Game Saved") message:[NSString stringWithFormat:message, filename] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                                  [alert show];
-                                  [alert release];
-                              } else {
-                                  // message for unsuccessful save
-                                  UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_SAVE_GAME_ALERT_UNSUCCESSFUL_TITLE", @"Error") message:NSLocalizedString(@"GAME_VIEW_ACTION_SHEET_SAVE_GAME_ALERT_UNSUCCESSFUL_MESSAGE", @"The game could not be saved.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                                  [alert show];
-                                  [alert release];
-         */
-        
     }   
 }
 

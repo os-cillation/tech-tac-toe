@@ -9,12 +9,11 @@
 //TODO clean Localized Strings
 //TODO clean unneeded files
 
-//TODO Singleplayer Savegames can be loaded in BT-session
-
-//TODO BT Indicator?
-
 //TODO Tabbar icons
 //TODO Orientation changes
+
+//TODO not fitting alert View
+
 
 #import "AppDelegate.h"
 #import "BluetoothDataHandler.h"

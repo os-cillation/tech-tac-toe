@@ -73,6 +73,11 @@
     
     self.connectCell.textLabel.text = NSLocalizedString(@"SETTINGS_CELL_CONNECT", "Connect");
     self.disconnectCell.textLabel.text = NSLocalizedString(@"SETTINGS_CELL_DISCONNECT", "Disconnect");
+    
+    static NSString *DetailCellIdentifier = @"DetailCell";
+    self.passControllCell = [self.tableView dequeueReusableCellWithIdentifier:DetailCellIdentifier];
+    self.passControllCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:DetailCellIdentifier] autorelease];
+    
     self.passControllCell.textLabel.text = NSLocalizedString(@"SETTINGS_CELL_REVOKE_CONTROL", "pass Controll");
     
     /*
@@ -82,8 +87,6 @@
         detailCell.detailTextLabel.text = peerName;
     }
      */
-    
-    //self.modeSelectControl.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     UIAlertView *alert51 = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"BTALERT_SINGLEPLAYER_TITLE", @"Active BT Connection Found") message:NSLocalizedString(@"BTALERT_SINGLEPLAYER_MESSAGE", @"disconnect?") delegate:self cancelButtonTitle:NSLocalizedString(@"CANCEL", @"Cancel") otherButtonTitles:NSLocalizedString(@"OK", @"OK"),nil];
     alert51.tag = 51;
@@ -330,12 +333,19 @@
                     {
                         self.passControllCell.textLabel.enabled = NO;
                         self.passControllCell.userInteractionEnabled = NO;
+                        self.passControllCell.detailTextLabel.enabled = NO;
                     }
                     else
                     {
                         self.passControllCell.textLabel.enabled = YES;
                         self.passControllCell.userInteractionEnabled = YES;
+                        self.passControllCell.detailTextLabel.enabled = YES;
                     }
+                    NSString *peerID = [[self.appDelegate.btdh.currentSession peersWithConnectionState:GKPeerStateConnected] objectAtIndex:0];
+                    NSString *peerName = [self.appDelegate.btdh.currentSession displayNameForPeer:peerID];
+                    //NSString *peerTitle = [NSString stringWithFormat:@"%@ %@", self.passControllCell.textLabel.text, peerName];
+                    //self.passControllCell.textLabel.text = peerTitle;
+                    self.passControllCell.detailTextLabel.text = peerName;
                     return self.passControllCell;
                 }
             }
