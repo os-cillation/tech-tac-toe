@@ -246,6 +246,8 @@
 /* Load Tab */
 
 "LOAD_VIEW_TITLE" = "Savegames";
+"LOAD_VIEW_TITLE_SP" = "Savegames: Singleplayer";
+"LOAD_VIEW_TITLE_MP" = "Savegames: Multiplayer";
 
 "LOAD_TAB_TITLE" = "Savegames";
 

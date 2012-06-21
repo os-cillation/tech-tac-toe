@@ -80,11 +80,11 @@
     
     if (self.appDelegate.isAIActivated)
     {
-        self.navigationItem.title = @"Savegames - Singleplayer";
+        self.navigationItem.title = NSLocalizedString(@"LOAD_VIEW_TITLE_SP", "Savegames for Singleplayer");
     }
     else
     {
-        self.navigationItem.title = @"Savegames - Multiplayer";
+        self.navigationItem.title = NSLocalizedString(@"LOAD_VIEW_TITLE_MP", "Savegames for Multiplayer");
     }
     
     /*

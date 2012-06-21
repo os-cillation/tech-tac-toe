@@ -242,6 +242,8 @@
 /*Load Tab*/
 
 "LOAD_VIEW_TITLE" = "Spielstände";
+"LOAD_VIEW_TITLE_SP" = "Spielstände: Einzelspieler";
+"LOAD_VIEW_TITLE_MP" = "Spielstände: Mehrspieler";
 
 "LOAD_TAB_TITLE" = "Spielstände";
 "SAVE_ACTIVE_GAME_CELL" = "aktives Spiel speichern";
