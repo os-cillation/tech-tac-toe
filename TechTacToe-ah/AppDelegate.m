@@ -10,6 +10,7 @@
 //TODO clean unneeded files
 
 //TODO Tabbar icons
+//TODO reposition Pickers
 
 #import "AppDelegate.h"
 #import "BluetoothDataHandler.h"

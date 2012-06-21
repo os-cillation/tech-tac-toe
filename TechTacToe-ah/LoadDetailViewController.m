@@ -39,7 +39,15 @@
     [unarchiver finishDecoding];
     
     self.gameInformation = localData;
-    self.gameName = filename;
+    
+    if([filename hasPrefix:@"SP"])
+    {
+        self.gameName = [filename substringFromIndex:2];
+    }
+    else
+    {
+        self.gameName = filename;
+    }
     
     // set board width and height
     [self.gameInformation updateBoardSize];
