@@ -173,7 +173,7 @@
 "GAME_VIEW_ALERT_BACK_TO_MENU_ACKNOWLEDGE_MESSAGE" = "The peer has send a request to go back to the main menu. Agree?\n(Selecting 'no' will end the session.)";
 */
 "GAME_VIEW_ALERT_BACK_TO_MENU_REQUEST_TITLE" = "Start Game";
-"GAME_VIEW_ALERT_BACK_TO_MENU_REQUEST_MESSAGE" = "Starting and Loading a game while a Bluetooth game is running will require confirmation from the other device. Send request to start a new game or disconnect from the session?";
+"GAME_VIEW_ALERT_BACK_TO_MENU_REQUEST_MESSAGE" = "Starting and Loading a game while a Bluetooth game is running will require confirmation from the other device. Send request to other device?";
 "GAME_VIEW_ALERT_BACK_TO_MENU_WAIT_FOR_ACK_TITLE" = "Waiting for Response";
 "GAME_VIEW_ALERT_BACK_TO_MENU_WAIT_FOR_ACK_MESSAGE" = "The request has been sent.\nWaiting for the other device to respond ...\n ";
 "GAME_VIEW_ALERT_BACK_TO_MENU_ACKNOWLEDGE_TITLE" = "Peer wants to start a game";

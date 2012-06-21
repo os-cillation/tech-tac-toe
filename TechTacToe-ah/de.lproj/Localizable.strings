@@ -174,7 +174,7 @@
 "GAME_VIEW_ALERT_BACK_TO_MENU_ACKNOWLEDGE_MESSAGE" = "Der Mitspieler will zurück zum Hauptmenü. Ausführen?\n('Nein' wird die Sitzung beenden.)";
 */
 "GAME_VIEW_ALERT_BACK_TO_MENU_REQUEST_TITLE" = "Spiel starten";
-"GAME_VIEW_ALERT_BACK_TO_MENU_REQUEST_MESSAGE" = "Bei einem laufendem Bluetooth Spiel braucht es die Bestätigung des anderen Gerätes, um ein Spiel zu starten oder laden. Anfrage an das andere Gerät senden oder die Verbindung trennen?";
+"GAME_VIEW_ALERT_BACK_TO_MENU_REQUEST_MESSAGE" = "Bei einem laufendem Bluetooth Spiel braucht es die Bestätigung des anderen Gerätes, um ein Spiel zu starten oder laden. Anfrage an das andere Gerät senden?";
 "GAME_VIEW_ALERT_BACK_TO_MENU_WAIT_FOR_ACK_TITLE" = "Warte auf Antwort";
 "GAME_VIEW_ALERT_BACK_TO_MENU_WAIT_FOR_ACK_MESSAGE" = "Die Anfrage wurde gesendet.\nWarte auf Antwort vom anderen Gerät ...\n ";
 "GAME_VIEW_ALERT_BACK_TO_MENU_ACKNOWLEDGE_TITLE" = "Mitspieler will ein Spiel starten";

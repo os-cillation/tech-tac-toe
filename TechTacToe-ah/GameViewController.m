@@ -1056,7 +1056,9 @@
     self.backToMenuGameOver = alert;
     [alert release];
     
-    UIAlertView *alertReq = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_BACK_TO_MENU_REQUEST_TITLE", @"Back to Menu") message:NSLocalizedString(@"GAME_VIEW_ALERT_BACK_TO_MENU_REQUEST_MESSAGE", @"Going back to menu on a Bluetooth game will require confirmation from the other device.\nSend request to go back to menu or disconnect from the session?") delegate:self cancelButtonTitle:NSLocalizedString(@"CANCEL", @"Cancel") otherButtonTitles:NSLocalizedString(@"SEND", @"Send"),NSLocalizedString(@"DISCONNECT", @"Disconnect"),nil];
+    UIAlertView *alertReq = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"GAME_VIEW_ALERT_BACK_TO_MENU_REQUEST_TITLE", @"Back to Menu") message:NSLocalizedString(@"GAME_VIEW_ALERT_BACK_TO_MENU_REQUEST_MESSAGE", @"Going back to menu on a Bluetooth game will require confirmation from the other device.\nSend request to go back to menu or disconnect from the session?") delegate:self cancelButtonTitle:NSLocalizedString(@"CANCEL", @"Cancel")
+                                            otherButtonTitles:NSLocalizedString(@"SEND", @"Send"), nil];
+        //otherButtonTitles:NSLocalizedString(@"SEND", @"Send"),NSLocalizedString(@"DISCONNECT", @"Disconnect"),nil];
     alertReq.tag = 13;
     self.backToMenuReqView = alertReq;
     [alertReq release];

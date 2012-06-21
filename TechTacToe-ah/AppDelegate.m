@@ -10,10 +10,6 @@
 //TODO clean unneeded files
 
 //TODO Tabbar icons
-//TODO Orientation changes
-
-//TODO not fitting alert View
-
 
 #import "AppDelegate.h"
 #import "BluetoothDataHandler.h"

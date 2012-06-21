@@ -32,4 +32,6 @@
 -(IBAction)gomoku:(id)sender;
 -(IBAction)customGame:(id)sender;
 
-@end
+-(void)updateInterface:(UIInterfaceOrientation)toInterfaceOrientation;
+
+@end 

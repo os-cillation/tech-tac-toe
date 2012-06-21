@@ -21,6 +21,7 @@
 		A7E957ED158F5CF5003FDF74 /* Gomoku@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7E957E9158F5CF5003FDF74 /* Gomoku@2x.png */; };
 		A7E957EE158F5CF5003FDF74 /* TicTacToe@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7E957EA158F5CF5003FDF74 /* TicTacToe@2x.png */; };
 		A7E957F1158F65B7003FDF74 /* TechTacToe@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7E957F0158F65B6003FDF74 /* TechTacToe@2x.png */; };
+		A7E9D9141593425C00867971 /* NewGameViewController-landscape.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7E9D9131593425B00867971 /* NewGameViewController-landscape.xib */; };
 		A7EC02CF156F6B43003BC8CA /* SelectAIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EC02CD156F6B43003BC8CA /* SelectAIViewController.m */; };
 		A7EC02D0156F6B43003BC8CA /* SelectAIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7EC02CE156F6B43003BC8CA /* SelectAIViewController.xib */; };
 		A7EC02D5156FA84B003BC8CA /* SelectAIPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EC02D3156FA849003BC8CA /* SelectAIPickerViewController.m */; };
@@ -105,6 +106,7 @@
 		A7E957E9158F5CF5003FDF74 /* Gomoku@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gomoku@2x.png"; sourceTree = "<group>"; };
 		A7E957EA158F5CF5003FDF74 /* TicTacToe@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TicTacToe@2x.png"; sourceTree = "<group>"; };
 		A7E957F0158F65B6003FDF74 /* TechTacToe@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TechTacToe@2x.png"; sourceTree = "<group>"; };
+		A7E9D9131593425B00867971 /* NewGameViewController-landscape.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "NewGameViewController-landscape.xib"; sourceTree = "<group>"; };
 		A7EC02CC156F6B43003BC8CA /* SelectAIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectAIViewController.h; sourceTree = "<group>"; };
 		A7EC02CD156F6B43003BC8CA /* SelectAIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectAIViewController.m; sourceTree = "<group>"; };
 		A7EC02CE156F6B43003BC8CA /* SelectAIViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectAIViewController.xib; sourceTree = "<group>"; };
@@ -295,6 +297,7 @@
 				A7EC02CE156F6B43003BC8CA /* SelectAIViewController.xib */,
 				CEC1E9281434557F0053266F /* MainWindow.xib */,
 				A7E8B85D1585DA03005AFBD9 /* NewGameViewController.xib */,
+				A7E9D9131593425B00867971 /* NewGameViewController-landscape.xib */,
 				CE7C3350143F0BB7005EE0D9 /* LoadViewController.xib */,
 				CE320ED9143F226500A688AB /* LoadDetailViewController.xib */,
 				CE8146091433145D006E7099 /* SettingsViewController.xib */,
@@ -494,6 +497,7 @@
 				A7E957ED158F5CF5003FDF74 /* Gomoku@2x.png in Resources */,
 				A7E957EE158F5CF5003FDF74 /* TicTacToe@2x.png in Resources */,
 				A7E957F1158F65B7003FDF74 /* TechTacToe@2x.png in Resources */,
+				A7E9D9141593425C00867971 /* NewGameViewController-landscape.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -106,6 +106,7 @@
     [alert21 release];
     [alert22 release];
     [alert23 release];
+    
 }
 
 - (void)viewDidUnload
@@ -113,6 +114,30 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+}
+
+-(void) viewDidAppear:(BOOL)animated
+{
+    [self updateInterface:self.interfaceOrientation];
+}
+
+-(void) updateInterface:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    if( UIInterfaceOrientationIsLandscape(toInterfaceOrientation) )
+    {
+        [[NSBundle mainBundle] loadNibNamed:[NSString stringWithFormat:@"%@-landscape", self.nibName] owner:self options:nil];
+        [self viewDidLoad];
+    }
+    else
+    {
+        [[NSBundle mainBundle] loadNibNamed:[NSString stringWithFormat:@"%@",self.nibName] owner:self options:nil];
+        [self viewDidLoad];
+    }
+}
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self updateInterface:toInterfaceOrientation];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
