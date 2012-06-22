@@ -276,7 +276,7 @@
 
 "SELECT_AI_COMPUTER_COLOR" = "Computer Color";
 "SELECT_AI_COMPUTER_STRENGTH" = "Computer Strength";
-"AI_PICKER_COLOR" = "Color";
+"AI_PICKER_COLOR" = "Computer Color";
 "AI_PICKER_STRENGTH" = "Computer Strength";
 "AISTRENGTH_1" = "Weak";
 "AISTRENGTH_2" = "Normal";

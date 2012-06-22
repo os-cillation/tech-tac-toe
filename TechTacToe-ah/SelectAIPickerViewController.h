@@ -11,7 +11,6 @@
 
 @interface SelectAIPickerViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource>
 
-@property (nonatomic, retain) IBOutlet UILabel *pickerName;
 @property (nonatomic, retain) IBOutlet UIPickerView *picker;
 @property (nonatomic, retain) NSMutableArray *dataArray;
 @property (nonatomic, assign) SelectAIViewController *svc;

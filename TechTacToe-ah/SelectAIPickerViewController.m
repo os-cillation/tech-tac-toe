@@ -17,7 +17,6 @@
 
 @synthesize svc;
 @synthesize pickerID;
-@synthesize pickerName;
 @synthesize picker;
 @synthesize selectedValue;
 @synthesize dataArray;
@@ -34,7 +33,7 @@
 - (void)viewDidLoad
 {
     // set the title and back button of the nav bar
-    self.navigationItem.title = NSLocalizedString(@"SELECT_AI_SETTINGS", "Settings");
+    //self.navigationItem.title = NSLocalizedString(@"SELECT_AI_SETTINGS", "Settings");
     UIBarButtonItem *tempButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"BACK_BUTTON", @"Back") style:UIBarButtonItemStyleBordered target:nil action:nil];
     self.navigationItem.backBarButtonItem = tempButton;
     [tempButton release];
@@ -50,7 +49,7 @@
     if (pickerID == 0)
     {
         //color
-        self.pickerName.text = NSLocalizedString(@"AI_PICKER_COLOR", "COLOR");
+        self.navigationItem.title = NSLocalizedString(@"AI_PICKER_COLOR", "COLOR");
         [self.dataArray addObject:NSLocalizedString(@"AICOLOR_BLUE", "blue")];
         [self.dataArray addObject:NSLocalizedString(@"AICOLOR_RED", "red")];
         
@@ -66,7 +65,7 @@
     else
     {
         //strength
-        self.pickerName.text = NSLocalizedString(@"AI_PICKER_STRENGTH", "Srength");
+        self.navigationItem.title = NSLocalizedString(@"AI_PICKER_STRENGTH", "Srength");
        /* for (int i = 1; i < 4; i++) {
             [self.dataArray addObject:[NSString stringWithFormat:@"%i",i]];
         }
@@ -162,7 +161,6 @@
 -(void) dealloc
 {
     [picker release];
-    [pickerName release];
     [dataArray release];
     [selectedValue release];
     [super dealloc];

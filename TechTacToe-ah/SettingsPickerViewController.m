@@ -10,7 +10,6 @@
 #import "SettingsViewController.h"
 
 @implementation SettingsPickerViewController
-@synthesize pickerName;
 @synthesize picker;
 @synthesize dataArray=_dataArray;
 @synthesize svc=_svc;
@@ -40,7 +39,6 @@
 }
 
 - (void)dealloc {
-    [pickerName release];
     [picker release];
     [_dataArray release];
     [_selectedValue release];
@@ -116,7 +114,7 @@
 - (void)viewDidLoad
 {
     // set the title and back button of the nav bar
-    self.navigationItem.title = NSLocalizedString(@"SETTINGS_VIEW_TITLE", @"Customize Game");
+    //self.navigationItem.title = NSLocalizedString(@"SETTINGS_VIEW_TITLE", @"Customize Game");
     UIBarButtonItem *tempButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"BACK_BUTTON", @"Back") style:UIBarButtonItemStyleBordered target:nil action:nil];
     self.navigationItem.backBarButtonItem = tempButton;
     [tempButton release];
@@ -133,7 +131,8 @@
     switch (self.pickerID) {
         case NUMBER_OF_TURNS:
             // number of turns picker
-            self.pickerName.text = NSLocalizedString(@"SETTINGS_VIEW_CELL_NUMBER_OF_TURNS", @"Number of Turns");
+            self.navigationItem.title = NSLocalizedString(@"SETTINGS_VIEW_CELL_NUMBER_OF_TURNS", @"Number of Turns");
+            
             // fill our picker's data source
             if (self.svc.boardLimitSwitch.isOn) {
                 for (int i = 1; i <= self.svc.boardHeightTextField.text.intValue * self.svc.boardWidthTextField.text.intValue; i++) {
@@ -149,7 +148,7 @@
             [self.picker selectRow:self.svc.numberOfTurnsTextField.text.intValue - 1 inComponent:0 animated:NO];
             break;
         case BOARD_WIDTH:
-            self.pickerName.text = NSLocalizedString(@"SETTINGS_VIEW_CELL_BOARD_WIDTH", @"Board Width");
+            self.navigationItem.title = NSLocalizedString(@"SETTINGS_VIEW_CELL_BOARD_WIDTH", @"Board Width");
             for (int i = self.svc.minimumForLineTextField.text.intValue; i <= 25 ; i++) {
                 //[self.dataArray addObject:[NSNumber numberWithInt:i]];
                 [self.dataArray addObject:[NSString stringWithFormat:@"%i",i]];
@@ -157,7 +156,7 @@
             [self.picker selectRow:self.svc.boardWidthTextField.text.intValue - self.svc.minimumForLineTextField.text.intValue inComponent:0 animated:NO];
             break;
         case BOARD_HEIGHT:
-            self.pickerName.text = NSLocalizedString(@"SETTINGS_VIEW_CELL_BOARD_HEIGHT", @"Board Height");
+            self.navigationItem.title = NSLocalizedString(@"SETTINGS_VIEW_CELL_BOARD_HEIGHT", @"Board Height");
             for (int i = self.svc.minimumForLineTextField.text.intValue; i <= 25 ; i++) {
                 //[self.dataArray addObject:[NSNumber numberWithInt:i]];
                 [self.dataArray addObject:[NSString stringWithFormat:@"%i",i]];
@@ -165,7 +164,7 @@
             [self.picker selectRow:self.svc.boardHeightTextField.text.intValue - self.svc.minimumForLineTextField.text.intValue inComponent:0 animated:NO];
             break;
         case MINIMUM_LINE_SIZE:
-            self.pickerName.text = NSLocalizedString(@"SETTINGS_VIEW_CELL_MINIMUM_LINE_SIZE", @"Minimum Line Size");
+            self.navigationItem.title = NSLocalizedString(@"SETTINGS_VIEW_CELL_MINIMUM_LINE_SIZE", @"Minimum Line Size");
             for (int i = 3; i <= 6; i++) {
                 //[self.dataArray addObject:[NSNumber numberWithInt:i]];
                 [self.dataArray addObject:[NSString stringWithFormat:@"%i",i]];
@@ -173,7 +172,7 @@
             [self.picker selectRow:self.svc.minimumForLineTextField.text.intValue - 3 inComponent:0 animated:NO];
             break;
         case PLAYER_COLOR:
-            self.pickerName.text = NSLocalizedString(@"SETTINGS_VIEW_CELL_PLAYER_COLOR", "Player Color");
+            self.navigationItem.title = NSLocalizedString(@"SETTINGS_VIEW_CELL_PLAYER_COLOR", "Player Color");
             [self.dataArray addObject:NSLocalizedString(@"AICOLOR_BLUE", "blue")];
             [self.dataArray addObject:NSLocalizedString(@"AICOLOR_RED", "red")];
             
@@ -201,7 +200,6 @@
 
 - (void)viewDidUnload
 {
-    [self setPickerName:nil];
     [self setPicker:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.

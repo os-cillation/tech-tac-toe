@@ -242,8 +242,8 @@
 /*Load Tab*/
 
 "LOAD_VIEW_TITLE" = "Spielstände";
-"LOAD_VIEW_TITLE_SP" = "Spielstände: Einzelspieler";
-"LOAD_VIEW_TITLE_MP" = "Spielstände: Mehrspieler";
+"LOAD_VIEW_TITLE_SP" = "Speicher: Einzelspieler";
+"LOAD_VIEW_TITLE_MP" = "Speicher: Mehrspieler";
 
 "LOAD_TAB_TITLE" = "Spielstände";
 "SAVE_ACTIVE_GAME_CELL" = "aktives Spiel speichern";
@@ -271,7 +271,7 @@
 
 "SELECT_AI_COMPUTER_COLOR" = "Computer Farbe";
 "SELECT_AI_COMPUTER_STRENGTH" = "Computer Stärke";
-"AI_PICKER_COLOR" = "Farbe";
+"AI_PICKER_COLOR" = "Computer Farbe";
 "AI_PICKER_STRENGTH" = "Computer Stärke";
 "AISTRENGTH_1" = "Schwach";
 "AISTRENGTH_2" = "Normal";
