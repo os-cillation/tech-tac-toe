@@ -9,8 +9,9 @@
 //TODO clean Localized Strings
 //TODO clean unneeded files
 
-//TODO Tabbar icons
+//TODO fix TechTacToe Button Image
 //TODO check App crashes
+//->Picker Parent View Controller deallocatd due to Tabbar popping to RootVC
 
 #import "AppDelegate.h"
 #import "BluetoothDataHandler.h"
@@ -87,6 +88,18 @@
     self.tab2NavigationController.tabBarItem.title = NSLocalizedString(@"LOAD_TAB_TITLE", "Load");
     self.tab3NavigationController.tabBarItem.title = NSLocalizedString(@"SETTINGS_TAB_TITLE", "Settings");
     self.tab4ViewController.tabBarItem.title = NSLocalizedString(@"INFO_TAB_TITLE", "Info");
+    
+    NSString *path = [[NSBundle mainBundle]pathForResource:@"ImagePaths" ofType:@"plist"];
+    NSDictionary *plist = [[NSDictionary alloc] initWithContentsOfFile:path];
+
+    //[self.button1 setImage:[UIImage imageNamed:[plist objectForKey:@"TechTacToeButton"]] forState:UIControlStateNormal];
+    
+    [self.tab0NavigationController.tabBarItem setImage: [UIImage imageNamed:[plist objectForKey:@"tab0icon"]]];
+    [self.tab1NavigationController.tabBarItem setImage: [UIImage imageNamed:[plist objectForKey:@"tab1icon"]]];
+    [self.tab2NavigationController.tabBarItem setImage: [UIImage imageNamed:[plist objectForKey:@"tab2icon"]]];
+    [self.tab3NavigationController.tabBarItem setImage: [UIImage imageNamed:[plist objectForKey:@"tab3icon"]]];
+    [self.tab4ViewController.tabBarItem setImage: [UIImage imageNamed:[plist objectForKey:@"tab4icon"]]];
+    
     [self.tabBarController reloadInputViews];
     
     self.menuReqType = -1;

@@ -36,5 +36,15 @@
 	<string>CustomBack.png</string>
 	<key>CustomButtonFront</key>
 	<string>CustomFront.png</string>
+	<key>tab4icon</key>
+	<string>tab4.png</string>
+	<key>tab3icon</key>
+	<string>tab3.png</string>
+	<key>tab2icon</key>
+	<string>tab2.png</string>
+	<key>tab1icon</key>
+	<string>tab1.png</string>
+	<key>tab0icon</key>
+	<string>tab0.png</string>
 </dict>
 </plist>
