@@ -7,6 +7,7 @@
 //
 
 #import "LoadDetailViewController.h"
+#import "BluetoothDataHandler.h"
 
 @implementation LoadDetailViewController
 

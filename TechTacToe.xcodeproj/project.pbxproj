@@ -72,7 +72,6 @@
 		CEB15E3814517635004A0A9B /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB15E3714517635004A0A9B /* background.png */; };
 		CEB15E3B14517786004A0A9B /* background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB15E3A14517786004A0A9B /* background@2x.png */; };
 		CEC1E9291434557F0053266F /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEC1E9281434557F0053266F /* MainWindow.xib */; };
-		CEC1E92E14345B320053266F /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC1E92C14345B320053266F /* MainViewController.m */; };
 		CEC6C64A145187D00089827D /* SettingsPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC6C648145187D00089827D /* SettingsPickerViewController.m */; };
 		CEC6C64B145187D00089827D /* SettingsPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEC6C649145187D00089827D /* SettingsPickerViewController.xib */; };
 		CEE6E616143B2EA500402251 /* RulesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE6E614143B2EA400402251 /* RulesViewController.m */; };
@@ -176,8 +175,6 @@
 		CEB15E3714517635004A0A9B /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		CEB15E3A14517786004A0A9B /* background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background@2x.png"; sourceTree = "<group>"; };
 		CEC1E9281434557F0053266F /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
-		CEC1E92B14345B320053266F /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
-		CEC1E92C14345B320053266F /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		CEC6C647145187D00089827D /* SettingsPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsPickerViewController.h; sourceTree = "<group>"; };
 		CEC6C648145187D00089827D /* SettingsPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsPickerViewController.m; sourceTree = "<group>"; };
 		CEC6C649145187D00089827D /* SettingsPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsPickerViewController.xib; sourceTree = "<group>"; };
@@ -296,8 +293,6 @@
 				E17BB52B1414E44700DFBCB5 /* GameViewController.m */,
 				A7E8B85B1585DA03005AFBD9 /* NewGameViewController.h */,
 				A7E8B85C1585DA03005AFBD9 /* NewGameViewController.m */,
-				CEC1E92B14345B320053266F /* MainViewController.h */,
-				CEC1E92C14345B320053266F /* MainViewController.m */,
 				A7E946F4157F5464007C6028 /* ActiveGameViewController.h */,
 				A7E946F5157F5464007C6028 /* ActiveGameViewController.m */,
 				CE7C334E143F0BB7005EE0D9 /* LoadViewController.h */,
@@ -574,7 +569,6 @@
 				E16FA3B1141DF44E001D2F09 /* Field.m in Sources */,
 				E170BA5D14232F5C00A2F6BF /* Rules.m in Sources */,
 				CE81460A1433145D006E7099 /* SettingsViewController.m in Sources */,
-				CEC1E92E14345B320053266F /* MainViewController.m in Sources */,
 				CEE6E616143B2EA500402251 /* RulesViewController.m in Sources */,
 				CE7C3351143F0BB7005EE0D9 /* LoadViewController.m in Sources */,
 				CE320EDA143F226500A688AB /* LoadDetailViewController.m in Sources */,

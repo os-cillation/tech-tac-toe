@@ -7,8 +7,10 @@
 //
 
 #import "SelectAIViewController.h"
-#import "MainViewController.h"
 #import "SelectAIPickerViewController.h"
+#import "BluetoothDataHandler.h"
+#import "GameData.h"
+#import "Game.h"
 
 @interface SelectAIViewController ()
 

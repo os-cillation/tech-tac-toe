@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "Game.h"
-#import "MainViewController.h"
 
 @interface LoadDetailViewController : UITableViewController {
     NSString *gameName; // the filename - displayed in table view

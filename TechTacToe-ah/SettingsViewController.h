@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "Game.h"
-#import "MainViewController.h"
 
 @interface SettingsViewController : UITableViewController {
     

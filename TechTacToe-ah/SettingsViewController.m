@@ -10,6 +10,7 @@
 
 #import "SettingsViewController.h"
 #import "SettingsPickerViewController.h"
+#import "BluetoothDataHandler.h"
 
 @implementation SettingsViewController
 

@@ -7,7 +7,6 @@
 //
 
 #import "BluetoothDataHandler.h"
-#import "MainViewController.h"
 #import "AppDelegate.h"
 #import "SelectAIViewController.h"
 #import "NewGameViewController.h"

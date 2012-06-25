@@ -10,7 +10,6 @@
 #import <GameKit/GKSession.h>
 #import <GameKit/GKPeerPickerController.h>
 #import "AppDelegate.h"
-#import "MainViewController.h"
 
 @class MainViewController;
 
