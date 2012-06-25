@@ -9,9 +9,6 @@
 //TODO clean Localized Strings
 //TODO clean unneeded files
 
-//TODO check App crashes
-//->Picker Parent View Controller deallocatd due to Tabbar popping to RootVC
-
 #import "AppDelegate.h"
 #import "BluetoothDataHandler.h"
 #import "Game.h"

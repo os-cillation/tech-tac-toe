@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
 
 @class SettingsViewController;
 
@@ -22,17 +23,16 @@ typedef enum {
     UIPickerView *picker; // the main object of this view
     int pickerID; // can be a value declared in the enum and identifies the cell of the settings view this picker corresponds to
     NSMutableArray *dataArray; // contains all valid numbers of our current picker
-    SettingsViewController *svc; // the reference to the settings view - we change the value the picker represents with this
     NSNumber *selectedValue; // the currently selected value of the picker
 }
 
 @property (nonatomic, retain) IBOutlet UIPickerView *picker;
 @property (nonatomic, retain) NSMutableArray *dataArray;
-@property (nonatomic, assign) SettingsViewController *svc;
 @property (nonatomic) int pickerID;
 @property (nonatomic, retain) NSString *selectedValue;
+@property (nonatomic, retain) AppDelegate *appDelegate;
 
 // custom init method
-- (SettingsPickerViewController*) initWithPickerID:(int)pickerIdentity fromSettingsView:(SettingsViewController*)settings;
+- (SettingsPickerViewController*) initWithPickerID:(int)pickerIdentity;
 
 @end

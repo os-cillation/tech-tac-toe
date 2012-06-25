@@ -144,26 +144,7 @@
     alert31.tag = 31;
     self.activeGameAlert31 = alert31;
     [alert31 release];
-    //Load values and set Interface according to them
-    self.limitTurnsSwitch.on = self.appDelegate.turnLimit;
-    self.numberOfTurnsTextField.text = [NSString stringWithFormat:@"%i", self.appDelegate.turnLimitNumber];
-    self.boardLimitSwitch.on = self.appDelegate.boardSizeLimit;
-    self.boardWidthTextField.text = [NSString stringWithFormat:@"%i", self.appDelegate.boardSizeWidth];
-    self.boardHeightTextField.text = [NSString stringWithFormat:@"%i", self.appDelegate.boardSizeHeight];
-    self.minimumForLineTextField.text = [NSString stringWithFormat:@"%i", self.appDelegate.minimumLineSize];
-    self.scoreModeSwitch.on = self.appDelegate.scoreMode;
-    self.additionalRedTurnSwitch.on = self.appDelegate.additionalRedTurn;
-    self.reuseLineSwitch.on = self.appDelegate.reuseLines;
-    if (self.appDelegate.localPlayerColorBlue)
-    {
-        self.playerColorTextField.textColor = [UIColor blueColor];
-        self.playerColorTextField.text = NSLocalizedString(@"AICOLOR_BLUE","blue");
-    }
-    else
-    {
-        self.playerColorTextField.textColor = [UIColor redColor];
-        self.playerColorTextField.text = NSLocalizedString(@"AICOLOR_RED","red");
-    }
+
     [self performSelector:@selector(boardLimitChanged:)];
     [self performSelector:@selector(limitTurnsChanged:)];
     [self performSelector:@selector(scoreModeChanged:)];
@@ -205,6 +186,26 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    //Load values and set Interface according to them
+    self.limitTurnsSwitch.on = self.appDelegate.turnLimit;
+    self.numberOfTurnsTextField.text = [NSString stringWithFormat:@"%i", self.appDelegate.turnLimitNumber];
+    self.boardLimitSwitch.on = self.appDelegate.boardSizeLimit;
+    self.boardWidthTextField.text = [NSString stringWithFormat:@"%i", self.appDelegate.boardSizeWidth];
+    self.boardHeightTextField.text = [NSString stringWithFormat:@"%i", self.appDelegate.boardSizeHeight];
+    self.minimumForLineTextField.text = [NSString stringWithFormat:@"%i", self.appDelegate.minimumLineSize];
+    self.scoreModeSwitch.on = self.appDelegate.scoreMode;
+    self.additionalRedTurnSwitch.on = self.appDelegate.additionalRedTurn;
+    self.reuseLineSwitch.on = self.appDelegate.reuseLines;
+    if (self.appDelegate.localPlayerColorBlue)
+    {
+        self.playerColorTextField.textColor = [UIColor blueColor];
+        self.playerColorTextField.text = NSLocalizedString(@"AICOLOR_BLUE","blue");
+    }
+    else
+    {
+        self.playerColorTextField.textColor = [UIColor redColor];
+        self.playerColorTextField.text = NSLocalizedString(@"AICOLOR_RED","red");
+    }
     // check for invalid settings combinations we might have got from the picker view and correct them
     // minimum line size might change the board size:
     int value = self.minimumForLineTextField.text.intValue;
@@ -462,27 +463,27 @@
     // create and display a picker depending on cell clicked
     SettingsPickerViewController *pickerView;
     if (indexPath.section == 0 && indexPath.row == 1 && self.limitTurnsSwitch.isOn) {
-        pickerView = [[SettingsPickerViewController alloc] initWithPickerID:NUMBER_OF_TURNS fromSettingsView:self];
+        pickerView = [[SettingsPickerViewController alloc] initWithPickerID:NUMBER_OF_TURNS];
         [self.navigationController pushViewController:pickerView animated:YES];
         [pickerView release];
     } else if (indexPath.section == 1 && self.boardLimitSwitch.isOn) {
         if (indexPath.row == 1) {
-            pickerView = [[SettingsPickerViewController alloc] initWithPickerID:BOARD_WIDTH fromSettingsView:self];
+            pickerView = [[SettingsPickerViewController alloc] initWithPickerID:BOARD_WIDTH];
             [self.navigationController pushViewController:pickerView animated:YES];
             [pickerView release];
         } else if (indexPath.row == 2) {
-            pickerView = [[SettingsPickerViewController alloc] initWithPickerID:BOARD_HEIGHT fromSettingsView:self];
+            pickerView = [[SettingsPickerViewController alloc] initWithPickerID:BOARD_HEIGHT];
             [self.navigationController pushViewController:pickerView animated:YES];
             [pickerView release];
         }
     } else if (indexPath.section == 2) {
-        pickerView = [[SettingsPickerViewController alloc] initWithPickerID:MINIMUM_LINE_SIZE fromSettingsView:self];
+        pickerView = [[SettingsPickerViewController alloc] initWithPickerID:MINIMUM_LINE_SIZE];
         [self.navigationController pushViewController:pickerView animated:YES];
         [pickerView release];
     }
     else if (indexPath.section == 6)
     {
-        pickerView = [[SettingsPickerViewController alloc] initWithPickerID:PLAYER_COLOR fromSettingsView:self];
+        pickerView = [[SettingsPickerViewController alloc] initWithPickerID:PLAYER_COLOR];
         [self.navigationController pushViewController:pickerView animated:YES];
         [pickerView release];
     }

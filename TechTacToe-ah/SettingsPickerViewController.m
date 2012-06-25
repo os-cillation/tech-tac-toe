@@ -12,9 +12,9 @@
 @implementation SettingsPickerViewController
 @synthesize picker;
 @synthesize dataArray=_dataArray;
-@synthesize svc=_svc;
 @synthesize pickerID=_pickerID;
 @synthesize selectedValue=_selectedValue;
+@synthesize appDelegate = _appDelegate;
 
 #pragma mark - Initializer and memory management
 
@@ -27,13 +27,13 @@
     return self;
 }
 
-- (SettingsPickerViewController *)initWithPickerID:(int)pickerIdentity fromSettingsView:(SettingsViewController*)settings
+- (SettingsPickerViewController *)initWithPickerID:(int)pickerIdentity
 {
     self = [super initWithNibName:@"SettingsPickerViewController" bundle:nil];
     if (self) {
         // Custom initialization
-        self.svc = settings;
         self.pickerID = pickerIdentity;
+        self.appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     }
     return self;
 }
@@ -42,6 +42,7 @@
     [picker release];
     [_dataArray release];
     [_selectedValue release];
+    [_appDelegate release];
     [super dealloc];
 }
 
@@ -76,32 +77,36 @@
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    self.selectedValue = [self.dataArray objectAtIndex:row];
+    //if (!self.view.window)
+    //{
+        //User switched View before Picker finished spinning
+        //return;
+    //}
     
+    self.selectedValue = [self.dataArray objectAtIndex:row];
+        
     switch (self.pickerID) {
         case NUMBER_OF_TURNS:
             //self.svc.numberOfTurnsTextField.text = self.selectedValue.description;
-            self.svc.numberOfTurnsTextField.text = self.selectedValue;
+            self.appDelegate.turnLimitNumber = self.selectedValue.intValue;
             break;
         case BOARD_WIDTH:
-            self.svc.boardWidthTextField.text = self.selectedValue;
+            self.appDelegate.boardSizeWidth = self.selectedValue.intValue;
             break;
         case BOARD_HEIGHT:
-            self.svc.boardHeightTextField.text = self.selectedValue;
+            self.appDelegate.boardSizeHeight = self.selectedValue.intValue;
             break;
         case MINIMUM_LINE_SIZE:
-            self.svc.minimumForLineTextField.text = self.selectedValue;
+            self.appDelegate.minimumLineSize = self.selectedValue.intValue;
             break;
         case PLAYER_COLOR:
             if ([self.selectedValue isEqualToString:NSLocalizedString(@"AICOLOR_BLUE", "blue")])
             {
-                self.svc.playerColorTextField.text = NSLocalizedString(@"AICOLOR_BLUE", "blue");
-                self.svc.playerColorTextField.textColor = [UIColor blueColor];
+                self.appDelegate.localPlayerColorBlue = YES;
             }
             else
-            {
-                self.svc.playerColorTextField.text = NSLocalizedString(@"AICOLOR_RED", "red");
-                self.svc.playerColorTextField.textColor = [UIColor redColor];
+            {                
+                self.appDelegate.localPlayerColorBlue = NO;
             }
             break;
         default:
@@ -134,8 +139,8 @@
             self.navigationItem.title = NSLocalizedString(@"SETTINGS_VIEW_CELL_NUMBER_OF_TURNS", @"Number of Turns");
             
             // fill our picker's data source
-            if (self.svc.boardLimitSwitch.isOn) {
-                for (int i = 1; i <= self.svc.boardHeightTextField.text.intValue * self.svc.boardWidthTextField.text.intValue; i++) {
+            if (self.appDelegate.boardSizeLimit) {
+                for (int i = 1; i <= self.appDelegate.boardSizeHeight * self.appDelegate.boardSizeWidth; i++) {
                     //[self.dataArray addObject:[NSNumber numberWithInt:i]];
                     [self.dataArray addObject:[NSString stringWithFormat:@"%i",i]];
                 }
@@ -145,23 +150,23 @@
                     [self.dataArray addObject:[NSString stringWithFormat:@"%i",i]];
                 }
             }
-            [self.picker selectRow:self.svc.numberOfTurnsTextField.text.intValue - 1 inComponent:0 animated:NO];
+            [self.picker selectRow:self.appDelegate.turnLimitNumber - 1 inComponent:0 animated:NO];
             break;
         case BOARD_WIDTH:
             self.navigationItem.title = NSLocalizedString(@"SETTINGS_VIEW_CELL_BOARD_WIDTH", @"Board Width");
-            for (int i = self.svc.minimumForLineTextField.text.intValue; i <= 25 ; i++) {
+            for (int i = self.appDelegate.minimumLineSize; i <= 25 ; i++) {
                 //[self.dataArray addObject:[NSNumber numberWithInt:i]];
                 [self.dataArray addObject:[NSString stringWithFormat:@"%i",i]];
             }
-            [self.picker selectRow:self.svc.boardWidthTextField.text.intValue - self.svc.minimumForLineTextField.text.intValue inComponent:0 animated:NO];
+            [self.picker selectRow:self.appDelegate.boardSizeWidth - self.appDelegate.minimumLineSize inComponent:0 animated:NO];
             break;
         case BOARD_HEIGHT:
             self.navigationItem.title = NSLocalizedString(@"SETTINGS_VIEW_CELL_BOARD_HEIGHT", @"Board Height");
-            for (int i = self.svc.minimumForLineTextField.text.intValue; i <= 25 ; i++) {
+            for (int i = self.appDelegate.minimumLineSize; i <= 25 ; i++) {
                 //[self.dataArray addObject:[NSNumber numberWithInt:i]];
                 [self.dataArray addObject:[NSString stringWithFormat:@"%i",i]];
             }
-            [self.picker selectRow:self.svc.boardHeightTextField.text.intValue - self.svc.minimumForLineTextField.text.intValue inComponent:0 animated:NO];
+            [self.picker selectRow:self.appDelegate.boardSizeHeight - self.appDelegate.minimumLineSize inComponent:0 animated:NO];
             break;
         case MINIMUM_LINE_SIZE:
             self.navigationItem.title = NSLocalizedString(@"SETTINGS_VIEW_CELL_MINIMUM_LINE_SIZE", @"Minimum Line Size");
@@ -169,14 +174,14 @@
                 //[self.dataArray addObject:[NSNumber numberWithInt:i]];
                 [self.dataArray addObject:[NSString stringWithFormat:@"%i",i]];
             }
-            [self.picker selectRow:self.svc.minimumForLineTextField.text.intValue - 3 inComponent:0 animated:NO];
+            [self.picker selectRow:self.appDelegate.minimumLineSize - 3 inComponent:0 animated:NO];
             break;
         case PLAYER_COLOR:
             self.navigationItem.title = NSLocalizedString(@"SETTINGS_VIEW_CELL_PLAYER_COLOR", "Player Color");
             [self.dataArray addObject:NSLocalizedString(@"AICOLOR_BLUE", "blue")];
             [self.dataArray addObject:NSLocalizedString(@"AICOLOR_RED", "red")];
             
-            if ([self.svc.playerColorTextField.text isEqualToString:NSLocalizedString(@"AICOLOR_BLUE", "blue")])
+            if (self.appDelegate.localPlayerColorBlue)
             {
                 [self.picker selectRow:0 inComponent:0 animated:NO];
             }
