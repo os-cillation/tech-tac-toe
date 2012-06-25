@@ -7,7 +7,6 @@
 //
 
 //TODO clean Localized Strings
-//TODO clean unneeded files
 
 #import "AppDelegate.h"
 #import "BluetoothDataHandler.h"
