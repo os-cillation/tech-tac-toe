@@ -34,11 +34,7 @@
 @synthesize localPlayerColorBlue = _localPlayerColorBlue;
 @synthesize menuReqType = _menuReqType;
 @synthesize needsAck = _needsAck;
-
 @synthesize noActiveGameViewController = _noActiveGameViewController;
-
-@synthesize bluetoothIndicator=_bluetoothIndicator;
-
 @synthesize tab0NavigationController=_tab0NavigationController;
 @synthesize tab1NavigationController=_tab1NavigationController;
 @synthesize tab2NavigationController=_tab2NavigationController;
@@ -53,7 +49,6 @@
     [_tabBarController release];
     [_btdh release];
     [_currentGame release];
-    [_bluetoothIndicator release];
     [_noActiveGameViewController release];
     [_tab0NavigationController release];
     [_tab1NavigationController release];
@@ -87,8 +82,6 @@
     
     NSString *path = [[NSBundle mainBundle]pathForResource:@"ImagePaths" ofType:@"plist"];
     NSDictionary *plist = [[NSDictionary alloc] initWithContentsOfFile:path];
-
-    //[self.button1 setImage:[UIImage imageNamed:[plist objectForKey:@"TechTacToeButton"]] forState:UIControlStateNormal];
     
     [self.tab0NavigationController.tabBarItem setImage: [UIImage imageNamed:[plist objectForKey:@"tab0icon"]]];
     [self.tab1NavigationController.tabBarItem setImage: [UIImage imageNamed:[plist objectForKey:@"tab1icon"]]];
@@ -97,7 +90,7 @@
     [self.tab4ViewController.tabBarItem setImage: [UIImage imageNamed:[plist objectForKey:@"tab4icon"]]];
     
     [self.tabBarController reloadInputViews];
-    
+    [plist release];
     self.menuReqType = -1;
     self.needsAck = YES;
     
@@ -169,15 +162,19 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
-    if (self.tabBarController.selectedIndex == 2)
+    if (self.tabBarController.selectedIndex == 0)
+    {
+        [self.tab0NavigationController popToRootViewControllerAnimated:NO];
+    }
+    else if (self.tabBarController.selectedIndex == 2)
     {
         [self.tab2NavigationController popToRootViewControllerAnimated:NO];
     }
-    if (self.tabBarController.selectedIndex == 1)
+    else if (self.tabBarController.selectedIndex == 1)
     {
         [self.tab1NavigationController popToRootViewControllerAnimated:NO];
     }
-    if (self.tabBarController.selectedIndex == 3)
+    else if (self.tabBarController.selectedIndex == 3)
     {
         [self.tab3NavigationController popToRootViewControllerAnimated:NO];
     }

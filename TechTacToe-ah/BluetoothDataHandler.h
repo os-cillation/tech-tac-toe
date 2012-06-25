@@ -34,7 +34,6 @@ typedef enum {
 
 @property (nonatomic, retain) GKSession *currentSession;
 @property (nonatomic, retain) AppDelegate *appDelegate;
-@property (nonatomic, retain) MainViewController *mvc;
 @property (nonatomic, getter = doesLocalUserActAsServer) BOOL localUserActAsServer;
 @property (nonatomic) int cointossResult;
 

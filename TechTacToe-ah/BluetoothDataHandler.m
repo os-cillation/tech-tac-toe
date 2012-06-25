@@ -20,7 +20,6 @@
 @synthesize appDelegate=_appDelegate;
 @synthesize localUserActAsServer=_localUserActAsServer;
 @synthesize cointossResult=_cointossResult;
-@synthesize mvc=_mvc;
 
 #pragma mark - Initializer and memory management
 
@@ -53,7 +52,6 @@
     
     [_currentSession release];
     [_appDelegate release];
-    [_mvc release];
     [super dealloc];
 }
 
@@ -64,9 +62,6 @@
     {
         case GKPeerStateConnected:
             //NSLog(@"connected");
-            if (self.appDelegate.bluetoothIndicator) {
-                self.appDelegate.bluetoothIndicator.hidden = NO;
-            }
             // do first (and hopefully only) cointoss
             [self doCointoss];
             break;
@@ -99,11 +94,7 @@
         [self.currentSession setDataReceiveHandler:nil withContext:NULL];
         self.currentSession.delegate = nil;
         self.currentSession = nil;
-    }
-    // update the main menu to reflect new status
-    //[self.mvc.tableView reloadData];
-    self.appDelegate.bluetoothIndicator.hidden = YES;
-    
+    }    
     // then, if we had a running game open, set it to hotseat mode again by reactivating controls and updating labels
     // also, dismiss any open dialogues (alert views) regarding going back to menu or waiting for the other device and stop the activity indicator
     if (self.appDelegate.currentGame)
@@ -131,7 +122,6 @@
     
     self.appDelegate.tabBarController.selectedIndex = 3;
     [self.appDelegate.tab3NavigationController popToRootViewControllerAnimated:NO];
-    //[self.appDelegate.tab3NavigationController reloadInputViews];
 }
 
 #pragma mark - Receiving and handling data
@@ -162,14 +152,12 @@
     } else if (type == MESSAGE_REVOKE_CONTROL) {
         // handle revoking control of main menu
         self.localUserActAsServer = YES;
-        //[self.mvc.tableView reloadData];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"BLUETOOTH_ALERT_ASSUMED_CONTROL_TITLE", @"Assumed Game Control") message:NSLocalizedString(@"BLUETOOTH_ALERT_ASSUMED_CONTROL_MESSAGE", @"The other device has relinquished control.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
         [alert release];
         
         SelectAIViewController *tempVC = (SelectAIViewController*) self.appDelegate.tab3NavigationController.topViewController;
         [tempVC.tableView reloadData];
-        //[self.appDelegate.tab3NavigationController reloadInputViews];
         
     } else if (type == MESSAGE_GAME_DATA) {
         // handle receiving the game data
@@ -202,10 +190,7 @@
             [self.appDelegate.currentGame.gameViewController.navigationItem.rightBarButtonItem setEnabled:NO];
             [self.appDelegate.currentGame.gameViewController.navigationItem.leftBarButtonItem setEnabled:NO];
         }
-        
         [aGame release];
-        
-        //[self.mvc.navigationController pushViewController:self.appDelegate.currentGame.gameViewController animated:YES];
         [self.appDelegate startGame];
         
 
@@ -257,7 +242,6 @@
         [self.appDelegate.currentGame.gameViewController.backToMenuGameOver dismissWithClickedButtonIndex:-1 animated:YES];
         [self.appDelegate.currentGame.gameViewController.backToMenuWaitView dismissWithClickedButtonIndex:-1 animated:YES];
         [self.appDelegate.currentGame.gameViewController.activityIndicator stopAnimating];
-        //[self.appDelegate.currentGame.gameViewController.navigationController popToRootViewControllerAnimated:YES];
         self.appDelegate.needsAck = NO;
         self.appDelegate.currentGame = Nil;
         if (self.appDelegate.menuReqType == 0)
@@ -325,9 +309,7 @@
 - (void)doRevokeControl
 {
     // first, let the local device know it has no server rights
-    self.localUserActAsServer = NO;
-    //[self.mvc.tableView reloadData];
-    
+    self.localUserActAsServer = NO;    
     // then let the other device know we rescinded control of the menu (or lost the cointoss)
     NSMutableData *data = [[NSMutableData alloc] init];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
@@ -343,8 +325,6 @@
     
     SelectAIViewController *tempVC = (SelectAIViewController*) self.appDelegate.tab3NavigationController.topViewController;
     [tempVC.tableView reloadData];
-    
-    //[self.appDelegate.tab3NavigationController reloadInputViews];
 }
 
 - (void)transmitCurrentGameData

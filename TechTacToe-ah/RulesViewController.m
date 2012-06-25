@@ -77,7 +77,6 @@
 {
     return YES;
     // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
 }
 
 #pragma mark - Creating label information

@@ -141,7 +141,6 @@
 {
     return YES;
     // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
 }
 
 #pragma mark - Table view data source

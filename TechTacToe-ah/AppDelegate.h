@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 @class Game;
-
 @class BluetoothDataHandler;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate,UITabBarControllerDelegate> {
@@ -39,6 +38,7 @@
 @property (nonatomic) BOOL localPlayerColorBlue;
 
 @property (nonatomic) BOOL needsAck;
+//used by AlertViews to know which type of game player tried to start
 @property (nonatomic) int menuReqType;
 /*  0 - TechTacToe
     1 - TicTacToe
@@ -54,7 +54,5 @@
 @property (nonatomic, retain) UINavigationController *tab2NavigationController;
 @property (nonatomic, retain) UINavigationController *tab3NavigationController;
 @property (nonatomic, retain) UIViewController *tab4ViewController;
-
-@property (nonatomic, retain) UIImageView *bluetoothIndicator;
 
 @end

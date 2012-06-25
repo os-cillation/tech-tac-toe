@@ -77,17 +77,11 @@
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    //if (!self.view.window)
-    //{
-        //User switched View before Picker finished spinning
-        //return;
-    //}
     
     self.selectedValue = [self.dataArray objectAtIndex:row];
         
     switch (self.pickerID) {
         case NUMBER_OF_TURNS:
-            //self.svc.numberOfTurnsTextField.text = self.selectedValue.description;
             self.appDelegate.turnLimitNumber = self.selectedValue.intValue;
             break;
         case BOARD_WIDTH:
@@ -221,7 +215,6 @@
 {
     return YES;
     // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 @end

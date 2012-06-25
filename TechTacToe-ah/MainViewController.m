@@ -60,22 +60,15 @@
     if (!self.appDelegate.btdh) {
         BluetoothDataHandler *btdh = [BluetoothDataHandler new];
         self.appDelegate.btdh = btdh;
-        self.appDelegate.btdh.mvc = self;
         [btdh release];
     }
     // get image for Bluetooth button (freeware, commercial use allowed)
     NSString *path = [[NSBundle mainBundle]pathForResource:@"ImagePaths" ofType:@"plist"];
     NSDictionary *plist = [[NSDictionary alloc] initWithContentsOfFile:path];
+
     
-    UIImageView *bluetoothImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[plist objectForKey:@"bluetooth icon"]]];
-    self.appDelegate.bluetoothIndicator = bluetoothImageView;
-    self.appDelegate.bluetoothIndicator.frame = CGRectMake(0, 0, 32, 32);
-    [bluetoothImageView release];
-    
-    UIBarButtonItem *btIcon = [[UIBarButtonItem alloc] initWithCustomView:bluetoothImageView];
     //self.navigationItem.leftBarButtonItem = btIcon;
     
-    [btIcon release];
     
     // set up the background view
     self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[plist objectForKey:@"main view background"]]];
