@@ -7,37 +7,7 @@
 */
 
 
-/* Hauptmenü */
-
-"MAIN_VIEW_TITLE" = "TechTacToe - Hauptmenü";
-
-// Zellen
-"MAIN_VIEW_CELL_DEFAULT_SETTINGS" = "Standardeinstellungen";
-"MAIN_VIEW_CELL_TICTACTOE" = "TicTacToe";
-"MAIN_VIEW_CELL_GOMOKU" = "Gomoku";
-"MAIN_VIEW_CELL_CUSTOMIZED_GAME" = "Angepasstes Spiel";
-"MAIN_VIEW_CELL_CONTINUE" = "Laufendes Spiel Fortsetzen";
-"MAIN_VIEW_CELL_LOAD" = "Spiel Laden";
-"MAIN_VIEW_CELL_CONNECT" = "Bluetooth Verbindung Aufbauen";
-"MAIN_VIEW_CELL_REVOKE_CONTROL" = "Spielkontrolle Abgeben an:";
-"MAIN_VIEW_CELL_DISCONNECT" = "Verbindung Trennen";
-"MAIN_VIEW_CELL_ABOUT" = "Über";
-
-"MAIN_VIEW_AI_SETTINGS" = "Einstellungen";
-
-"MAIN_VIEW_AI_ENABLED" = "Computergegner: eingeschaltet";
-"MAIN_VIEW_AI_DISABLED" = "Computergegner: ausgeschaltet";
-
-// Abschnittsüberschriften
-"MAIN_VIEW_HEADER_START_NEW_GAME" = "Neues Spiel";
-"MAIN_VIEW_HEADER_ONGOING_GAMES" = "Laufende Spiele";
-
-// Abschnittsfußnoten
-"MAIN_VIEW_FOOTER_ONGOING_GAMES" = "Fortsetzen ist nicht verfügbar bei einem Spiel über Bluetooth. Gespeicherte Spiele können allerdings geladen werden.";
-
-
 /* Laden: Übersicht */
-
 
 // Warnmeldungen
 "LOAD_VIEW_ALERT_DELETE_GAME_UNSUCCESSFUL_TITLE" = "Fehler";
@@ -216,19 +186,14 @@
 /* KI Einstellungen */
 
 "SELECT_AI_SETTINGS" = "Einstellungen";
-"SELECT_AI_COMPUTER_OPPONENT" = "Computergegner";
 
-"SELECT_AI_AI_FOOTER" = "Schaltet den Computergegner ein oder aus";
-
-
-
-/* Active Game Tab */
+/* Aktives Spiel Tab */
 
 "ACTIVE_GAME_TAB_TITLE" = "Aktives Spiel";
 "ACTIVE_GAME_TITLE" = "Kein Aktives Spiel";
 "ACTIVE_GAME_LABEL" = "Auf aktive Spiele kann in diesem Tab zugegriffen werden. Ein neues Spiel muss gestartet oder ein zuvor gespeichertes Spiel geladen werden.";
 
-/* New Game Tab */
+/* Neues Spiel Tab */
 
 "NEW_GAME_TAB_TITLE" = "Neues Spiel";
 "NEW_GAME_TITLE" = "Neues Spiel Starten";
@@ -239,7 +204,7 @@
 
 "NEW_GAME_ALERT_ACTIVE_GAME_TITLE" = "Aktives Spiel Gefunden";
 "NEW_GAME_ALERT_ACTIVE_GAME_MESSAGE" = "Es läuft bereits ein aktives Spiel. Aktives Spiel abbrechen und ein neues Spiel starten?";
-/*Load Tab*/
+/*Spielstände Tab*/
 
 "LOAD_VIEW_TITLE" = "Spielstände";
 "LOAD_VIEW_TITLE_SP" = "Spiele: Einzelspieler";
@@ -251,7 +216,7 @@
 "LOAD_GAME_ALERT_ACTIVE_GAME_TITLE" = "Aktives Spiel Gefunden";
 "LOAD_GAME_ALERT_ACTIVE_GAME_MESSAGE" = "Es läuft bereits ein aktives Spiel. Aktives Spiel abbrechen und ausgewähltes Spiel laden?";
 
-/* Settings Tab */
+/* Einstellungen Tab */
 
 "SETTINGS_TAB_TITLE" = "Einstellungen";
 

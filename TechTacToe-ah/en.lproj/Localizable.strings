@@ -7,34 +7,6 @@
 */
 
 
-/* main menu */
-
-"MAIN_VIEW_TITLE" = "TechTacToe - Main Menu";
-
-// cell labels
-"MAIN_VIEW_CELL_DEFAULT_SETTINGS" = "Default Settings";
-"MAIN_VIEW_CELL_TICTACTOE" = "TicTacToe";
-"MAIN_VIEW_CELL_GOMOKU" = "Gomoku";
-"MAIN_VIEW_CELL_CUSTOMIZED_GAME" = "Customized Game";
-"MAIN_VIEW_CELL_CONTINUE" = "Continue Running Game";
-"MAIN_VIEW_CELL_LOAD" = "Load Game";
-"MAIN_VIEW_CELL_CONNECT" = "Connect Via Bluetooth";
-"MAIN_VIEW_CELL_REVOKE_CONTROL" = "Pass Game Control to:";
-"MAIN_VIEW_CELL_DISCONNECT" = "Disconnect";
-"MAIN_VIEW_CELL_ABOUT" = "About";
-
-"MAIN_VIEW_AI_SETTINGS" = "Settings";
-"MAIN_VIEW_AI_ENABLED" = "Computer Opponent Enabled";
-"MAIN_VIEW_AI_DISABLED" = "Computer Opponent Disabled";
-
-// section headers
-"MAIN_VIEW_HEADER_START_NEW_GAME" = "New Game";
-"MAIN_VIEW_HEADER_ONGOING_GAMES" = "Ongoing Games";
-
-// section footers
-"MAIN_VIEW_FOOTER_ONGOING_GAMES" = "Continue is not available for games via Bluetooth. Make sure to save and then load the game instead.";
-
-
 /* load view */
 
 
@@ -216,12 +188,6 @@
 /* AI Settings */
 
 "SELECT_AI_SETTINGS" = "Settings";
-"SELECT_AI_COMPUTER_OPPONENT" = "Computer Opponent";
-"SELECT_AI_AI_FOOTER" = "Enables or disables the computer opponent";
-
-
-"SELECT_AI_ENABLED" = "Enabled";
-
 
 /* Active Game Tab */
 
@@ -243,7 +209,7 @@
 "NEW_GAME_ALERT_ACTIVE_GAME_TITLE" = "Active Game Found";
 "NEW_GAME_ALERT_ACTIVE_GAME_MESSAGE" = "There is already an active game running. Abort active game and start a new game?";
 
-/* Load Tab */
+/* Savegames Tab */
 
 "LOAD_VIEW_TITLE" = "Savegames";
 "LOAD_VIEW_TITLE_SP" = "Savegames: Singleplayer";
