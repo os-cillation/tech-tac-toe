@@ -145,10 +145,6 @@
     alert31.tag = 31;
     self.activeGameAlert31 = alert31;
     [alert31 release];
-
-    [self performSelector:@selector(boardLimitChanged:)];
-    [self performSelector:@selector(limitTurnsChanged:)];
-    [self performSelector:@selector(scoreModeChanged:)];
 }
 
 - (void)viewDidUnload
@@ -182,11 +178,6 @@
 {
     self.navigationController.navigationBar.tintColor = [UIColor grayColor];
     
-    [super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
     //Load values and set Interface according to them
     self.limitTurnsSwitch.on = self.appDelegate.turnLimit;
     self.numberOfTurnsTextField.text = [NSString stringWithFormat:@"%i", self.appDelegate.turnLimitNumber];
@@ -223,6 +214,15 @@
         self.numberOfTurnsTextField.text = [NSString stringWithFormat:@"%i", self.boardHeightTextField.text.intValue * self.boardWidthTextField.text.intValue];
     }
     
+    [super viewWillAppear:animated];
+    
+    [self performSelector:@selector(boardLimitChanged:)];
+    [self performSelector:@selector(limitTurnsChanged:)];
+    [self performSelector:@selector(scoreModeChanged:)];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{    
     [super viewDidAppear:animated];
 }
 
