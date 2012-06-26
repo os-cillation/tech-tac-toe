@@ -70,9 +70,15 @@
     // e.g. self.myOutlet = nil;
 }
 
--(void) viewDidAppear:(BOOL)animated
+-(void) viewWillAppear:(BOOL)animated
 {
     [self updateInterface:self.interfaceOrientation];
+    [super viewWillAppear:animated];
+}
+
+-(void) viewDidAppear:(BOOL)animated
+{
+    //[self updateInterface:self.interfaceOrientation];
     
     self.navigationController.navigationBar.tintColor = [UIColor grayColor];
     //self.title = NSLocalizedString(@"NEW_GAME_TITLE", "New Game");
@@ -126,12 +132,12 @@
     if( UIInterfaceOrientationIsLandscape(toInterfaceOrientation) )
     {
         [[NSBundle mainBundle] loadNibNamed:[NSString stringWithFormat:@"%@-landscape", self.nibName] owner:self options:nil];
-        [self viewDidLoad];
+        [self viewDidAppear:NO];
     }
     else
     {
         [[NSBundle mainBundle] loadNibNamed:[NSString stringWithFormat:@"%@",self.nibName] owner:self options:nil];
-        [self viewDidLoad];
+        [self viewDidAppear:NO];
     }
 }
 
