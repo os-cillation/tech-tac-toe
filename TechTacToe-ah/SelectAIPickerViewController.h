@@ -7,15 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-@class SelectAIViewController;
+@class AppDelegate;
 
 @interface SelectAIPickerViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource>
 
 @property (nonatomic, retain) IBOutlet UIPickerView *picker;
 @property (nonatomic, retain) NSMutableArray *dataArray;
-@property (nonatomic, assign) SelectAIViewController *svc;
 @property (nonatomic) int pickerID;
 @property (nonatomic, retain) NSString *selectedValue;
+@property (nonatomic, retain) AppDelegate *appDelegate;
 
 @end
 

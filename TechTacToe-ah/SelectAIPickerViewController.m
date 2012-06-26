@@ -7,7 +7,7 @@
 //
 
 #import "SelectAIPickerViewController.h"
-#import "SelectAIViewController.h"
+#import "AppDelegate.h"
 
 @interface SelectAIPickerViewController ()
 
@@ -15,11 +15,11 @@
 
 @implementation SelectAIPickerViewController
 
-@synthesize svc;
 @synthesize pickerID;
 @synthesize picker;
 @synthesize selectedValue;
 @synthesize dataArray;
+@synthesize appDelegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -53,7 +53,7 @@
         [self.dataArray addObject:NSLocalizedString(@"AICOLOR_BLUE", "blue")];
         [self.dataArray addObject:NSLocalizedString(@"AICOLOR_RED", "red")];
         
-        if (self.svc.isAIRedPlayer)
+        if (self.appDelegate.isAIRedPlayer)
         {
             [self.picker selectRow:1 inComponent:0 animated:NO];
         }
@@ -73,11 +73,11 @@
         [self.dataArray addObject:NSLocalizedString(@"AISTRENGTH_1", "weak")];
         [self.dataArray addObject:NSLocalizedString(@"AISTRENGTH_2", "normal")];
         [self.dataArray addObject:NSLocalizedString(@"AISTRENGTH_3", "strong")];
-        if (self.svc.strengthOfAI == 1)
+        if (self.appDelegate.strengthOfAI == 1)
         {
             [self.picker selectRow:0 inComponent:0 animated:NO];
         }
-        else if (self.svc.strengthOfAI == 2)
+        else if (self.appDelegate.strengthOfAI == 2)
         {
             [self.picker selectRow:1 inComponent:0 animated:NO];
         }
@@ -107,11 +107,11 @@
         //set values from picker to mvc
         if ([self.selectedValue isEqualToString:NSLocalizedString(@"AICOLOR_RED", "red")])
         {
-            self.svc.isAIRedPlayer = YES;
+            self.appDelegate.isAIRedPlayer = YES;
         }
         else
         {
-            self.svc.isAIRedPlayer = NO;
+            self.appDelegate.isAIRedPlayer = NO;
         }
     }
     else
@@ -120,15 +120,15 @@
         //self.svc.strengthOfAI = self.selectedValue.intValue;
         if ([self.selectedValue isEqualToString:NSLocalizedString(@"AISTRENGTH_1", "weak")])
         {
-            self.svc.strengthOfAI = 1;
+            self.appDelegate.strengthOfAI = 1;
         }
         else if ([self.selectedValue isEqualToString:NSLocalizedString(@"AISTRENGTH_2", "normal")])
         {
-            self.svc.strengthOfAI = 2;
+            self.appDelegate.strengthOfAI = 2;
         }
         else
         {
-            self.svc.strengthOfAI = 3;
+            self.appDelegate.strengthOfAI = 3;
         }
     }
 }
@@ -163,6 +163,7 @@
     [picker release];
     [dataArray release];
     [selectedValue release];
+    [appDelegate release];
     [super dealloc];
 }
 

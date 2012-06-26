@@ -403,7 +403,6 @@
     if (indexPath.section == 1 && self.isAIActivated)
     {
         SelectAIPickerViewController *pickerView = [[SelectAIPickerViewController alloc] initWithNibName:@"SelectAIPickerViewController" bundle:Nil];
-        pickerView.svc = self;
         if (indexPath.row == 0)
         {
             //color
