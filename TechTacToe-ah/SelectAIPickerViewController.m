@@ -32,6 +32,7 @@
 
 - (void)viewDidLoad
 {
+    self.appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     // set the title and back button of the nav bar
     //self.navigationItem.title = NSLocalizedString(@"SELECT_AI_SETTINGS", "Settings");
     UIBarButtonItem *tempButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"BACK_BUTTON", @"Back") style:UIBarButtonItemStyleBordered target:nil action:nil];
