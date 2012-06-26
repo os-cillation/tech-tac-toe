@@ -75,6 +75,11 @@
     // set nav bar content
     self.navigationController.navigationBar.tintColor = [UIColor grayColor];
     
+    // set back button of the nav bar
+    UIBarButtonItem *tempButton2 = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"LOAD_VIEW_TITLE", @"Load Game") style:UIBarButtonItemStyleBordered target:nil action:nil];
+    self.navigationItem.backBarButtonItem = tempButton2;
+    [tempButton2 release];
+    
     if (self.appDelegate.isAIActivated)
     {
         self.navigationItem.title = NSLocalizedString(@"LOAD_VIEW_TITLE_SP", "Savegames for Singleplayer");
@@ -132,7 +137,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    self.navigationItem.title = NSLocalizedString(@"LOAD_VIEW_TITLE", @"Load Game");
+    //self.navigationItem.title = NSLocalizedString(@"LOAD_VIEW_TITLE", @"Load Game");
 }
 
 - (void)viewDidDisappear:(BOOL)animated
