@@ -150,7 +150,6 @@
 }
 
 #pragma mark - Alert view delegate
-//TODO get rid of unnecessary stuff here
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     // which alert view is caller
@@ -940,8 +939,6 @@
     
     // create container to scroll in
     // has to be size.width + FIELDSIZE and size.height + FIELDSIZE to display lower and right fields because of the way the images are drawn
-    //Note: above information was from the time before tabbar was added
-    //With tabbar the size has to be smaller
     UIView *tempContainerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.currentSize.width, self.currentSize.height - self.tabBarController.tabBar.frame.size.height)];
     self.containerView = tempContainerView;
     [tempContainerView release];

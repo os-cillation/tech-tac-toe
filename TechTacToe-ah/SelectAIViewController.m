@@ -45,6 +45,18 @@
 
 - (void)viewDidLoad
 {
+    
+    [super viewDidLoad];
+        
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+ 
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
     self.appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     
     self.navigationController.navigationBar.tintColor = [UIColor grayColor];
@@ -54,12 +66,7 @@
     self.navigationItem.backBarButtonItem = tempButton;
     [tempButton release];
     
-    [super viewDidLoad];
-    
-    NSString *path = [[NSBundle mainBundle]pathForResource:@"ImagePaths" ofType:@"plist"];
-    NSDictionary *plist = [[NSDictionary alloc] initWithContentsOfFile:path];
-    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[plist objectForKey:@"main view background"]]];
-    [plist release];
+    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[self.appDelegate.plist objectForKey:@"main view background"]]];
     
     self.colorCell.textLabel.text = NSLocalizedString(@"SELECT_AI_COMPUTER_COLOR","Computer Color");
     self.colorCell.accessoryView = self.colorTextField;
@@ -68,8 +75,6 @@
     
     [self.modeSelectControl setTitle:NSLocalizedString(@"SINGLEPLAYER", "Singleplayer") forSegmentAtIndex:0];
     [self.modeSelectControl setTitle:NSLocalizedString(@"MULTIPLAYER", "Multiplayer") forSegmentAtIndex:1];
-    
-    //self.modeSelectCell.accessoryView = self.modeSelectControl;
     
     [self.modeSelectCell.contentView addSubview:self.modeSelectControl];
     
@@ -81,14 +86,6 @@
     self.passControllCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:DetailCellIdentifier] autorelease];
     
     self.passControllCell.textLabel.text = NSLocalizedString(@"SETTINGS_CELL_REVOKE_CONTROL", "pass Controll");
-    
-    /*
-    if (self.appDelegate.btdh.currentSession) {
-        NSString *peerID = [[self.appDelegate.btdh.currentSession peersWithConnectionState:GKPeerStateConnected] objectAtIndex:0];
-        NSString *peerName = [self.appDelegate.btdh.currentSession displayNameForPeer:peerID];
-        detailCell.detailTextLabel.text = peerName;
-    }
-     */
     
     UIAlertView *alert51 = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"BTALERT_SINGLEPLAYER_TITLE", @"Active BT Connection Found") message:NSLocalizedString(@"BTALERT_SINGLEPLAYER_MESSAGE", @"disconnect?") delegate:self cancelButtonTitle:NSLocalizedString(@"CANCEL", @"Cancel") otherButtonTitles:NSLocalizedString(@"OK", @"OK"),nil];
     alert51.tag = 51;
@@ -114,16 +111,7 @@
         self.modeSelectControl.selectedSegmentIndex = 1;
     }
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
-    
+    //old ViewDidAppear starts here
     if (self.isAIRedPlayer)
     {
         self.colorTextField.text = NSLocalizedString(@"AICOLOR_RED", "red");

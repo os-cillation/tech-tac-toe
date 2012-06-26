@@ -39,6 +39,7 @@
 @synthesize tab2NavigationController=_tab2NavigationController;
 @synthesize tab3NavigationController=_tab3NavigationController;
 @synthesize tab4ViewController=_tab4ViewController;
+@synthesize plist = _plist;
 
 #pragma mark
 
@@ -54,6 +55,7 @@
     [_tab2NavigationController release];
     [_tab3NavigationController release];
     [_tab4ViewController release];
+    [_plist release];
     [super dealloc];
 }
 
@@ -80,16 +82,15 @@
     self.tab4ViewController.tabBarItem.title = NSLocalizedString(@"INFO_TAB_TITLE", "Info");
     
     NSString *path = [[NSBundle mainBundle]pathForResource:@"ImagePaths" ofType:@"plist"];
-    NSDictionary *plist = [[NSDictionary alloc] initWithContentsOfFile:path];
+    self.plist = [[NSDictionary alloc] initWithContentsOfFile:path];
     
-    [self.tab0NavigationController.tabBarItem setImage: [UIImage imageNamed:[plist objectForKey:@"tab0icon"]]];
-    [self.tab1NavigationController.tabBarItem setImage: [UIImage imageNamed:[plist objectForKey:@"tab1icon"]]];
-    [self.tab2NavigationController.tabBarItem setImage: [UIImage imageNamed:[plist objectForKey:@"tab2icon"]]];
-    [self.tab3NavigationController.tabBarItem setImage: [UIImage imageNamed:[plist objectForKey:@"tab3icon"]]];
-    [self.tab4ViewController.tabBarItem setImage: [UIImage imageNamed:[plist objectForKey:@"tab4icon"]]];
+    [self.tab0NavigationController.tabBarItem setImage: [UIImage imageNamed:[self.plist objectForKey:@"tab0icon"]]];
+    [self.tab1NavigationController.tabBarItem setImage: [UIImage imageNamed:[self.plist objectForKey:@"tab1icon"]]];
+    [self.tab2NavigationController.tabBarItem setImage: [UIImage imageNamed:[self.plist objectForKey:@"tab2icon"]]];
+    [self.tab3NavigationController.tabBarItem setImage: [UIImage imageNamed:[self.plist objectForKey:@"tab3icon"]]];
+    [self.tab4ViewController.tabBarItem setImage: [UIImage imageNamed:[self.plist objectForKey:@"tab4icon"]]];
     
     [self.tabBarController reloadInputViews];
-    [plist release];
     self.menuReqType = -1;
     self.needsAck = YES;
     

@@ -22,6 +22,8 @@
 @property (nonatomic, retain) Game *currentGame;
 @property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
 
+@property (nonatomic, retain) NSDictionary *plist;
+
 @property (nonatomic) BOOL isAIActivated;
 @property (nonatomic) BOOL isAIRedPlayer;
 @property (nonatomic) int strengthOfAI;

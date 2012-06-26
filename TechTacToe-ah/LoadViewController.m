@@ -43,20 +43,6 @@
 
 - (void)viewDidLoad
 {    
-    self.appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    // get path to documents directory
-    NSString *docPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDirectory, YES) objectAtIndex:0];
-    self.path = docPath;
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // set up the background view
-    NSString *resourcePath = [[NSBundle mainBundle]pathForResource:@"ImagePaths" ofType:@"plist"];
-    NSDictionary *plist = [[NSDictionary alloc] initWithContentsOfFile:resourcePath];
-    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[plist objectForKey:@"main view background"]]];
-    [plist release];
-        
     [super viewDidLoad];
 }
 
@@ -74,6 +60,17 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    self.appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    // get path to documents directory
+    NSString *docPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDirectory, YES) objectAtIndex:0];
+    self.path = docPath;
+    
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+    
+    // set up the background view
+    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[self.appDelegate.plist objectForKey:@"main view background"]]];
+    
     [super viewDidAppear:animated];
     // set nav bar content
     self.navigationController.navigationBar.tintColor = [UIColor grayColor];

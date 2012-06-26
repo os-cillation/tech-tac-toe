@@ -34,7 +34,10 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
+}
 
+- (void)viewDidAppear:(BOOL)animated
+{
     self.scrollView.contentSize = CGSizeMake(320, 700);
     NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
     self.labelVersion.text = [NSString stringWithFormat:@"%@ (%@)",
@@ -43,7 +46,6 @@
 	self.labelProducts.text = NSLocalizedString(@"otherProducts", @"");
 	self.textView.text = NSLocalizedString(@"aboutText", @"");
 }
-
 
 - (void)viewDidUnload
 {

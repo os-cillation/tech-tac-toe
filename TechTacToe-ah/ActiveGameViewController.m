@@ -7,6 +7,7 @@
 //
 
 #import "ActiveGameViewController.h"
+#import "AppDelegate.h"
 
 @interface ActiveGameViewController ()
 
@@ -27,16 +28,19 @@
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    AppDelegate *tempAppDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     self.navigationItem.title = NSLocalizedString(@"ACTIVE_GAME_TITLE", @"Active Game");
     self.navigationController.navigationBar.tintColor = [UIColor grayColor];
     // set up the background view
-    NSString *resourcePath = [[NSBundle mainBundle]pathForResource:@"ImagePaths" ofType:@"plist"];
-    NSDictionary *plist = [[NSDictionary alloc] initWithContentsOfFile:resourcePath];
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[plist objectForKey:@"main view background"]]];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[tempAppDelegate.plist objectForKey:@"main view background"]]];
     self.textLabel.text = NSLocalizedString(@"ACTIVE_GAME_LABEL", @"no game active - start a new game or load");
-    [plist release];
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    [super viewDidAppear:animated];
 }
 
 - (void)viewDidUnload

@@ -60,7 +60,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    // Do any additional setup after loading the view from its nib.    
+}
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
+-(void) viewDidAppear:(BOOL)animated
+{
+    [self updateInterface:self.interfaceOrientation];
+    
     self.navigationController.navigationBar.tintColor = [UIColor grayColor];
     //self.title = NSLocalizedString(@"NEW_GAME_TITLE", "New Game");
     self.navigationItem.title = NSLocalizedString(@"NEW_GAME_TITLE", "New Game");
@@ -68,9 +81,9 @@
     UIBarButtonItem *tempButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"BACK_BUTTON", @"Back") style:UIBarButtonItemStyleBordered target:nil action:nil];
     self.navigationItem.backBarButtonItem = tempButton;
     [tempButton release];
-    NSString *path = [[NSBundle mainBundle]pathForResource:@"ImagePaths" ofType:@"plist"];
-    NSDictionary *plist = [[NSDictionary alloc] initWithContentsOfFile:path];
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[plist objectForKey:@"main view background"]]];
+    //NSString *path = [[NSBundle mainBundle]pathForResource:@"ImagePaths" ofType:@"plist"];
+    //NSDictionary *plist = [[NSDictionary alloc] initWithContentsOfFile:path];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[self.appDelegate.plist objectForKey:@"main view background"]]];
     //set button corners to make the corners rounded
     self.button1.layer.cornerRadius = 10;
     self.button1.clipsToBounds = YES;
@@ -81,14 +94,13 @@
     self.button4.layer.cornerRadius = 10;
     self.button4.clipsToBounds = YES;
     
-    [self.button1 setImage:[UIImage imageNamed:[plist objectForKey:@"TechTacToeButton"]] forState:UIControlStateNormal];
-    [self.button2 setImage:[UIImage imageNamed:[plist objectForKey:@"TicTacToeButton"]] forState:UIControlStateNormal];
-    [self.button3 setImage:[UIImage imageNamed:[plist objectForKey:@"GomokuButton"]] forState:UIControlStateNormal];
-    [self.button4 setBackgroundImage:[UIImage imageNamed:[plist objectForKey:@"CustomButtonBack"]] forState:UIControlStateNormal];
+    [self.button1 setImage:[UIImage imageNamed:[self.appDelegate.plist objectForKey:@"TechTacToeButton"]] forState:UIControlStateNormal];
+    [self.button2 setImage:[UIImage imageNamed:[self.appDelegate.plist objectForKey:@"TicTacToeButton"]] forState:UIControlStateNormal];
+    [self.button3 setImage:[UIImage imageNamed:[self.appDelegate.plist objectForKey:@"GomokuButton"]] forState:UIControlStateNormal];
+    [self.button4 setBackgroundImage:[UIImage imageNamed:[self.appDelegate.plist objectForKey:@"CustomButtonBack"]] forState:UIControlStateNormal];
     self.button4.imageEdgeInsets = UIEdgeInsetsMake(25, 25, 0, 0);
-    [self.button4 setImage:[UIImage imageNamed:[plist objectForKey:@"CustomButtonFront"]] forState:UIControlStateNormal];
+    [self.button4 setImage:[UIImage imageNamed:[self.appDelegate.plist objectForKey:@"CustomButtonFront"]] forState:UIControlStateNormal];
     
-    [plist release];
     self.label1.text = NSLocalizedString(@"NEW_GAME_TECHTACTOE", "TechTacToe");
     self.label2.text = NSLocalizedString(@"NEW_GAME_TICTACTOE", "TicTacToe");
     self.label3.text = NSLocalizedString(@"NEW_GAME_GOMOKU", "Gomoku");
@@ -106,19 +118,7 @@
     [alert21 release];
     [alert22 release];
     [alert23 release];
-    
-}
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
--(void) viewDidAppear:(BOOL)animated
-{
-    [self updateInterface:self.interfaceOrientation];
 }
 
 -(void) updateInterface:(UIInterfaceOrientation)toInterfaceOrientation
