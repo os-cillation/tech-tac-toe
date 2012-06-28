@@ -713,7 +713,12 @@
             }
             
             // check for game over - on game over, call cleanUpAfterGameOver and return and don't bother with updating labels or incrementing turn numbers
-            if (self.gameData.isGameOver) {
+            if (self.gameData.isGameOver)
+            {
+                if (!(self.gameData.hasBlueResigned || self.gameData.hasRedResigned))
+                {
+                    self.gameData.numberOfTurn--;
+                }
                 [self cleanUpAfterGameOver];
                 return;
             }
