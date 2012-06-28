@@ -630,8 +630,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: os-cillation GmbH";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: os-cillation GmbH";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -640,8 +640,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "3BA484B2-D2DA-4300-BDBD-0CE355A7BE36";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3BA484B2-D2DA-4300-BDBD-0CE355A7BE36";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -659,6 +659,7 @@
 				GCC_PREFIX_HEADER = "TechTacToe-ah/TechTacToe-ah-Prefix.pch";
 				INFOPLIST_FILE = "TechTacToe-ah/TechTacToe-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = TechTacToe;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -668,15 +669,20 @@
 		E1806A8E1410D6720050493D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ARCHS = (
+					armv6,
+					armv7,
+				);
+				CODE_SIGN_IDENTITY = "iPhone Distribution: os-cillation GmbH";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: os-cillation GmbH";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TechTacToe-ah/TechTacToe-ah-Prefix.pch";
 				INFOPLIST_FILE = "TechTacToe-ah/TechTacToe-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = TechTacToe;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "3BA484B2-D2DA-4300-BDBD-0CE355A7BE36";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3BA484B2-D2DA-4300-BDBD-0CE355A7BE36";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
