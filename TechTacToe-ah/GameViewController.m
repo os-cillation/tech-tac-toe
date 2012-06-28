@@ -1012,7 +1012,7 @@
     frame = CGRectMake(10, 393, 180, 40);
     UILabel *tempLabel = [[UILabel alloc]initWithFrame:frame];
     self.turnInfo = tempLabel;
-    [self.view addSubview:self.turnInfo];
+    //[self.view addSubview:self.turnInfo];
     [tempLabel release];
     [self.turnInfo setBackgroundColor:[UIColor clearColor]];
     [self.turnInfo setShadowColor:[UIColor darkTextColor]];
