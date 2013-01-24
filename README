@@ -1,0 +1,21 @@
+iOS App TechTacToe for iPhone
+=============================
+
+TechTacToe is a fresh approach to an old game idea. It incorporates classic games like TicTacToe and Gomoku (also known as Gobang or Connect 5) and adds flexibility of rules and boards to it.
+
+Game Features
+-------------
+
+- Play in single player mode with a computer opponent
+- Play in multi player mode with a friend on one device or use Bluetooth to connect two devices together
+- Freely zoom and scroll across the board
+- Choose from a preconfigured selection of game modes or create your own special set of rules
+- Adjust the size of the board to your liking or choose not to and start with an undefined size and let it grow as you play
+- Set turn limits freely or choose not to
+- Determine the minimum size of a line, from three fields as in TicTacToe up to a complex game of connecting six fields.
+- Play for points instead for the first line, opening different strategies to win
+- Let the second player have one more move to counter a win of the first player, which makes being the second player more of a strategic difference than a disadvantage
+- Choose to make lines intersectable or not, which will change the way you plan your moves
+- Save your game at any time and resume it later - even resume local games as Bluetooth games and vice versa
+
+URL: http://www.os-cillation.de/en/development/iphone-ipad-android-apps/techtactoe/
